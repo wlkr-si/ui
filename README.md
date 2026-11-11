@@ -1,8 +1,28 @@
 # wlkr/ui
 
-Standalone React, TypeScript, Tailwind 4, and shadcn registry, live at [ui.wlkrlabs.com](https://ui.wlkrlabs.com). Public source release `5d31d9d4c70c20700ff08c3ac140b6496eae0d6d` contains eleven original components, opt-in typography, and semantic light/dark theme (13 items). HTTPS build identity and every registry JSON endpoint match the release receipt. Fresh public-namespace installation, TypeScript/Vite build, and browser acceptance passed; see [verification](docs/verification.md). Website adoption is tracked separately.
+React components for interfaces with a little more character: pixel objects, animated text, accessible actions and a public shadcn-compatible registry.
 
-Created from the official [shadcn registry starter](https://github.com/shadcn-ui/registry-template), linked by the [current getting-started guide](https://ui.shadcn.com/docs/registry/getting-started), at upstream commit `906f859db0125965cba71c51da1707c0a4c6d045`. Full upstream history remains in Git. `upstream` preserves that starter for provenance. `origin` points to the public [wlkr-labs/ui source repository](https://github.com/wlkr-labs/ui). Repository publication does not deploy either website. Work is on `codex/wlkr-ui`. Local checkout: `/Users/shanewalker/Desktop/dev/wlkr-ui`.
+[Explore the components](https://ui.wlkrlabs.com) · [Component API](docs/page-components.md) · [Motion API](docs/motion-components.md) · [Contribute](https://github.com/wlkr-si/.github/blob/main/CONTRIBUTING.md)
+
+<a href="https://wlkr.si"><picture><source media="(prefers-color-scheme: dark)" srcset="https://wlkr.si/brand/part-of-wlkr-si-dark.svg"><img src="https://wlkr.si/brand/part-of-wlkr-si-light.svg" alt="Part of WLKR.SI" width="184" height="32"></picture></a>
+
+## Try a component
+
+In a React/TypeScript project configured for Tailwind and shadcn:
+
+```sh
+pnpm dlx shadcn@latest add https://ui.wlkrlabs.com/r/pixel-object.json
+```
+
+```tsx
+import { PixelObject } from "@/components/wlkr/pixel-object"
+
+<PixelObject label="A rotating pixel sphere" />
+```
+
+Use your project's configured import alias. Components are copied into your source; there is no WLKR runtime service or account. The collection contains eleven original components, optional typography and a light/dark theme. Original component code is MIT; brand assets and fonts have separate terms.
+
+The public host remains **ui.wlkrlabs.com**. The current source is [wlkr-si/ui](https://github.com/wlkr-si/ui). Dated release and consumer-installation evidence is kept in [verification](docs/verification.md); a source or documentation commit does not itself deploy the gallery.
 
 ## Develop and verify
 
@@ -65,7 +85,7 @@ import { PixelObject } from "@/components/wlkr/pixel-object"
 <PixelObject label="Pixel sphere" />
 ```
 
-The `wlkrlabs.com` site uses Astro. Astro adoption uses the official `@astrojs/react` integration, compatible Tailwind/shadcn setup, and interactive React islands (for example `<CopyCommand client:load command="pnpm build" />` in an `.astro` page). Apply the registry setup in the separate website checkout and verify its React islands before publishing. Review generated files, existing token conflicts, and imports before committing. No runtime component package, custom installer, renderer, or additional MCP server is required.
+The [WLKR.SI website](https://wlkr.si) uses Astro and this registry. Other Astro projects can use the official `@astrojs/react` integration, compatible Tailwind/shadcn setup, and interactive React islands (for example `<CopyCommand client:load command="pnpm build" />` in an `.astro` page). Apply the registry setup in the separate website checkout and verify its React islands before publishing. Review generated files, existing token conflicts, and imports before committing. No runtime component package, custom installer, renderer, or additional MCP server is required.
 
 ## Collection and behavior
 
@@ -113,7 +133,7 @@ Paper white `#ffffff`, ink `#010101`, neutral secondary text, and WLKR green `#3
 - WLKR’s existing mark, favicon, and licensed Geist font are reused from the WLKR Labs brand masters. Branding remains WLKR Labs property; no rights to its marks are granted by the source license.
 - Original component code: MIT, see `LICENSE`.
 
-The public site runs on its own Cloudflare static Worker, `wlkr-ui`, at `ui.wlkrlabs.com`. The main website and its Worker remain unchanged. See [release verification](docs/verification.md) for the exact published source revision and acceptance evidence. Source is published in the public [wlkr-labs/ui repository](https://github.com/wlkr-labs/ui).
+The public site runs on its own Cloudflare static Worker, `wlkr-ui`, at `ui.wlkrlabs.com`. The main website and its Worker remain unchanged. See [release verification](docs/verification.md) for the exact published source revision and acceptance evidence. Source is published in the public [wlkr-si/ui repository](https://github.com/wlkr-si/ui).
 
 ## Static Cloudflare release
 
@@ -122,3 +142,7 @@ See [the deployment runbook](docs/deployment.md). `pnpm deploy:check` builds and
 ## GitHub star
 
 `GithubStar` links to a repository with a count supplied by the application. It does not fetch or mutate GitHub stars. Rolling tabular digits, a bottom-up WLKR-green fill, and twelve bounded particles replay on hover/focus after the initial visible reveal; reduced motion renders the final count and star. Pass `count={null}` when the count is unavailable. See [API and attribution](docs/github-star.md). Published source: `5d31d9d4c70c20700ff08c3ac140b6496eae0d6d`.
+
+## Upstream provenance
+
+Created from the official [shadcn registry starter](https://github.com/shadcn-ui/registry-template) at commit `906f859db0125965cba71c51da1707c0a4c6d045`. The full upstream history and attribution remain in Git. Project-specific licensing and the terms above apply.
