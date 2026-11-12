@@ -25,7 +25,7 @@ export function validateReceipt(receipt) {
   if (!/^[0-9a-f]{40}$/.test(receipt?.sourceCommit || "") || !Number.isFinite(Date.parse(receipt?.builtAt)) || !hashes || Object.keys(hashes).length !== 15 || !hashes["/registry.json"] || !hashes["/r/registry.json"] || Object.entries(hashes).some(([path, hash]) => !/^\/(?:registry|r\/[a-z0-9-]+)\.json$/.test(path) || !/^[0-9a-f]{64}$/.test(hash))) {
     throw new Error("Invalid build receipt: expected a source commit, build time and all 15 registry hashes.")
   }
-  if (receipt.pageSha256 !== undefined && (Object.keys(receipt.pageSha256 || {}).length !== 1 || !/^[0-9a-f]{64}$/.test(receipt.pageSha256?.["/pixels"] || ""))) throw new Error("Invalid page receipt: expected only the /pixels SHA-256.")
+  if (receipt.pageSha256 !== undefined && (!isDeepStrictEqual(Object.keys(receipt.pageSha256).sort(), ["/contrast", "/pixels"]) && !isDeepStrictEqual(Object.keys(receipt.pageSha256).sort(), ["/pixels"]) || Object.values(receipt.pageSha256).some(hash => !/^[0-9a-f]{64}$/.test(hash)))) throw new Error("Invalid page receipt: expected /pixels and optional /contrast SHA-256 values.")
   return receipt
 }
 export function latestDeployment(raw) {
@@ -51,7 +51,7 @@ export async function localReceipt(run = processAdapter, read = readFile) {
   const paths = ["/registry.json", "/r/registry.json", ...catalog.items.map(item => `/r/${item.name}.json`)].sort()
   if (!isDeepStrictEqual(paths, Object.keys(receipt.registrySha256).sort())) throw new Error("Build receipt does not match the complete registry catalog.")
   if (!receipt.pageSha256) throw new Error("Candidate receipt is missing /pixels; rebuild before deployment.")
-  for (const [path, hash] of Object.entries({ ...receipt.registrySha256, ...receipt.pageSha256 })) if (sha(await read(path === "/pixels" ? "out/pixels.html" : `out${path}`)) !== hash) throw new Error(`Local asset differs from receipt: ${path}`)
+  for (const [path, hash] of Object.entries({ ...receipt.registrySha256, ...receipt.pageSha256 })) if (sha(await read(path === "/pixels" ? "out/pixels.html" : path === "/contrast" ? "out/contrast.html" : `out${path}`)) !== hash) throw new Error(`Local asset differs from receipt: ${path}`)
   return receipt
 }
 
@@ -122,7 +122,7 @@ export async function release({ run = processAdapter, readCandidate = () => loca
     if (!owned(active, version, message)) throw new ConflictError(`Candidate ownership cannot be established at deployment ${active.id}. No rollback: inspect wlkr-ui deployments.`)
     await verify(candidate)
     await assertCurrent(active)
-    log(`Verified source ${candidate.sourceCommit} and all 15 registry hashes plus /pixels on both hosts.`)
+    log(`Verified source ${candidate.sourceCommit}, all 15 registry hashes, and receipt-covered pages on both hosts.`)
     return { sourceCommit: candidate.sourceCommit, version, deployment: active.id, previousVersion: priorVersion, previousDeployment: previous.id, hosts: HOSTS }
   } catch (failure) {
     if (failure instanceof ConflictError) throw failure

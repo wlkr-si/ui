@@ -216,3 +216,56 @@
 .pixels-page { max-width:760px; margin:36px auto 72px; }
 .pixels-page h1 { font-size:clamp(32px,5vw,48px); font-weight:500; letter-spacing:-.05em; line-height:1.1; margin-bottom:28px; }
 .focused-pixels .pixel-exports { margin:4px 0 24px; }
+
+.contrast-page { max-width:760px; margin:36px auto 72px; }
+.contrast-page h1 { font-size:clamp(32px,5vw,48px); font-weight:500; letter-spacing:-.05em; line-height:1.1; margin-bottom:28px; }
+.contrast-tool { display:grid; gap:24px; }
+.contrast-controls { display:grid; grid-template-columns:minmax(0,1fr) 44px minmax(0,1fr); align-items:end; gap:16px; }
+.contrast-field { display:grid; gap:9px; color:var(--muted-foreground); font-size:13px; }
+.contrast-input-row { display:flex; min-width:0; align-items:center; gap:12px; border-bottom:1px solid var(--border); }
+.contrast-input-row input[type=color] { width:44px; height:44px; padding:5px; border:0; background:transparent; cursor:pointer; }
+.contrast-input-row input[type=text] { min-width:0; width:100%; height:44px; border:0; background:none; font:inherit; color:var(--foreground); font-variant-numeric:tabular-nums; }
+.contrast-swap { width:44px; height:44px; display:grid; place-items:center; background:none; border:1px solid var(--border); cursor:pointer; }
+.contrast-swap svg { width:17px; height:17px; }
+.contrast-preview { min-height:190px; padding:24px; display:flex; flex-direction:column; justify-content:center; overflow-wrap:anywhere; }
+.contrast-preview-large { margin-top:18px; font-size:32px; line-height:1.15; font-weight:550; letter-spacing:-.04em; }
+.contrast-preview-small { margin-top:12px; font-size:14px; line-height:1.55; }
+.contrast-summary { display:flex; align-items:baseline; gap:12px; }
+.contrast-summary strong { font-size:32px; font-variant-numeric:tabular-nums; letter-spacing:-.05em; font-weight:550; }
+.contrast-summary span,.contrast-scope { font-size:12px; color:var(--muted-foreground); }
+.contrast-results { border-top:1px solid var(--border); }
+.contrast-result-head,.contrast-result-row { display:grid; grid-template-columns:minmax(0,1fr) 100px 100px; align-items:center; gap:12px; padding:13px 0; border-bottom:1px solid var(--border); font-size:13px; }
+.contrast-result-head { color:var(--muted-foreground); font-size:11px; }
+.contrast-result-row>span:first-child { color:var(--foreground); }
+.contrast-result { display:flex; justify-content:flex-start; }
+.contrast-result>span { position:absolute; width:1px; height:1px; overflow:hidden; clip-path:inset(50%); white-space:nowrap; }
+.contrast-result strong { font-size:12px; font-weight:550; }
+.contrast-result strong[data-pass=true] { color:var(--success); }
+.contrast-result strong[data-pass=false] { color:var(--destructive); }
+.contrast-scope { line-height:1.65; max-width:60ch; margin:0; }
+.contrast-share { display:grid; gap:9px; }
+.contrast-share>label { font-size:13px; }
+.contrast-share>div { display:grid; grid-template-columns:minmax(0,1fr) auto; gap:10px; align-items:center; }
+.contrast-share input { min-width:0; height:44px; padding:0 10px; border:1px solid var(--border); background:var(--control-surface); font:12px ui-monospace,monospace; }
+.contrast-copy { display:flex; gap:8px; align-items:center; justify-content:center; min-height:44px; padding:0 12px; border:1px solid var(--border); background:none; cursor:pointer; font-size:12px; }
+.contrast-copy svg { width:15px; height:15px; }
+.contrast-share p { min-height:1.4em; font-size:12px; color:var(--muted-foreground); margin:0; }
+.contrast-tool :is(button,input):focus-visible { outline:2px solid var(--ring); outline-offset:4px; }
+@media(max-width:620px) {
+ .contrast-page { margin:20px auto 52px; }
+ .contrast-controls { gap:9px; }
+ .contrast-input-row { gap:4px; }
+ .contrast-input-row input[type=color] { width:38px; }
+ .contrast-input-row input[type=text] { font-size:12px; }
+ .contrast-preview { min-height:175px; padding:18px; }
+ .contrast-preview-large { font-size:26px; }
+ .contrast-result-head,.contrast-result-row { grid-template-columns:minmax(0,1fr) 60px 60px; gap:8px; }
+ .contrast-share>div { grid-template-columns:minmax(0,1fr) auto; gap:6px; }
+ .contrast-copy { padding:0 9px; }
+}
+@media(max-width:380px) {
+ .site-header { gap:12px; }
+ .identity { gap:8px; font-size:18px; letter-spacing:-.8px; }
+ .brand-mark { width:23px; height:27px; }
+ .header-nav { gap:8px; font-size:11px; }
+}

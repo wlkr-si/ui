@@ -9,6 +9,6 @@ const info = {
   sourceCommit: execFileSync("git", ["rev-parse", "HEAD"], { encoding: "utf8" }).trim(),
   builtAt: new Date().toISOString(),
   registrySha256,
-  pageSha256: { "/pixels": createHash("sha256").update(await readFile("out/pixels.html")).digest("hex") },
+  pageSha256: { "/pixels": createHash("sha256").update(await readFile("out/pixels.html")).digest("hex"), "/contrast": createHash("sha256").update(await readFile("out/contrast.html")).digest("hex") },
 }
 await writeFile("out/build-info.json", JSON.stringify(info, null, 2) + "\n")

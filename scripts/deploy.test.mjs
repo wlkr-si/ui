@@ -13,7 +13,8 @@ const paths = ["/registry.json", "/r/registry.json", ...Array.from({ length: 13 
 function artifact(letter) {
   const bodies = Object.fromEntries(paths.map(path => [path, JSON.stringify({ path, source: letter })]))
   bodies["/pixels"] = `<html><h1>Pixels ${letter}</h1></html>`
-  return { bodies, receipt: { sourceCommit: letter.repeat(40), builtAt: "2026-11-11T00:00:00.000Z", pageSha256: { "/pixels": digest(bodies["/pixels"]) }, registrySha256: Object.fromEntries(paths.map(path => [path, digest(bodies[path])])) } }
+  bodies["/contrast"] = `<html><h1>Contrast ${letter}</h1></html>`
+  return { bodies, receipt: { sourceCommit: letter.repeat(40), builtAt: "2026-11-11T00:00:00.000Z", pageSha256: { "/pixels": digest(bodies["/pixels"]), "/contrast": digest(bodies["/contrast"]) }, registrySha256: Object.fromEntries(paths.map(path => [path, digest(bodies[path])])) } }
 }
 const prior = artifact("a"), candidate = artifact("b")
 function fixture(options = {}) {
@@ -78,7 +79,7 @@ function fixture(options = {}) {
       }
       return new Response(JSON.stringify(options.badBaseline && state.version === OLD ? {} : active.receipt))
     }
-    if ((options.pageFails && parsed.pathname === "/pixels" || options.verifyFails || options.legacyFails && parsed.origin === HOSTS[1]) && state.version === NEW || options.restoreVerificationFails && state.restores > 0) {
+    if ((options.pageFails && parsed.pathname === "/pixels" || options.contrastFails && parsed.pathname === "/contrast" || options.verifyFails || options.legacyFails && parsed.origin === HOSTS[1]) && state.version === NEW || options.restoreVerificationFails && state.restores > 0) {
       state.corrupted = true
       return new Response("wrong registry bytes")
     }
@@ -94,7 +95,7 @@ test("success checks exact receipt and all 15 endpoint bytes on both hosts", asy
   assert.equal(result.version, NEW)
   assert.equal(result.previousVersion, OLD)
   assert.equal(state.restores, 0)
-  for (const host of HOSTS) for (const path of [...paths, "/pixels"]) assert.ok(state.requests.filter(url => url === host + path).length >= 2, host + path)
+  for (const host of HOSTS) for (const path of [...paths, "/pixels", "/contrast"]) assert.ok(state.requests.filter(url => url === host + path).length >= 2, host + path)
 })
 test("no provider access after release-check failure", async () => {
   const { state, adapters } = fixture({ checkFails: true })
@@ -132,7 +133,7 @@ test("bad live bytes trigger one rollback and full two-host restoration checks",
   await assert.rejects(release(adapters), /Previous version .* restored and verified/)
   assert.equal(state.restores, 1)
   assert.equal(state.version, OLD)
-  for (const host of HOSTS) for (const path of [...paths, "/pixels"]) assert.ok(state.requests.filter(url => url === host + path).length >= 2)
+  for (const host of HOSTS) for (const path of [...paths, "/pixels", "/contrast"]) assert.ok(state.requests.filter(url => url === host + path).length >= 2)
 })
 test("rollback CLI error after provider mutation still verifies restoration", async () => {
   const { state, adapters } = fixture({ verifyFails: true, restoreFailsAfterMutation: true })
@@ -190,11 +191,11 @@ test("local receipt verifies HEAD, catalog, and actual file bytes", async () => 
   const bodies = { ...prior.bodies, "/registry.json": catalog }
   const receipt = { ...prior.receipt, registrySha256: { ...prior.receipt.registrySha256, "/registry.json": digest(catalog) } }
   const run = async () => ({ status: 0, stdout: receipt.sourceCommit, stderr: "" })
-  const read = async path => path === "out/build-info.json" ? JSON.stringify(receipt) : bodies[path === "out/pixels.html" ? "/pixels" : path.slice(3)]
+  const read = async path => path === "out/build-info.json" ? JSON.stringify(receipt) : bodies[path === "out/pixels.html" ? "/pixels" : path === "out/contrast.html" ? "/contrast" : path.slice(3)]
   assert.deepEqual(await localReceipt(run, read), receipt)
   await assert.rejects(localReceipt(async () => ({ status: 0, stdout: "0".repeat(40), stderr: "" }), read), /does not match HEAD/)
   await assert.rejects(localReceipt(run, async path => path === "out/r/item-0.json" ? "changed" : read(path)), /Local asset differs/)
-  await assert.rejects(localReceipt(run, async path => path === "out/pixels.html" ? "changed" : read(path)), /Local asset differs/)
+  await assert.rejects(localReceipt(run, async path => path === "out/pixels.html" || path === "out/contrast.html" ? "changed" : read(path)), /Local asset differs/)
   const missingPage = { ...receipt }; delete missingPage.pageSha256
   await assert.rejects(localReceipt(run, async path => path === "out/build-info.json" ? JSON.stringify(missingPage) : read(path)), /missing \/pixels/)
 })
@@ -269,6 +270,16 @@ test("focused page corruption on either host fails verification while older rece
   assert.deepEqual(validateReceipt(legacy), legacy)
   await verifyHosts(legacy, { ...adapters, attempts: 1, fetchImpl: (url, init) => new URL(url).pathname === "/build-info.json" ? Promise.resolve(new Response(JSON.stringify(legacy))) : adapters.fetchImpl(url, init) })
   for (const pages of [{}, { "/pixels": "bad" }, { "/pixels": pageSha256["/pixels"], "/other": pageSha256["/pixels"] }]) assert.throws(() => validateReceipt({ ...prior.receipt, pageSha256: pages }), /Invalid page receipt/)
+})
+
+test("contrast bytes are independently checked on both hosts and trigger restoration when wrong", async () => {
+  const { adapters } = fixture()
+  for (const host of HOSTS) await assert.rejects(verifyHosts(prior.receipt, { ...adapters, attempts: 1, fetchImpl: (url, init) => new URL(url).origin === host && new URL(url).pathname === "/contrast" ? Promise.resolve(new Response("wrong contrast page")) : adapters.fetchImpl(url, init) }), /asset SHA-256 mismatch/)
+  const { state, adapters: failing } = fixture({ contrastFails: true })
+  await assert.rejects(release(failing), /Previous version .* restored and verified/)
+  assert.equal(state.restores, 1)
+  assert.equal(state.version, OLD)
+  for (const host of HOSTS) assert.ok(state.requests.filter(url => url === host + "/contrast").length >= 2)
 })
 
 test("a focused-page-only failure rolls back and verifies the previous release", async () => {

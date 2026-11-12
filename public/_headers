@@ -10,3 +10,9 @@
   Cache-Control: public, max-age=0, must-revalidate, no-transform
 /pixels.html
   Cache-Control: public, max-age=0, must-revalidate, no-transform
+/contrast
+  Cache-Control: public, max-age=0, must-revalidate, no-transform
+/contrast/
+  Cache-Control: public, max-age=0, must-revalidate, no-transform
+/contrast.html
+  Cache-Control: public, max-age=0, must-revalidate, no-transform
