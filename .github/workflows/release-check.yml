@@ -1,0 +1,52 @@
+name: Public release checks
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  release-check:
+    name: Release check
+    # Avoid GitHub's loose comparison treating missing/null private metadata as false.
+    if: ${{ github.event.repository.visibility == 'public' && toJSON(github.event.repository.private) == 'false' }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    env:
+      NEXT_TELEMETRY_DISABLED: '1'
+    steps:
+      - name: Check out source
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+          set-safe-directory: false
+
+      - name: Set up Node
+        uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: '26.8.2'
+          package-manager-cache: false
+
+      - name: Install exact pnpm
+        run: |
+          npm install --prefix "$RUNNER_TEMP/ui-pnpm" --cache "$RUNNER_TEMP/ui-npm" --ignore-scripts --no-audit --no-fund --no-package-lock pnpm@11.15.0
+          echo "$RUNNER_TEMP/ui-pnpm/node_modules/.bin" >> "$GITHUB_PATH"
+          echo "XDG_CACHE_HOME=$RUNNER_TEMP/ui-cache" >> "$GITHUB_ENV"
+
+      - name: Verify tool versions
+        run: |
+          test "$(node --version)" = 'v26.8.2'
+          test "$(pnpm --version)" = '11.15.0'
+
+      - name: Install frozen dependencies
+        run: pnpm install --frozen-lockfile --store-dir "$RUNNER_TEMP/ui-pnpm-store"
+
+      - name: Run existing release checks
+        run: pnpm release:check
