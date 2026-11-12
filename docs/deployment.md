@@ -41,7 +41,36 @@ Before publishing, inspect the Cloudflare account, existing Worker custom domain
 pnpm run deploy
 ```
 
-The release check requires a clean committed checkout, rebuilds, runs lint and TypeScript checks, confirms generation leaves Git clean, and checks the expected static files. It prints the Git revision that produced the output. `out/build-info.json` records that source revision, the build time, and SHA-256 hashes of both registry catalogs and every item endpoint in the corresponding catalog. This receipt is generated only in the ignored export directory, avoiding a committed self-reference. Wrangler then publishes only the asset-only Worker code. Existing custom-domain mappings remain separately managed. Record the revision and Cloudflare deployment/version identifiers in the verification record.
+The guarded release command inherits the caller's existing Wrangler environment and normal CLI authentication. It does not read, save, or print tokens, install tools, or change domain configuration. The pinned Wrangler is invoked through `pnpm exec`. The Worker name is fixed to `wlkr-ui`; both public hosts are fixed in the release script.
+
+`pnpm run deploy` now performs this sequence:
+
+1. Acquire an exclusive local Git lock, then run `release:check` (release automation tests, build, lint, TypeScript, clean generated registry, and exported-file checks).
+2. Validate the local receipt against HEAD, the complete catalog, and all local registry bytes. Capture the current deployment ID and its single version serving 100% of traffic. Refuse split/unknown traffic.
+3. Before any upload, verify the existing exact public receipt and all 15 SHA-256 registry hashes on **both** `ui.wlkr.si` and `ui.wlkrlabs.com`. Recheck that the captured deployment has not changed. This snapshot is the rollback baseline.
+4. Upload the candidate without activating it. Read its version ID from pinned Wrangler's output, then recheck the original deployment ID immediately before activation. Activate only that candidate at 100%, using a unique `ui-release:<run ID>` deployment message.
+5. Require the active deployment's version and unique message to match this run. Verify the entire exact candidate receipt (including source commit and build time), all 15 registry byte hashes on both hosts, and receipt stability after the hash checks. Recheck the deployment ID before accepting success.
+6. On upload/activation/verification failure, reconcile provider state first. If the original deployment remains, verify that baseline and leave traffic alone. If activation is delayed or its outcome uncertain, fail with IDs/marker for inspection; do not blindly retry.
+7. If the current deployment is provably this run's candidate, recheck its exact deployment ID immediately before restoring the captured previous version to 100%. Use a unique `ui-restore:<run ID>` marker. Reconcile even a failed restore CLI response, then verify the restored exact receipt and all 15 registry hashes on both hosts and the final deployment ID. A release that needed restoration still exits unsuccessfully, with the verified restore IDs.
+
+No rollback is attempted when ownership is uncertain, provider state cannot be read, or another deployment is observed. An unchanged version with a **different deployment ID** counts as a conflict too. Failed or unverified rollback is explicitly reported with candidate/prior IDs and a request to inspect current state. The command never blindly retries a traffic mutation.
+
+Each public GET times out after five seconds. Verification uses at most four concurrent requests, four full sweeps, and two seconds between sweeps. It bypasses browser caches and adds a per-run query string. Each provider CLI operation is bounded to two minutes; the local release check has a ten-minute process timeout. Network checks compare bytes rather than browser screenshots. They do not replace interaction or consumer-installation acceptance after component changes.
+
+The local lock is resolved using `git rev-parse --git-path wlkr-ui-release.lock` and records its PID/start time without credentials. It is removed on ordinary success or failure. After a killed process or machine failure, inspect the recorded process and provider deployment before removing a confirmed stale lock. Do not remove a lock held by a running release. Locks serialize cooperating releases in this checkout; separate clones and dashboard/CLI publishers are not locked.
+
+**Concurrency limitation:** Wrangler 4.145.0 provides no conditional/compare-and-swap deployment or rollback operation. The script checks immediately before and after writes, stops on observed conflicts, and refuses uncertain recovery. An external publisher can still race between the final read and Cloudflare's unconditional write. This is not atomic protection across publishers: coordinate external writers during a release. A hard process termination can also prevent automatic recovery; use the printed prior/candidate version and unique marker to reconcile before acting.
+
+On success the command prints the source commit, candidate version/deployment, previous version/deployment, and verified hosts. `out/build-info.json` records the source, build time, and hashes. An upload that never activates can leave an unused version at Cloudflare; the script does not delete versions. This script manages code versions only; routes, DNS, aliases, billing, permissions, secrets and bound data are outside its scope.
+
+Run the controlled adapter tests without publishing or authenticating:
+
+```sh
+pnpm test:release
+pnpm release:check
+```
+
+The tests simulate process and network success, partial provider writes, failed verification and recovery, missing ownership, concurrent deployments, local receipt drift, bounded retries, and lock conflicts. They make no Cloudflare or public-host requests.
 
 ## Verify the public release
 

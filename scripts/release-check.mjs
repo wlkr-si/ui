@@ -13,6 +13,7 @@ function run(...args) {
 
 requireClean()
 const revision = execFileSync("git", ["rev-parse", "HEAD"], { encoding: "utf8" }).trim()
+run("test:release")
 run("build")
 run("lint")
 run("typecheck")
