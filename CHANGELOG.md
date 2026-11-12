@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.4.0 — 2026-11-11
+
+- Added `/pixels`, a focused drawing page reusing the gallery editor, artwork state, code and image exports. React code is available on request.
+- Added gallery navigation and agent documentation for Pixels; new canonical links open the focused page while existing root v1/v2 links remain supported.
+- Added exact focused-page verification on both release hosts with backward-compatible baseline and rollback receipts.
+
+The package remains private; the GitHub source tag follows live acceptance. Registry items are unchanged.
+
 ## 0.3.0 — 2026-11-11
 
 - Added practical 8×8, 16×16 and 32×32 masks with centred resize/crop, reversible size and ink changes, and a scrollable 1,024-cell detail editor with pointer Pan and one keyboard tab stop.

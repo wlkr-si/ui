@@ -24,7 +24,7 @@ Use your project's configured import alias. Components are copied into your sour
 
 The gallery is available at **ui.wlkr.si**. The existing **ui.wlkrlabs.com** host and installation namespace remain available. The current source is [wlkr-si/ui](https://github.com/wlkr-si/ui). Dated release and consumer-installation evidence is kept in [verification](docs/verification.md); a source or documentation commit does not itself deploy the gallery.
 
-The private package is version 0.3.0. See [the changelog](CHANGELOG.md) for the gallery milestone; distribution remains GitHub source and the public registry, not an npm package.
+The private package is version 0.4.0. See [the changelog](CHANGELOG.md) for the gallery milestone; distribution remains GitHub source and the public registry, not an npm package.
 
 ## Develop and verify
 
@@ -117,6 +117,8 @@ Rotation pauses off-screen and in hidden browser tabs. Click/tap or Enter/Space 
 The site uses installed, unchanged stock `Button`, `Input`, `Switch`, `Tabs`, `Slider`, `Command`, `Popover`, `Collapsible`, `Field`, `HoverCard`, `Toggle`, `ToggleGroup`, and `Tooltip` (plus their upstream helper components). Those files are **not** registry entries. Original components declare stock dependencies by official shadcn item name; consumers receive them directly from upstream. The site presentation layer removes visual chrome without altering upstream source. Installed components inherit the consumer’s stock primitives and local styling, so appearance can differ from this showcase. WLKR theme changes tokens, not stock source or font imports.
 
 ## Gallery controls and source panels
+
+[Pixels](https://ui.wlkr.si/pixels) is the focused drawing page, with the same editor, state, codec and export implementation as the gallery. React code opens only when requested; studio navigation and display controls remain available. New Share links point to `/pixels`; existing root v1/v2 links still restore the same artwork. The static release receipt hashes `/pixels` and checks it on both hosts, with a scoped no-transform response directive; older baseline/rollback receipts remain explicitly registry-only.
 
 The Pixel object playground offers 8×8, 16×16 and 32×32 masks with theme-relative or explicit six-digit hex ink. Grid changes centre the artwork; shrinking crops it. Undo/redo tracks 32 strokes or artwork edits and restores cropped pixels, size and ink together. Clear keeps the current size and ink; Reset returns to the original 8×8 theme-relative starter and is undoable. Switching to Object preserves mask state and the existing object settings.
 

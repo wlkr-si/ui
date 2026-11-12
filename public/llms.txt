@@ -2,7 +2,11 @@
 
 React and TypeScript source components, a shadcn-compatible registry, and opt-in WLKR typography.
 
-Source: https://github.com/wlkr-labs/ui. Build identity: /build-info.json.
+Source: https://github.com/wlkr-si/ui. Build identity: /build-info.json.
+
+## Pixel drawing
+
+[Pixels](/pixels) is the focused drawing page. It reuses the gallery mask editor, ink, centred resize/crop, undo/redo, explicit Share and transparent SVG/PNG exports. React code opens on request. New canonical links use /pixels?mask=<token>#pixels; existing root v1/v2 links remain supported. No artwork is saved to a backend or browser storage.
 
 ## Installation
 
