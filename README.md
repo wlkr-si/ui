@@ -2,7 +2,7 @@
 
 React components for interfaces with a little more character: pixel objects, animated text, accessible actions and a public shadcn-compatible registry.
 
-[Explore the components](https://ui.wlkrlabs.com) · [Component API](docs/page-components.md) · [Motion API](docs/motion-components.md) · [Contribute](https://github.com/wlkr-si/.github/blob/main/CONTRIBUTING.md)
+[Explore the components](https://ui.wlkr.si) · [Component API](docs/page-components.md) · [Motion API](docs/motion-components.md) · [Contribute](https://github.com/wlkr-si/.github/blob/main/CONTRIBUTING.md)
 
 <a href="https://wlkr.si"><picture><source media="(prefers-color-scheme: dark)" srcset="https://wlkr.si/brand/part-of-wlkr-si-dark.svg"><img src="https://wlkr.si/brand/part-of-wlkr-si-light.svg" alt="Part of WLKR.SI" width="184" height="32"></picture></a>
 
@@ -22,7 +22,7 @@ import { PixelObject } from "@/components/wlkr/pixel-object"
 
 Use your project's configured import alias. Components are copied into your source; there is no WLKR runtime service or account. The collection contains eleven original components, optional typography and a light/dark theme. Original component code is MIT; brand assets and fonts have separate terms.
 
-The public host remains **ui.wlkrlabs.com**. The current source is [wlkr-si/ui](https://github.com/wlkr-si/ui). Dated release and consumer-installation evidence is kept in [verification](docs/verification.md); a source or documentation commit does not itself deploy the gallery.
+The gallery is available at **ui.wlkr.si**. The existing **ui.wlkrlabs.com** host and installation namespace remain available. The current source is [wlkr-si/ui](https://github.com/wlkr-si/ui). Dated release and consumer-installation evidence is kept in [verification](docs/verification.md); a source or documentation commit does not itself deploy the gallery.
 
 ## Develop and verify
 
