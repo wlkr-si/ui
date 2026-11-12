@@ -47,6 +47,8 @@ The CLI makes no network requests, reads no credentials and writes no files; it 
 
 With project dependencies already installed, `pnpm pixels --grid ./mask.txt` is a shortcut. `pnpm test:pixels-cli` runs temporary-file, native-process, malformed-input, no-network/no-write and SVG geometry/colour/codec checks. The same tests run in `pnpm release:check`. The registry/component API is unchanged.
 
+The 13 CLI checks passed on Linux Node 24.22.3 and Node 26.8.2, and on macOS Node 26.5.0. A minimal fixture without installed dependencies also passed URL, JSON and SVG output checks with networking denied.
+
 ## AA text options
 
 The optional chooser keeps the background fixed and evaluates text mixed toward black or white in 5% RGB steps, up to 20 steps per direction. It lists up to two distinct passing choices per direction, plus the current text when it already passes. Every listed choice meets the unrounded 4.5:1 normal-text threshold. Selecting a choice leaves the current pair unchanged until **Apply**.
