@@ -42,5 +42,5 @@ export function readMaskSearch(search: string): MaskLink {
   catch { return { kind: "invalid" } }
 }
 export function maskShareUrl(mask: string[], ink: string | null = null) {
-  return `https://ui.wlkr.si/?mask=${encodeArtwork(mask, ink)}#pixel-object`
+  return `https://ui.wlkr.si/pixels?mask=${encodeArtwork(mask, ink)}#pixels`
 }

@@ -25,6 +25,7 @@ export function validateReceipt(receipt) {
   if (!/^[0-9a-f]{40}$/.test(receipt?.sourceCommit || "") || !Number.isFinite(Date.parse(receipt?.builtAt)) || !hashes || Object.keys(hashes).length !== 15 || !hashes["/registry.json"] || !hashes["/r/registry.json"] || Object.entries(hashes).some(([path, hash]) => !/^\/(?:registry|r\/[a-z0-9-]+)\.json$/.test(path) || !/^[0-9a-f]{64}$/.test(hash))) {
     throw new Error("Invalid build receipt: expected a source commit, build time and all 15 registry hashes.")
   }
+  if (receipt.pageSha256 !== undefined && (Object.keys(receipt.pageSha256 || {}).length !== 1 || !/^[0-9a-f]{64}$/.test(receipt.pageSha256?.["/pixels"] || ""))) throw new Error("Invalid page receipt: expected only the /pixels SHA-256.")
   return receipt
 }
 export function latestDeployment(raw) {
@@ -49,7 +50,8 @@ export async function localReceipt(run = processAdapter, read = readFile) {
   const catalog = JSON.parse(await read("out/registry.json", "utf8"))
   const paths = ["/registry.json", "/r/registry.json", ...catalog.items.map(item => `/r/${item.name}.json`)].sort()
   if (!isDeepStrictEqual(paths, Object.keys(receipt.registrySha256).sort())) throw new Error("Build receipt does not match the complete registry catalog.")
-  for (const [path, hash] of Object.entries(receipt.registrySha256)) if (sha(await read(`out${path}`)) !== hash) throw new Error(`Local asset differs from receipt: ${path}`)
+  if (!receipt.pageSha256) throw new Error("Candidate receipt is missing /pixels; rebuild before deployment.")
+  for (const [path, hash] of Object.entries({ ...receipt.registrySha256, ...receipt.pageSha256 })) if (sha(await read(path === "/pixels" ? "out/pixels.html" : `out${path}`)) !== hash) throw new Error(`Local asset differs from receipt: ${path}`)
   return receipt
 }
 
@@ -68,16 +70,16 @@ export async function verifyHosts(expected, { fetchImpl = fetch, sleep = ms => n
       const receipts = received.map(result => result.value)
       const target = expected || receipts[0]
       if (receipts.some(receipt => !isDeepStrictEqual(receipt, target))) throw new Error("Public build receipt differs from the exact expected receipt on one or both hosts.")
-      const checks = HOSTS.flatMap(host => Object.entries(target.registrySha256).map(([path, hash]) => ({ host, path, hash })))
+      const checks = HOSTS.flatMap(host => Object.entries({ ...target.registrySha256, ...target.pageSha256 }).map(([path, hash]) => ({ host, path, hash })))
       for (let offset = 0; offset < checks.length; offset += 4) {
         const batch = await Promise.allSettled(checks.slice(offset, offset + 4).map(async ({ host, path, hash }) => {
-          if (sha(await get(host, path)) !== hash) throw new Error(`${host}${path}: registry SHA-256 mismatch`)
+          if (sha(await get(host, path)) !== hash) throw new Error(`${host}${path}: asset SHA-256 mismatch`)
         }))
         const rejected = batch.find(result => result.status === "rejected")
         if (rejected) throw rejected.reason
       }
       const finalReceipts = await Promise.allSettled(HOSTS.map(async host => JSON.parse((await get(host, "/build-info.json")).toString("utf8"))))
-      if (finalReceipts.some(result => result.status !== "fulfilled" || !isDeepStrictEqual(result.value, target))) throw new Error("Public receipt changed during registry verification.")
+      if (finalReceipts.some(result => result.status !== "fulfilled" || !isDeepStrictEqual(result.value, target))) throw new Error("Public receipt changed during asset verification.")
       return target
     } catch (error) { failure = error }
     if (attempt + 1 < attempts) await sleep(delayMs)
@@ -120,7 +122,7 @@ export async function release({ run = processAdapter, readCandidate = () => loca
     if (!owned(active, version, message)) throw new ConflictError(`Candidate ownership cannot be established at deployment ${active.id}. No rollback: inspect wlkr-ui deployments.`)
     await verify(candidate)
     await assertCurrent(active)
-    log(`Verified source ${candidate.sourceCommit} and all 15 registry hashes on both hosts.`)
+    log(`Verified source ${candidate.sourceCommit} and all 15 registry hashes plus /pixels on both hosts.`)
     return { sourceCommit: candidate.sourceCommit, version, deployment: active.id, previousVersion: priorVersion, previousDeployment: previous.id, hosts: HOSTS }
   } catch (failure) {
     if (failure instanceof ConflictError) throw failure

@@ -212,3 +212,7 @@
 .mask-grid[data-tool=pan] .mask-cell { cursor:grab; }
 .mask-grid[data-tool=pan]:active .mask-cell { cursor:grabbing; }
 .mask-artwork { width:260px; max-width:100%; }
+
+.pixels-page { max-width:760px; margin:36px auto 72px; }
+.pixels-page h1 { font-size:clamp(32px,5vw,48px); font-weight:500; letter-spacing:-.05em; line-height:1.1; margin-bottom:28px; }
+.focused-pixels .pixel-exports { margin:4px 0 24px; }

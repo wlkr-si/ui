@@ -5,7 +5,7 @@ import { showcaseExamples, tokenReference, registryConfig } from "@/lib/code-sam
 import { CodePanel } from "@/components/code-panel"
 import { Disclosure } from "@/components/disclosure"
 import { Code2 } from "lucide-react"
-import Image from "next/image"
+import { SiteHeader, SiteFooter } from "@/components/site-chrome"
 import { ArrowDown, ArrowUpRight, Check, Search, X } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -76,10 +76,7 @@ export function Showcase({ sources, highlights = {} }: { sources: Record<string,
   const filtered = entries.filter(entry => `${entry.name} ${entry.description} ${entry.keywords}`.toLowerCase().includes(query.toLowerCase().trim()))
   return <div className="site shell">
     <a href="#collection" className="sr-only focus:not-sr-only">Skip to components</a>
-    <header className="site-header">
-      <a href="#" className="identity" aria-label="wlkr/ui home"><Image className="brand-mark" src="/wlkr-mark.svg" alt="" width={27} height={31} priority /><span>wlkr<span className="text-muted-foreground">/</span>ui</span></a>
-      <nav className="header-nav" aria-label="Main navigation"><a href="#collection">Components</a><a href="#installation">Get started</a><a className="desktop-link" href="https://wlkr.si" target="_blank" rel="noreferrer">WLKR.SI</a></nav>
-    </header>
+    <SiteHeader />
     <main>
       <div className="hero"><h1>Interfaces,<br />reduced.</h1><div className="hero-note"><p>Useful components.<br />Thoughtful defaults.<br />Source you own.</p><a href="#collection">Explore the collection <ArrowDown aria-hidden="true" /></a></div></div>
       <div className="workbench" id="collection">
@@ -97,6 +94,6 @@ export function Showcase({ sources, highlights = {} }: { sources: Record<string,
         </div>
       </div>
     </main>
-    <footer className="site-footer"><a className="studio-family-badge" href="https://wlkr.si" aria-label="Part of WLKR.SI"><Image className="studio-family-badge-light" src="/brand/part-of-wlkr-si-light.svg" alt="" width={184} height={32} /><Image className="studio-family-badge-dark" src="/brand/part-of-wlkr-si-dark.svg" alt="" width={184} height={32} /></a><div><a href="/registry.json">Registry</a><a href="#installation">Installation</a><FooterControls agentHref="/llms.txt" /></div></footer>
+    <SiteFooter />
   </div>
 }

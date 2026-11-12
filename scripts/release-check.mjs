@@ -21,5 +21,5 @@ run("typecheck")
 // Registry generation must reproduce the committed static artifacts exactly.
 requireClean()
 const catalog = JSON.parse(await readFile("out/registry.json", "utf8"))
-for (const path of ["out/build-info.json", "out/llms.txt", "out/index.html", "out/404.html", "out/registry.json", "out/r/registry.json", ...catalog.items.map(item => `out/r/${item.name}.json`)]) await access(path)
+for (const path of ["out/build-info.json", "out/llms.txt", "out/index.html", "out/pixels.html", "out/404.html", "out/registry.json", "out/r/registry.json", ...catalog.items.map(item => `out/r/${item.name}.json`)]) await access(path)
 console.log(`Static release verified from ${revision}.`)
