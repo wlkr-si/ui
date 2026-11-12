@@ -3,6 +3,7 @@
 ## 0.9.0 — 2026-11-11
 
 - Added Download grid for the current Pixels mask, with exact dot/hash rows, one final newline and a size-based text filename accepted by the existing CLI. Ink remains separate in links and CLI flags.
+- Linked Use CLI to usage instructions.
 - Kept projected browser SVG/PNG snapshots and the canonical codec unchanged, with serialization and browser-download-to-CLI verification.
 
 The package remains private; the GitHub source tag follows live acceptance. Registry items are unchanged.
