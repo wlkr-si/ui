@@ -26,7 +26,7 @@ The gallery and focused tools use primary-domain canonical and social metadata w
 
 The gallery is available at **ui.wlkr.si**. The focused [contrast checker](https://ui.wlkr.si/contrast) previews opaque colour pairs, checks WCAG text thresholds, and shares pairs by URL. Optional AA text mixes never change the selected colour until applied. The existing **ui.wlkrlabs.com** host and installation namespace remain available. The current source is [wlkr-si/ui](https://github.com/wlkr-si/ui). Dated release and consumer-installation evidence is kept in [verification](docs/verification.md); a source or documentation commit does not itself deploy the gallery.
 
-The private package is version 0.9.0. See [the changelog](CHANGELOG.md) for the gallery milestone; distribution remains GitHub source and the public registry, not an npm package.
+The private package is version 0.10.0. See [the changelog](CHANGELOG.md) for the gallery milestone; distribution remains GitHub source and the public registry, not an npm package.
 
 ## Pixels CLI
 
@@ -50,6 +50,25 @@ The CLI makes no network requests, reads no credentials and writes no files; it 
 With project dependencies already installed, `pnpm pixels --grid ./mask.txt` is a shortcut. `pnpm test:pixels-cli` runs temporary-file, native-process, malformed-input, no-network/no-write and SVG geometry/colour/codec checks. The same tests run in `pnpm release:check`. The registry/component API is unchanged.
 
 The 13 CLI checks passed on Linux Node 24.22.3 and Node 26.8.2, and on macOS Node 26.5.0. A minimal fixture without installed dependencies also passed URL, JSON and SVG output checks with networking denied.
+
+## Contrast CLI
+
+Use Node 24 or newer from this source checkout, without dependency installation. Foreground comes first, then background; hashes are optional:
+
+```sh
+node scripts/contrast.mjs 000000 ffffff
+node scripts/contrast.mjs '#81737a' '#ffffff' --json
+node scripts/contrast.mjs 777777 767676 --suggest --json
+node scripts/contrast.mjs --help
+```
+
+Supply exactly two opaque six-digit sRGB hex colours. The CLI uses the unchanged browser math and AA text-option helper. JSON contains normalized `foreground`/`background`, the exact unrounded `ratio`, and explicit `normalText.AA`, `normalText.AAA`, `largeText.AA`, `largeText.AAA` booleans. Thresholds are 4.5/7 for normal text and 3/4.5 for large text. Human output rounds only displayed ratios to two decimals; pass decisions use the unrounded number, so a displayed 4.50 can still fail AA.
+
+`--suggest` adds `aaTextOptions`, keeping the background fixed and returning the same deterministic options as the browser: 5% RGB mixes toward black or white, up to two passing choices per direction, plus current text once when it already passes. Options retain exact ratios and direction labels; duplicates are removed by the shared helper and every option meets unrounded 4.5:1 normal-text AA. Suggestions never change the selected input pair.
+
+There are no network requests, credentials, file inputs or output files; output goes to stdout. Invalid, duplicate or unknown arguments produce a generic error without echoing input. Exit 0 means a valid result, including failing pairs; exit 1 means invalid arguments. With existing project dependencies installed, `pnpm contrast 000000 ffffff` is a shortcut. `pnpm test:contrast-cli` runs native no-network commands and exact shared-helper/threshold/suggestion checks, also included in `pnpm release:check`.
+
+The seven CLI checks passed on Linux Node 24.22.3 and 26.8.2, and macOS Node 26.5.0, including real native commands with networking forbidden and no installed dependencies.
 
 ## AA text options
 

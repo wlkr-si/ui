@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.10.0 — 2026-11-11
+
+- Added a dependency-free Node 24+ Contrast CLI reusing the browser math and optional deterministic AA text choices. JSON retains exact ratios and explicit threshold booleans; human output rounds display only.
+- Added focused Use CLI instructions and agent discovery, with native command, threshold, malformed-input and suggestion tests in the release gate.
+
+The package remains private; the GitHub source tag follows live acceptance. Browser behaviour and registry items are unchanged.
+
 ## 0.9.0 — 2026-11-11
 
 - Added Download grid for the current Pixels mask, with exact dot/hash rows, one final newline and a size-based text filename accepted by the existing CLI. Ink remains separate in links and CLI flags.
