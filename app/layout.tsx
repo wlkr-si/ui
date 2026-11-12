@@ -13,7 +13,7 @@ export const metadata: Metadata = {
     siteName: "wlkr/ui",
     title: "wlkr/ui",
     description: "Source-first React components, a shadcn registry, and interactive design tools.",
-    images: [{ url: "/opengraph-image.png", width: 1200, height: 630, alt: "wlkr/ui component gallery" }],
+    images: [{ url: "/opengraph-image", width: 1200, height: 630, alt: "wlkr/ui component gallery" }],
   },
   twitter: {
     card: "summary_large_image",
