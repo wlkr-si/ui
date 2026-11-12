@@ -284,3 +284,7 @@
 .contrast-apply { min-height:44px; width:fit-content; padding:0 16px; border:1px solid var(--border); background:var(--foreground); color:var(--background); cursor:pointer; font-size:12px; }
 .contrast-apply:disabled { opacity:.5; cursor:default; }
 .contrast-aa-options :is(summary,input,button):focus-visible { outline:2px solid var(--ring); outline-offset:4px; }
+
+.pixels-heading { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:12px; margin-bottom:28px; }
+.pixels-heading h1 { margin-bottom:0; }
+.pixels-cli-link { display:inline-flex; align-items:center; min-height:44px; padding:8px 0; font-size:13px; }
