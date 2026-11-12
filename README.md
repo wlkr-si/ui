@@ -26,7 +26,7 @@ The gallery and focused tools use primary-domain canonical and social metadata w
 
 The gallery is available at **ui.wlkr.si**. The focused [contrast checker](https://ui.wlkr.si/contrast) previews opaque colour pairs, checks WCAG text thresholds, and shares pairs by URL. Optional AA text mixes never change the selected colour until applied. The existing **ui.wlkrlabs.com** host and installation namespace remain available. The current source is [wlkr-si/ui](https://github.com/wlkr-si/ui). Dated release and consumer-installation evidence is kept in [verification](docs/verification.md); a source or documentation commit does not itself deploy the gallery.
 
-The private package is version 0.8.0. See [the changelog](CHANGELOG.md) for the gallery milestone; distribution remains GitHub source and the public registry, not an npm package.
+The private package is version 0.9.0. See [the changelog](CHANGELOG.md) for the gallery milestone; distribution remains GitHub source and the public registry, not an npm package.
 
 ## Pixels CLI
 
@@ -38,6 +38,8 @@ node scripts/pixels.mjs --grid ./mask.txt --ink '#33f282' --format svg
 node scripts/pixels.mjs --mask v1.0000000000000000 --format json
 node scripts/pixels.mjs --help
 ```
+
+In the browser, **Download grid** saves the current mask as `pixels-8x8.txt`, `pixels-16x16.txt` or `pixels-32x32.txt`. The file contains only exact dot/hash rows and one final LF newline. Pass it directly to `--grid`; ink stays in share links or an explicit `--ink` flag. Browser SVG/PNG actions continue to capture the projected preview.
 
 Choose exactly one `--grid <file>` or `--mask <canonical-v1/v2-token>`. A grid has exactly 8, 16 or 32 square rows of `.`/`#`, with LF/CRLF, an optional UTF-8 BOM and one optional final newline. Spaces, comments and blank rows are rejected. `--ink` accepts six hex digits with optional `#`, normalizes case and overrides token ink.
 

@@ -22,5 +22,5 @@ export const metadata: Metadata = {
   },
 }
 export default function Pixels() {
-  return <div className="site shell"><a href="#pixels" className="sr-only focus:not-sr-only">Skip to pixels</a><SiteHeader /><main className="pixels-page" id="pixels" tabIndex={-1}><div className="pixels-heading"><h1>Pixels</h1><a className="pixels-cli-link" href="https://github.com/wlkr-si/ui/blob/main/scripts/pixels.mjs">CLI source</a></div><PixelPlayground focused /></main><SiteFooter /></div>
+  return <div className="site shell"><a href="#pixels" className="sr-only focus:not-sr-only">Skip to pixels</a><SiteHeader /><main className="pixels-page" id="pixels" tabIndex={-1}><div className="pixels-heading"><h1>Pixels</h1><a className="pixels-cli-link" href="https://github.com/wlkr-si/ui/blob/main/README.md#pixels-cli">Use CLI</a></div><PixelPlayground focused /></main><SiteFooter /></div>
 }
