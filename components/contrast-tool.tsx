@@ -1,7 +1,10 @@
 "use client"
 
 import * as React from "react"
-import { ArrowLeftRight, Copy } from "lucide-react"
+import { Disclosure } from "@/components/disclosure"
+import { CopyCommand } from "@/registry/wlkr/copy-command"
+import { contrastCss } from "@/lib/contrast-css"
+import { ArrowLeftRight, Code2, Copy } from "lucide-react"
 import { contrastRatio, generateAAOptions, meets, parseOpaqueHex } from "@/lib/contrast"
 import { canonicalContrastShareUrl, contrastSharePath, readContrastPair, type ContrastPair } from "@/lib/contrast-link"
 
@@ -27,13 +30,13 @@ export function ContrastTool() {
   const [backgroundDraft, setBackgroundDraft] = React.useState<string | null>(null)
   const [textDraft, setTextDraft] = React.useState<string | null>(null)
   const shareRef = React.useRef<HTMLInputElement>(null)
-  const cssRef = React.useRef<HTMLInputElement>(null)
   const copyAttempt = React.useRef(0)
 
   const bg = parseOpaqueHex(pair.background)!
   const fg = parseOpaqueHex(pair.text)!
   const ratio = contrastRatio(bg, fg)
   const shareUrl = canonicalContrastShareUrl(pair)
+  const css = contrastCss(pair)
   const aaOptions = generateAAOptions(pair.background, pair.text)
   const selectedColor = aaOptions.some(option => option.color === selectedAAColor)
     ? selectedAAColor
@@ -142,9 +145,10 @@ export function ContrastTool() {
     <div className="contrast-share">
       <label htmlFor="contrast-share-url">Share this pair</label>
       <div><input id="contrast-share-url" ref={shareRef} type="text" readOnly value={shareUrl} onFocus={event => event.currentTarget.select()} /><button type="button" className="contrast-copy" onClick={() => copyValue(shareUrl, shareRef, "Link")}><Copy aria-hidden="true" />Copy link</button></div>
-      <label htmlFor="contrast-css">CSS</label>
-      <div><input id="contrast-css" ref={cssRef} type="text" readOnly value={`color: ${pair.text}; background-color: ${pair.background};`} onFocus={event => event.currentTarget.select()} /><button type="button" className="contrast-copy" onClick={() => copyValue(`color: ${pair.text}; background-color: ${pair.background};`, cssRef, "CSS")}><Copy aria-hidden="true" />Copy CSS</button></div>
       <p role="status" aria-live="polite">{copyState}</p>
     </div>
+    <Disclosure title="CSS" icon={Code2} className="contrast-css-output">
+      <CopyCommand key={css} command={css} />
+    </Disclosure>
   </section>
 }
