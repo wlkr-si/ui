@@ -87,6 +87,8 @@ pnpm start --port 3100
 
 `pnpm build` rebuilds the registry before Next.js and exports the entire site to `out/`. `pnpm dev --port 3100` runs Next.js development mode. `pnpm start --port 3100` previews the exported assets through the local Cloudflare runtime; build first. The `public/r/` files and `public/registry.json` are generated and committed for static hosting. Rebuild whenever registry sources change. Source preview reads the same original files at build time; there is no component renderer or installer service.
 
+Public pull requests and `main` pushes use the [public release-check workflow](docs/ci.md), with read-only contents permission, exact tool versions and an explicit public-repository gate. It runs the existing checks without deployment, Actions caches or artifact uploads. Local validation does not establish a hosted GitHub result.
+
 ## Install into another React project
 
 Use a React/TypeScript app configured for Tailwind and shadcn. For a new consumer, run `pnpm dlx shadcn@latest init` in that app first. Merge this into **that app’s** `components.json`:
