@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.5.0 — 2026-11-11
+
+- Added /contrast, a focused opaque sRGB text/background pair checker with WCAG 2.2 AA/AAA outcomes, canonical colour-pair links, and copyable CSS.
+- Added exact byte receipts for /contrast alongside /pixels on both hosts, without changing the 15 registry hashes; older receipts remain valid.
+
+The package remains private; the GitHub source tag follows live acceptance. Registry items are unchanged.
+
+
 ## 0.4.0 — 2026-11-11
 
 - Added `/pixels`, a focused drawing page reusing the gallery editor, artwork state, code and image exports. React code is available on request.
