@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.15.1
+
+- Remove repeated gallery hero and idle sidebar taglines.
+- Give the collection action a 44px touch target.
+
 ## 0.15.0 — 2026-11-12
 
 - Added Flat SVG for exact transparent 8/16/32 bitmap downloads, with unit rectangles and 16-pixel cells matching the released CLI.
