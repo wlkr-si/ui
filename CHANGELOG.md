@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.20.0 — 2026-11-12
+
+- Gallery: the WLKR loader shows the liquid loop by default, with Loop/Hover bounce playback, a Liquid switch, and Usage code that is a complete hover example for Hover bounce.
+- Loader: clearing `frame` replays a hover bounce without a restart key, and a held frame always redraws, so switching from a running loop to a held pose never leaves the arc where the loop left it.
+- README component table lists the liquid and bounce props.
+- The closed rest pose renders as the plain vector mark, so small loaders and logos stay crisp; liquid pieces and the surface-tension filter appear only while the mark moves or holds a turned frame.
+
 ## 0.19.0 — 2026-11-12
 
 - Quicker hovers: Hover bounce no longer passes through first. The arc kicks forward, bounces off the bowl at first contact and settles in about 350 ms. Hover once defaults to a 650 ms pass; Loop keeps 1,800 ms. Cycle duration now goes down to 300 ms.

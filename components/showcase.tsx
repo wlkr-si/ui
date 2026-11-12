@@ -31,7 +31,7 @@ const entries = [
   { id: "async-action", name: "Async action", description: "An action that follows through. Pending, success, and a second chance when something goes wrong.", keywords: "button save loading promise error retry" },
   { id: "filter-list", name: "Filter list", description: "Find the thing you came for. A small, accessible search for lists that don’t need a whole search engine.", keywords: "search input empty list filter" },
   { id: "pixel-object", name: "Pixel object", description: "Give a shape a little life. Project a point cloud or a simple mask into a quiet field of pixels.", keywords: "sphere disco rotating motion flicker grid shape object mask pixels" },
-  { id: "wlkr-loader", name: "WLKR loader", description: "A revolving arc behind the fixed Open Lens semicircle.", keywords: "loading logo loader symbol arc rotation motion" },
+  { id: "wlkr-loader", name: "WLKR loader", description: "A liquid Open Lens mark that loops while loading and bounces on hover.", keywords: "loading logo loader symbol arc rotation motion liquid goo hover bounce" },
   { id: "page-intro", name: "Page intro", description: "A clear beginning. Final text holds its place while a quiet binary field resolves into the title.", keywords: "heading title binary reveal typography header intro" },
   { id: "index-row", name: "Index row", description: "An index with a little movement. Three digits roll on hover or focus, then settle where they belong.", keywords: "index list row number counting spin link navigation" },
   { id: "text-link", name: "Text link", description: "A link that stays a link. Add an optional preview when a little context helps someone choose.", keywords: "link hover card preview focus navigation" },

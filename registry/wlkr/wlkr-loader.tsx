@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import { cn } from "@/lib/utils"
-import { lensArcAngle, lensBounceCurve, lensBounceSample, lensSquashMatrix, liquidDefaults, liquidLensFrame } from "@/lib/open-lens-motion"
+import { lensArcAngle, lensBounceCurve, normalizeLensAngle, lensBounceSample, lensSquashMatrix, liquidDefaults, liquidLensFrame } from "@/lib/open-lens-motion"
 
 export type WlkrLoaderProps = {
   variant?: "orbit" | "breathe" | "bars" | "dots"
@@ -75,7 +75,9 @@ export function WlkrLoader({ variant = "orbit", size = 48, duration = 1800, stag
   const id = `wlkr-lens-${React.useId().replace(/[^a-zA-Z0-9_-]/g, "")}`
   const rays = dimension < 96 ? 72 : 160
   const options = React.useMemo(() => ({ openingDistance, splitRadius, goo, squish, ripple, arcScale: scale, reverse }), [openingDistance, splitRadius, goo, squish, ripple, scale, reverse])
-  const still = cutThrough ? liquidLensFrame(fixed ?? start, options, rays) : undefined
+  // The closed rest pose is drawn as the plain vector mark: the surface-tension filter would alias small edges.
+  const resting = fixed !== undefined ? normalizeLensAngle(fixed) === 0 : !motion && !paused && normalizeLensAngle(start) === 0
+  const still = cutThrough && !resting ? liquidLensFrame(fixed ?? start, options, rays) : undefined
   const fluid = clamp(goo, 0, 24, liquidDefaults.goo) > 0
   const curve = React.useMemo(() => cutThrough && bounce && !loop ? lensBounceCurve(options) : null, [cutThrough, bounce, loop, options])
 
@@ -97,17 +99,20 @@ export function WlkrLoader({ variant = "orbit", size = 48, duration = 1800, stag
     preference.addEventListener("change", sync); document.addEventListener("visibilitychange", sync); sync()
     return () => { observer.disconnect(); preference.removeEventListener("change", sync); document.removeEventListener("visibilitychange", sync) }
   }, [paused, fixed])
-  React.useEffect(() => { progress.current = 0 }, [restartKey, start, cutThrough])
+  // Leaving a held frame starts a fresh turn, so a hover can replay just by clearing `frame`.
+  React.useEffect(() => { progress.current = 0 }, [restartKey, start, cutThrough, fixed])
+  // Frame loops write the DOM directly, so a held frame must be redrawn rather than left to React.
+  const draw = React.useCallback((turn: number, squash = 0) => {
+    jellyRef.current?.setAttribute("transform", curve ? lensSquashMatrix(curve, squash) : "")
+    const next = liquidLensFrame(turn, options, rays)
+    innerRef.current?.setAttribute("d", next.inner)
+    outerRef.current?.setAttribute("d", next.outer)
+    blurRef.current?.setAttribute("stdDeviation", next.goo.toFixed(2))
+    if (arcRef.current) arcRef.current.style.transform = `rotate(${turn}deg)`
+  }, [curve, options, rays])
+  React.useEffect(() => { if (cutThrough && fixed !== undefined) draw(fixed) }, [cutThrough, fixed, draw])
   React.useEffect(() => {
     if (!cutThrough || fixed !== undefined || !motion) return
-    const draw = (turn: number, squash = 0) => {
-      if (curve) jellyRef.current?.setAttribute("transform", lensSquashMatrix(curve, squash))
-      const next = liquidLensFrame(turn, options, rays)
-      innerRef.current?.setAttribute("d", next.inner)
-      outerRef.current?.setAttribute("d", next.outer)
-      blurRef.current?.setAttribute("stdDeviation", next.goo.toFixed(2))
-      if (arcRef.current) arcRef.current.style.transform = `rotate(${turn}deg)`
-    }
     let request = 0, origin: number | undefined
     const step = (now: number) => {
       origin ??= now - progress.current * beat
@@ -120,7 +125,7 @@ export function WlkrLoader({ variant = "orbit", size = 48, duration = 1800, stag
     }
     request = requestAnimationFrame(step)
     return () => cancelAnimationFrame(request)
-  }, [cutThrough, fixed, motion, beat, loop, start, reverse, easing, options, rays, restartKey, curve])
+  }, [cutThrough, fixed, motion, beat, loop, start, reverse, easing, restartKey, curve, draw])
   const arc = () => <g ref={arcRef} className="wlkr-loader-arc" style={motionStyle} data-visible-arc="true" onAnimationEnd={event => { if (event.target === event.currentTarget && !loop && !cutThrough) onCycleComplete?.() }}>
     <g transform={`${transform} scale(${scale})`}><path transform="translate(0 -7)" d={arcPath} fill="currentColor" /></g>
   </g>
