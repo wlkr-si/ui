@@ -51,7 +51,7 @@ With `cutThrough`, the body behaves like liquid. A split line follows the arc's 
 | --- | --- | --- |
 | `variant` | `orbit` | Compatibility input; previous variant names use the same arc motion. |
 | `size` | 48 | Square size, clamped 16–240 px. |
-| `duration` | 1,800 | Cycle duration, clamped 800–10,000 ms. |
+| `duration` | 1,800 | Cycle duration, clamped 300–10,000 ms. Hover bounce reads best around 350 ms, a full hover pass around 650 ms, loading loops around 1,800 ms. |
 | `cutThrough` | false | Liquid mode: the bowl parts around the arc and seals behind it. |
 | `openingDistance` | 40 | How far the groove opens around the arc, clamped 0–100 SVG units. |
 | `splitRadius` | 74 | Split line radius around the arc centre, clamped 40–100 SVG units. |
@@ -65,7 +65,7 @@ With `cutThrough`, the body behaves like liquid. A split line follows the arc's 
 | `frame` | unset | Exact static turn from 0–1; supplying it suspends animation. Frame is an angle, independent of easing/direction. |
 | `startAngle` | 0 | Starting orientation in degrees for live playback. |
 | `loop` | true | False performs one turn and keeps its final pose. |
-| `bounce` | false | Liquid mode with `loop` off: after the full pass the arc keeps its speed, strikes the bowl at first contact, squashes a few degrees in while the bowl jiggles, rebounds and settles home. Starts from rest. |
+| `bounce` | false | Liquid mode with `loop` off: a quick hover where the arc kicks forward, strikes the bowl at first contact, squashes a few degrees in while the bowl jiggles, rebounds and settles home. `duration` is the whole bounce (about 350 ms suits a hover). Starts from rest. |
 | `restartKey` | 0 | Change to restart the turn. |
 | `onCycleComplete` | unset | Once-mode callback after the final pose. |
 | `paused` | false | Freeze the current phase. |
@@ -79,7 +79,7 @@ Without `cutThrough`, a CSS transform rotates the arc with no JavaScript frame l
 
 ### Animation room
 
-[Animation room](https://ui.wlkr.si/animation) renders the real `WlkrLoader` in loader and approved-wordmark layouts. It provides cycle duration, size, arc scale, opening, split radius, goo, squish, ripple, tilt, direction, easing, a Liquid comparison toggle, center guides, light/dark/checkerboard backgrounds, Loop/Hover once/Hover bounce, play/pause and exact angle scrubbing. Hover once and Hover bounce complete after pointer exit, and Hover bounce always starts from the rest pose; touch and keyboard users can use Play once. Pausing samples the visible arc angle; resuming starts from that angle. Reset restores the room defaults.
+[Animation room](https://ui.wlkr.si/animation) renders the real `WlkrLoader` in loader and approved-wordmark layouts. It provides cycle duration, size, arc scale, opening, split radius, goo, squish, ripple, tilt, direction, easing, a Liquid comparison toggle, center guides, light/dark/checkerboard backgrounds, Loop/Hover once/Hover bounce, play/pause and exact angle scrubbing. Hover once and Hover bounce complete after pointer exit, and Hover bounce always starts from the rest pose; choosing Loop sets 1,800 ms, Hover once 650 ms and Hover bounce 350 ms; touch and keyboard users can use Play once. Pausing samples the visible arc angle; resuming starts from that angle. Reset restores the room defaults.
 
 Copy settings link serializes the whitelisted, versioned visual settings and current angle to the URL fragment. Version 3 holds the liquid settings. Valid version-1 and version-2 links keep their shared look and playback settings and take the liquid defaults, since their rigid separation values no longer apply. Opening a settings link restores a paused exact frame for review. The room does not write browser storage or send settings to a backend, and does not apply them to the homepage. Clipboard denial reveals a selectable link. Unknown keys, unsupported versions, invalid types, out-of-range values, malformed encoding and oversized fragments are rejected. Ordinary page anchors are not treated as settings links.
 

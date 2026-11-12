@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import { cn } from "@/lib/utils"
-import { LENS_BOUNCE_LENGTH, lensArcAngle, lensBounceCurve, lensBounceSample, lensSquashMatrix, liquidDefaults, liquidLensFrame } from "@/lib/open-lens-motion"
+import { lensArcAngle, lensBounceCurve, lensBounceSample, lensSquashMatrix, liquidDefaults, liquidLensFrame } from "@/lib/open-lens-motion"
 
 export type WlkrLoaderProps = {
   variant?: "orbit" | "breathe" | "bars" | "dots"
@@ -37,7 +37,7 @@ export type WlkrLoaderProps = {
   frame?: number
   startAngle?: number
   loop?: boolean
-  /** With liquid mode and loop off: after the full pass the arc tries again, bounces off the bowl at first contact and settles. Starts from rest. */
+  /** With liquid mode and loop off: a quick hover where the arc nudges forward, bounces off the bowl at first contact and settles. Duration is the whole bounce. Starts from rest. */
   bounce?: boolean
   restartKey?: number
   onCycleComplete?: () => void
@@ -67,7 +67,7 @@ export function WlkrLoader({ variant = "orbit", size = 48, duration = 1800, stag
   const completed = React.useRef(onCycleComplete)
   const [motion, setMotion] = React.useState(false)
   const dimension = clamp(size, 16, 240, 48)
-  const beat = clamp(duration, 800, 10000, 1800)
+  const beat = clamp(duration, 300, 10000, 1800)
   const scale = clamp(arcScale, .6, 1.2, 1)
   const angle = clamp(tilt, -60, 60, -24)
   const start = clamp(startAngle, -36000, 36000, 0)
@@ -111,11 +111,11 @@ export function WlkrLoader({ variant = "orbit", size = 48, duration = 1800, stag
     let request = 0, origin: number | undefined
     const step = (now: number) => {
       origin ??= now - progress.current * beat
-      const elapsed = (now - origin) / beat, total = curve ? 1 + LENS_BOUNCE_LENGTH : 1
-      if (!loop && elapsed >= total) { progress.current = total; draw(lensArcAngle(1, start, reverse, easing)); completed.current?.(); return }
+      const elapsed = (now - origin) / beat
+      if (!loop && elapsed >= 1) { progress.current = 1; draw(curve ? start : lensArcAngle(1, start, reverse, easing)); completed.current?.(); return }
       progress.current = loop ? elapsed % 1 : elapsed
-      const bounce = curve && progress.current > 1 ? lensBounceSample(curve, (progress.current - 1) / LENS_BOUNCE_LENGTH) : { angle: 0, squash: 0 }
-      draw(lensArcAngle(Math.min(1, progress.current), start, reverse, easing) + bounce.angle, bounce.squash)
+      if (curve) { const bounce = lensBounceSample(curve, progress.current); draw(start + bounce.angle, bounce.squash) }
+      else draw(lensArcAngle(progress.current, start, reverse, easing))
       request = requestAnimationFrame(step)
     }
     request = requestAnimationFrame(step)

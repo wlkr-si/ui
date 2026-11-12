@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.19.0 — 2026-11-12
+
+- Quicker hovers: Hover bounce no longer passes through first. The arc kicks forward, bounces off the bowl at first contact and settles in about 350 ms. Hover once defaults to a 650 ms pass; Loop keeps 1,800 ms. Cycle duration now goes down to 300 ms.
+
 ## 0.18.0 — 2026-11-12
 
 - Hover bounce: with liquid mode and `bounce`, the arc makes one full pass, keeps its speed into a second attempt, strikes the bowl at first contact, squashes in while the bowl jiggles, rebounds and settles into the symbol. The animation room adds Hover bounce playback.
