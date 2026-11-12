@@ -1,11 +1,11 @@
 # Changelog
 
-## 0.13.0 — 2026-11-12 (candidate)
+## 0.13.0 — 2026-11-12
 
 - Added a compact Examples popover with original Spark 8, Robot 16 and Orbit 32 editable masks. Choosing an example retains ink, replaces artwork in one Undo/Redo step and invalidates pending grid imports.
 - Robot preserves the exact original portable-pixels grid; no network request is made when choosing examples.
 
-Source candidate only; not deployed. Registry, codec, exports and CLI contracts are unchanged.
+Source release; live deployment is qualified separately. Registry, codec, exports and CLI contracts are unchanged.
 
 ## 0.12.0 — 2026-11-12
 
