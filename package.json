@@ -11,7 +11,8 @@
     "typecheck": "tsc --noEmit",
     "release:check": "node scripts/release-check.mjs",
     "deploy:check": "pnpm build && wrangler deploy --dry-run",
-    "deploy": "pnpm release:check && wrangler deploy"
+    "deploy": "node scripts/deploy.mjs",
+    "test:release": "node --test scripts/deploy.test.mjs"
   },
   "dependencies": {
     "class-variance-authority": "^0.7.1",

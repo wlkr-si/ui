@@ -137,7 +137,7 @@ The public site runs on its own Cloudflare static Worker, `wlkr-ui`, at `ui.wlkr
 
 ## Static Cloudflare release
 
-See [the deployment runbook](docs/deployment.md). `pnpm deploy:check` builds and validates the upload without publishing. `pnpm run deploy` requires a clean committed checkout, rebuilds and checks it, then publishes only the separate `wlkr-ui` static Worker at `ui.wlkrlabs.com`. The main `wlkrlabs-com` Worker and apex/`www` routes are outside this configuration.
+See [the deployment runbook](docs/deployment.md). `pnpm deploy:check` builds and validates the upload without publishing. `pnpm run deploy` requires a clean committed checkout, rebuilds and checks it, then activates the separate `wlkr-ui` static Worker and verifies the exact receipt plus all registry hashes on both gallery hosts. Failed releases restore and verify the previous version when deployment ownership is certain; observed conflicts stop further writes. See the runbook for the local lock and non-atomic provider concurrency limitation. `pnpm test:release` tests the release flow without network or authentication. The main `wlkrlabs-com` Worker and apex/`www` routes are outside this configuration.
 
 ## GitHub star
 
