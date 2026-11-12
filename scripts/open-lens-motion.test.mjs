@@ -1,64 +1,59 @@
 import test from "node:test"
 import assert from "node:assert/strict"
-import { openLensPose, lensEase, lensArcAngle, sampleLensMotion } from "../lib/open-lens-motion.ts"
+import { liquidLensFrame, lensOpening, lensEase, lensArcAngle, liquidDefaults } from "../lib/open-lens-motion.ts"
 const near = (a,b,t=1e-8) => assert.ok(Math.abs(a-b)<t, `${a} != ${b}`)
+const points = d => d.slice(1,-1).split("L").map(p => p.split(" ").map(Number))
+const deg = Math.PI / 180
 
-test("closed endpoints and start/end contact preserve the joined rigid body", () => {
-  for(const angle of [0,360,720,-360,10,350]) {
-    const p=openLensPose(angle)
-    near(p.openness,0); near(p.inner.x,0); near(p.inner.y,0); near(p.outer.x,0); near(p.outer.y,0)
+test("the rest pose is the closed approved mark with relaxed surface tension", () => {
+  for (const reverse of [false, true]) for (const angle of [0, 360, -360]) {
+    const f = liquidLensFrame(angle, { reverse }), closed = liquidLensFrame(angle, { reverse, openingDistance: 0 })
+    near(f.goo, liquidDefaults.goo * .3, 1e-9)
+    assert.equal(f.inner, closed.inner); assert.equal(f.outer, closed.outer)
+    assert.ok(points(f.inner).length > 20 && points(f.outer).length > 20)
   }
-  const p=openLensPose(0,{splitGap:12});near(p.inner.y,-6);near(p.outer.y,6)
+  // Nothing opens across the bowl at rest.
+  for (let phi = 30; phi <= 150; phi += 3) assert.equal(lensOpening(phi * deg, 0), 0)
 })
-test("the two complete pieces pop apart with opposite rigid translations at midpass", () => {
-  const p=openLensPose(180,{openingDistance:48})
-  near(p.openness,1);near(p.inner.x,0);near(p.outer.x,0);near(p.inner.y,-24);near(p.outer.y,24)
-  for(let angle=0;angle<=360;angle+=3) {
-    const p=openLensPose(angle,{openingDistance:64,splitGap:7,openingAngle:23})
-    near(p.inner.x,-p.outer.x);near(p.inner.y,-p.outer.y)
-    assert.ok(p.openness>=0&&p.openness<=1)
+test("the groove is fully open along the arc and closed well ahead of its leading end", () => {
+  for (const theta of [60, 180, 300]) {
+    assert.equal(lensOpening((theta - 90) * deg, theta), 1)
+    assert.equal(lensOpening((theta + 40) * deg, theta), 0)
   }
+  // Reverse travel leads with the other end.
+  assert.equal(lensOpening((-180 - 180 - 40) * deg, -180, { reverse: true }), 0)
+  assert.equal(lensOpening((-180 - 90) * deg, -180, { reverse: true }), 1)
 })
-test("contact tracks right entry, downward middle and left exit; reverse mirrors contact", () => {
-  const right=openLensPose(90),left=openLensPose(-90)
-  assert.ok(right.outer.x>0&&right.outer.y>0)
-  assert.ok(left.outer.x<0&&left.outer.y>0)
-  near(right.outer.x,-left.outer.x);near(right.outer.y,left.outer.y)
-  const angled=openLensPose(180,{openingAngle:90});near(angled.outer.y,0);assert.ok(angled.outer.x<0)
-  assert.equal(openLensPose(80,{openAt:90}).openness,0)
-  assert.equal(openLensPose(300,{closeAt:280}).openness,0)
+test("mid pass pinches the inner material into a floating drop and widens surface tension", () => {
+  const rest = liquidLensFrame(0), mid = liquidLensFrame(180)
+  assert.ok(mid.goo > rest.goo * 3)
+  const radius = d => Math.max(...points(d).map(([x,y]) => Math.hypot(x + 1, y - 12)))
+  // The drop sits well inside the arc's inner edge (radius 60 around the arc centre).
+  assert.ok(radius(mid.inner) < 50, `drop radius ${radius(mid.inner)}`)
+  assert.ok(radius(rest.inner) > 65)
 })
-test("smooth timing inverts the CSS Bezier x coordinate rather than easing each piece segment", () => {
+test("the bowl seals behind the arc with a small damped ripple, then settles before rest", () => {
+  const theta = 300, trailing = theta - 180
+  const values = Array.from({ length: 80 }, (_, i) => lensOpening((trailing - 12 - i) * deg, theta))
+  assert.ok(Math.min(...values) < 0 && Math.min(...values) > -.3)
+  assert.equal(lensOpening((trailing - 100) * deg, theta), 0)
+  for (let phi = 30; phi <= 150; phi += 2) assert.ok(Math.abs(lensOpening(phi * deg, 359.5)) < .02)
+  assert.deepEqual(liquidLensFrame(0, { ripple: 0 }).inner, liquidLensFrame(0).inner)
+})
+test("frames are deterministic, finite and respect option bounds", () => {
+  for (let angle = -360; angle <= 720; angle += 7) {
+    const f = liquidLensFrame(angle, { openingDistance: 100, splitRadius: 40, goo: 24, squish: 1, ripple: 1, arcScale: 1.2 }, 48)
+    for (const d of [f.inner, f.outer]) if (d) for (const [x,y] of points(d)) assert.ok(Number.isFinite(x) && Number.isFinite(y) && Math.hypot(x,y) < 260)
+    assert.deepEqual(f, liquidLensFrame(angle, { openingDistance: 100, splitRadius: 40, goo: 24, squish: 1, ripple: 1, arcScale: 1.2 }, 48))
+  }
+  assert.deepEqual(liquidLensFrame(90, { goo: 999, openingDistance: -5 }), liquidLensFrame(90, { goo: 24, openingDistance: 0 }))
+  assert.deepEqual(liquidLensFrame(NaN), liquidLensFrame(0))
+})
+test("smooth timing inverts the CSS Bezier x coordinate", () => {
   assert.equal(lensEase(0,"smooth"),0);assert.equal(lensEase(1,"smooth"),1)
   assert.ok(lensEase(.25,"smooth")<.1)
   assert.ok(lensEase(.75,"smooth")>.9)
   const t=.4,x=3*(1-t)**2*t*.77+3*(1-t)*t*t*.175+t**3,y=3*(1-t)*t*t+t**3
   near(lensEase(x,"smooth"),y)
   near(lensArcAngle(.25,20,true,"smooth"),20-360*lensEase(.25,"smooth"))
-})
-test("sampled continuous poses and exact scrubbed poses use the same actual eased angle", () => {
-  const options={openingDistance:55,openingAngle:17,openAt:30,closeAt:320,splitGap:3}
-  for(const easing of ["linear","smooth"])for(const reverse of [false,true]) {
-    const frames=sampleLensMotion(options,123,reverse,easing,360)
-    for(const i of [0,37,90,180,270,360]) {
-      const f=frames[i];near(f.angle,lensArcAngle(i/360,123,reverse,easing))
-      assert.deepEqual(f.pose,openLensPose(f.angle,options))
-    }
-    assert.deepEqual(frames[0].pose,openLensPose(frames[360].angle,options))
-  }
-})
-
-test("continuous interpolation stays within a subpixel of exact scrubbing even at the tightest contact window", () => {
-  const options={openingDistance:100,openAt:120,closeAt:240,openingAngle:90}
-  for(const reverse of [false,true])for(const start of [0,123,359]) {
-    const frames=sampleLensMotion(options,start,reverse,"smooth")
-    const count=frames.length-1
-    for(let i=0;i<count;i++) {
-      const exact=openLensPose(lensArcAngle((i+.5)/count,start,reverse,"smooth"),options)
-      for(const axis of ["x","y"]) {
-        const interpolated=(frames[i].pose.inner[axis]+frames[i+1].pose.inner[axis])/2
-        assert.ok(Math.abs(interpolated-exact.inner[axis])<.3)
-      }
-    }
-  }
 })

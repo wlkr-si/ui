@@ -64,7 +64,7 @@ function RoomContent({ initial, shared, invalid }: { initial: AnimationRoomSetti
   React.useEffect(() => { if (copyState === "manual") { linkInput.current?.focus(); linkInput.current?.select() } }, [copyState])
   const mark = <div className={styles.mark} style={{ width: settings.size }}>
     {settings.guides && <svg className={styles.guides} viewBox="0 0 256 256" aria-hidden="true"><circle cx="128" cy="128" r={settings.splitRadius} /><path d="M128 12V244M12 128H244" /><circle cx="128" cy="128" r="3" /></svg>}
-    <WlkrLoader size={settings.size} duration={settings.duration} cutThrough={settings.cutThrough} cutGap={settings.cutGap} openingDistance={settings.openingDistance} splitRadius={settings.splitRadius} openingAngle={settings.openingAngle} openAt={settings.openAt} closeAt={settings.closeAt} arcScale={settings.arcScale} tilt={settings.tilt} reverse={settings.reverse} easing={settings.easing} frame={playing ? undefined : settings.frame / 360} startAngle={startAngle} loop={settings.playback === "loop"} restartKey={restart} paused={!playing} onCycleComplete={finish} decorative />
+    <WlkrLoader size={settings.size} duration={settings.duration} cutThrough={settings.cutThrough} openingDistance={settings.openingDistance} splitRadius={settings.splitRadius} goo={settings.goo} squish={settings.squish} ripple={settings.ripple} arcScale={settings.arcScale} tilt={settings.tilt} reverse={settings.reverse} easing={settings.easing} frame={playing ? undefined : settings.frame / 360} startAngle={startAngle} loop={settings.playback === "loop"} restartKey={restart} paused={!playing} onCycleComplete={finish} decorative />
   </div>
   return <div className={styles.room}>
     {invalid && <p role="alert" className={styles.notice}>That settings link is invalid.</p>}
@@ -90,17 +90,16 @@ function RoomContent({ initial, shared, invalid }: { initial: AnimationRoomSetti
       <section className={styles.controls} aria-label="Animation controls">
         <ChoiceControl label="Playback" value={settings.playback} onChange={value => { clearShare(); const playback = value as AnimationRoomSettings["playback"]; setSettings(current => ({ ...current, playback, frame: 0 })); setStartAngle(0); setPlaying(playback === "loop"); setRestart(value => value + 1) }} options={[{ value: "loop", label: "Loop" }, { value: "hover", label: "Hover once" }]} />
         <ChoiceControl label="Background" value={settings.background} onChange={value => update("background", value as AnimationRoomSettings["background"])} options={[{ value: "light", label: "Light" }, { value: "dark", label: "Dark" }, { value: "checkerboard", label: "Checkerboard" }]} />
-        <div className={styles.switches}><Toggle label="Separate pieces" checked={settings.cutThrough} onChange={value => { update("cutThrough", value); setStartAngle(playing ? currentAngle() : settings.frame); setRestart(value => value + 1) }} /><Toggle label="Reverse" checked={settings.reverse} onChange={value => { clearShare(); const frame = currentAngle(); setSettings(current => ({ ...current, reverse: value, frame })); setStartAngle(frame); setRestart(value => value + 1) }} /><Toggle label="Center guides" checked={settings.guides} onChange={value => update("guides", value)} /></div>
+        <div className={styles.switches}><Toggle label="Liquid" checked={settings.cutThrough} onChange={value => { update("cutThrough", value); setStartAngle(playing ? currentAngle() : settings.frame); setRestart(value => value + 1) }} /><Toggle label="Reverse" checked={settings.reverse} onChange={value => { clearShare(); const frame = currentAngle(); setSettings(current => ({ ...current, reverse: value, frame })); setStartAngle(frame); setRestart(value => value + 1) }} /><Toggle label="Center guides" checked={settings.guides} onChange={value => update("guides", value)} /></div>
         <RangeControl label="Cycle duration" value={settings.duration} onChange={value => update("duration", value)} min={800} max={10000} step={100} unit="ms" />
         <RangeControl label="Size" value={settings.size} onChange={value => update("size", value)} min={48} max={240} step={4} unit="px" />
         <RangeControl label="Arc size" value={settings.arcScale * 100} onChange={value => update("arcScale", value / 100)} min={60} max={120} step={1} unit="%" />
         {settings.cutThrough && <>
-          <RangeControl label="Opening distance" value={settings.openingDistance} onChange={value => update("openingDistance", value)} min={0} max={100} step={1} />
+          <RangeControl label="Opening" value={settings.openingDistance} onChange={value => update("openingDistance", value)} min={0} max={100} step={1} />
           <RangeControl label="Split radius" value={settings.splitRadius} onChange={value => update("splitRadius", value)} min={40} max={100} step={1} />
-          <RangeControl label="Opening angle" value={settings.openingAngle} onChange={value => update("openingAngle", value)} min={-90} max={90} step={1} unit="°" />
-          <RangeControl label="Open at" value={settings.openAt} onChange={value => update("openAt", value)} min={0} max={120} step={1} unit="°" />
-          <RangeControl label="Close at" value={settings.closeAt} onChange={value => update("closeAt", value)} min={240} max={360} step={1} unit="°" />
-          <RangeControl label="Split gap" value={settings.cutGap} onChange={value => update("cutGap", value)} min={0} max={24} step={1} />
+          <RangeControl label="Goo" value={settings.goo} onChange={value => update("goo", value)} min={0} max={24} step={.5} />
+          <RangeControl label="Squish" value={Math.round(settings.squish * 100)} onChange={value => update("squish", value / 100)} min={0} max={100} step={1} unit="%" />
+          <RangeControl label="Ripple" value={Math.round(settings.ripple * 100)} onChange={value => update("ripple", value / 100)} min={0} max={100} step={1} unit="%" />
         </>}
         <RangeControl label="Tilt" value={settings.tilt} onChange={value => update("tilt", value)} min={-60} max={60} step={1} unit="°" />
         <ChoiceControl label="Easing" value={settings.easing} onChange={value => update("easing", value as AnimationRoomSettings["easing"])} options={[{ value: "linear", label: "Linear" }, { value: "smooth", label: "Smooth" }]} />
