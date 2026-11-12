@@ -82,7 +82,7 @@
       "name": "wlkr-loader",
       "type": "registry:component",
       "title": "WLKR loader",
-      "description": "The original six-cell WLKR mark with considerate bars and dots loading motion.",
+      "description": "The WLKR.SI Open Lens mark with orbit and breathing motion, pause and reduced-motion support.",
       "author": "WLKR Labs",
       "files": [
         {
