@@ -114,6 +114,11 @@
 .get-started pre { overflow:auto; font-size:12px; line-height:1.7; padding:12px 0; }
 .site-footer { display:flex; justify-content:space-between; align-items:center; gap:20px; padding:30px 0 50px; font-size:12px; color:var(--muted-foreground); }
 .site-footer a:hover { color:var(--foreground); }
+.studio-family-badge { display:inline-flex; flex-shrink:0; }
+.studio-family-badge img { width:184px; height:32px; }
+.studio-family-badge-dark { display:none; }
+.dark .studio-family-badge-light { display:none; }
+.dark .studio-family-badge-dark { display:block; }
 .site-footer div { display:flex; gap:25px; }
 .text-link { text-decoration:underline; text-underline-offset:4px; }
 @media (max-width:900px) {
