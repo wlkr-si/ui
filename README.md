@@ -32,7 +32,7 @@ The private package is version 0.13.0. See [the changelog](CHANGELOG.md) for the
 
 In the Pixels editor, Examples starts an editable Spark 8, Robot 16 or Orbit 32 mask. Selection keeps the ink and replaces the grid in one Undo/Redo step. The robot reproduces the [original portable-pixels grid](https://wlkr.si/media/portable-pixels/robot-16.txt); the other two masks are original geometric artwork. These source changes await gallery release.
 
-Maintainers can [reproduce a minimal offline CLI kit](docs/cli-kit.md) from the pinned public release without packaging the gallery or installing dependencies.
+[Download the v0.12.0 CLI kit](https://github.com/wlkr-si/ui/releases/download/v0.12.0/wlkr-cli-v0.12.0.zip) for Node 24+ without Git or npm. Maintainers can [reproduce the minimal offline CLI kit](docs/cli-kit.md) from the pinned public release without packaging the gallery or installing dependencies.
 
 Use Node 24 or newer from this source checkout; no dependency installation is needed:
 
