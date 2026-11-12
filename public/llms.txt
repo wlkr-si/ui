@@ -28,7 +28,7 @@ The CLI installs original source and pulls stock shadcn dependencies directly fr
 - [Async action](/#async-action): Promise-aware action with pending, success, failure and retry states. [Source JSON](/r/async-action.json)
 - [Filter list](/#filter-list): An accessible searchable list with accent-insensitive matching and empty states. [Source JSON](/r/filter-list.json)
 - [Pixel object](/#pixel-object): A projected pixel sphere, custom point cloud, or mask with considerate motion controls. [Source JSON](/r/pixel-object.json)
-- [WLKR loader](/#wlkr-loader): The original six-cell WLKR mark with considerate bars and dots loading motion. [Source JSON](/r/wlkr-loader.json)
+- [WLKR loader](/#wlkr-loader): The WLKR.SI Open Lens mark with orbit and breathing motion, pause and reduced-motion support. [Source JSON](/r/wlkr-loader.json)
 - [WLKR theme](/#theme): Semantic light and dark tokens. Typography stays with your application. [Source JSON](/r/theme.json)
 - [Page intro](/#page-intro): Gallery typography with a width-stable binary heading reveal. [Source JSON](/r/page-intro.json)
 - [Index row](/#index-row): Borderless index link with three fixed digits that roll on hover and focus. [Source JSON](/r/index-row.json)

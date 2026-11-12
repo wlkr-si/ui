@@ -1,6 +1,6 @@
 # Motion components
 
-The customizer and WLKR loader are live at [ui.wlkrlabs.com](https://ui.wlkrlabs.com), source release `2935308d0e1a68df26bbba95a6cadcf38bf8719f`. Configure `@wlkr` as `https://ui.wlkrlabs.com/r/{name}.json`, then install `@wlkr/pixel-object` and `@wlkr/wlkr-loader` with the standard shadcn CLI. Clean-consumer installation, TypeScript/Vite build, and browser rendering were verified. For local development, run `pnpm dev --port 3100` and optionally map a disposable consumer to the local namespace.
+The customizer and WLKR loader are available at [ui.wlkr.si](https://ui.wlkr.si). Configure `@wlkr` as `https://ui.wlkr.si/r/{name}.json`, then install `@wlkr/pixel-object` and `@wlkr/wlkr-loader` with the standard shadcn CLI. For local development, run `pnpm dev --port 3100`.
 
 ## PixelObject
 
@@ -43,24 +43,24 @@ Motion stops on explicit pause, off-screen intersection, hidden document, or red
 
 ## WlkrLoader
 
-The loader embeds the exact approved WLKR mark: original 904×904 viewBox, group transform, six rectangle positions/sizes, and radius 33. It inherits ink from currentColor and keeps the top cell WLKR green. Bars compress each cell vertically within its bounds; dots apply a gentle scale/opacity beat to the original rounded squares. Neither variant changes the logo into circles or moves its bounds.
+The loader uses the current WLKR.SI Open Lens: the exact two paths and resting angle from the approved `wlkr-si/website` master `brand/open-lens.svg`. It inherits currentColor without a separate accent. Orbit rotates steadily while the halves gently open and close; Breathe rocks through a small angle with the same opening motion. Both remain within the square bounds.
 
 | Prop | Default | Meaning and bounds |
 | --- | --- | --- |
-| `variant` | `bars` | `bars` or `dots`. |
+| `variant` | `orbit` | `orbit` or `breathe`. Legacy `bars` and `dots` map to those respectively. |
 | `size` | 48 | Fixed square bounds in px, clamped 16–240. |
-| `duration` | 1,800 | Milliseconds per smooth beat, clamped 800–10,000. |
-| `stagger` | 120 | Milliseconds between cells, clamped 0–2,000. |
+| `duration` | 3,200 | Milliseconds per cycle, clamped 800–10,000. |
+| `stagger` | 120 | Phase delay between halves, clamped 0–2,000 ms. |
 | `label` | “Loading” | One accessible loading announcement. |
-| `decorative` | false | Hides the loader from accessibility APIs when another control already announces loading. |
-| `paused` | false | Pauses the beat without changing geometry. |
+| `decorative` | false | Hides the loader when another control already announces loading. |
+| `paused` | false | Freezes rotation and opening at their current positions. |
 | `className` | unset | Inherited color/layout composition. |
 
-The component uses CSS animation and no JavaScript frame loop. Intersection, visibility, and reduced-motion state control animation play state. Reduced motion shows the original static mark. Animation updates do not rewrite live-region text. The gallery provides variant, size, beat duration, cell stagger, and Reset controls; clicking or pressing the mark toggles pause with a matching copyable Usage example.
+CSS transforms provide motion without a JavaScript frame loop. Explicit pause, off-screen intersection and hidden documents freeze all animated groups. Reduced motion shows the unchanged static Open Lens. Observers and listeners clean up on unmount; animation never rewrites live-region text. The gallery exposes Orbit/Breathe, size, cycle duration, phase delay, Reset and click/keyboard pause; Usage reflects those settings.
 
 ## Provenance
 
-All motion/projection code is authored for WLKR. The geometry comes from the approved local brand master `public/wlkr-mark.svg`. Motion references are [Loading UI Bars](https://www.loading-ui.com/docs/components/bars) for staggered vertical pulses and [Loading UI Dots](https://www.loading-ui.com/docs/components/dots) for soft scale/opacity beats. Those reference implementations were not copied. The earlier pixel-field interaction reference is [Magic UI’s Flickering Grid](https://magicui.design/docs/components/flickering-grid). The gallery controls use CLI-installed, unchanged shadcn Slider, NativeSelect, and Field primitives; none are republished as WLKR registry entries.
+All motion/projection code is authored for WLKR. Pixel geometry comes from the original local brand master `public/wlkr-mark.svg`; loader geometry comes from the approved WLKR.SI Open Lens master in `wlkr-si/website/brand/open-lens.svg`. Motion references are [Loading UI Bars](https://www.loading-ui.com/docs/components/bars) for staggered vertical pulses and [Loading UI Dots](https://www.loading-ui.com/docs/components/dots) for soft scale/opacity beats. Those reference implementations were not copied. The earlier pixel-field interaction reference is [Magic UI’s Flickering Grid](https://magicui.design/docs/components/flickering-grid). The gallery controls use CLI-installed, unchanged shadcn Slider, NativeSelect, and Field primitives; none are republished as WLKR registry entries.
 
 ## Optional continuous shape morph
 
