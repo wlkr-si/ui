@@ -39,6 +39,8 @@ node scripts/pixels.mjs --mask v1.0000000000000000 --format json
 node scripts/pixels.mjs --help
 ```
 
+In the browser, **Transform** offers horizontal/vertical flips and clockwise 90° rotation for every supported size. Each operation keeps ink and size and is reversible with Undo/Redo.
+
 In the browser, **Open grid** reads a user-selected UTF-8 text grid locally (at most 4 KiB), using the same format below. It replaces the grid in one undo step and keeps the chosen ink. Invalid or cancelled selections leave artwork unchanged; newer editor actions or file selections discard pending reads. Nothing is uploaded or stored.
 
 In the browser, **Download grid** saves the current mask as `pixels-8x8.txt`, `pixels-16x16.txt` or `pixels-32x32.txt`. The file contains only exact dot/hash rows and one final LF newline. Pass it directly to `--grid`; ink stays in share links or an explicit `--ink` flag. Browser SVG/PNG actions continue to capture the projected preview.

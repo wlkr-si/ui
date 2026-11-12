@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.12.0 — 2026-11-12
+
+- Added a compact Transform disclosure for horizontal/vertical flips and clockwise 90° rotation on 8/16/32 masks. Each exact cell permutation keeps ink and size, uses the existing one-step Undo/Redo history and invalidates pending grid imports.
+
+The package remains private; the GitHub source tag follows live acceptance. Registry, codec and CLI contracts are unchanged.
+
 ## 0.11.0 — 2026-11-12
 
 - Added native Open grid for bounded local 8/16/32 UTF-8 dot/hash files, sharing the unchanged CLI parser. Valid imports retain ink and replace artwork in one undo step.

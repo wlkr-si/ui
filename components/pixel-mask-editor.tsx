@@ -2,12 +2,13 @@
 
 import * as React from "react"
 import { createGridImportSession } from "@/lib/pixel-grid-import"
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { Input } from "@/components/ui/input"
 import { encodeArtwork, maskShareUrl } from "@/lib/pixel-mask-link"
 import { Button } from "@/components/ui/button"
 import { ChoiceControl } from "@/components/playground-controls"
 import { MaskInkControl } from "@/components/mask-ink-control"
-import { blankMask, cellAtPoint, inkBackdrop, maskLine, maskReducer, MASK_SIZES, moveMaskCell, type MaskAction, type MaskState } from "@/lib/pixel-mask"
+import { blankMask, cellAtPoint, inkBackdrop, maskLine, maskReducer, MASK_SIZES, moveMaskCell, transformMask, type MaskTransform, type MaskAction, type MaskState } from "@/lib/pixel-mask"
 
 type Gesture = { pointer: number; kind: "paint"; last: number | null; filled: boolean } | { pointer: number; kind: "pan"; x: number; y: number; left: number; top: number }
 export function PixelMaskEditor({ state, dispatch }: { state: MaskState; dispatch: React.Dispatch<MaskAction> }) {
@@ -25,6 +26,7 @@ export function PixelMaskEditor({ state, dispatch }: { state: MaskState; dispatc
     if (result === "opened") setImportStatus({ message: "Grid opened.", error: false })
     else if (result === "invalid") setImportStatus({ message: "Use an 8×8, 16×16 or 32×32 UTF-8 dot/hash grid, at most 4 KiB.", error: true })
   }
+  const [transformOpen, setTransformOpen] = React.useState(false)
   const size = state.mask.length
   const [tool, setTool] = React.useState<"draw" | "erase" | "pan">("draw")
   const [active, setActive] = React.useState(0)
@@ -96,6 +98,12 @@ export function PixelMaskEditor({ state, dispatch }: { state: MaskState; dispatc
       <Button type="button" variant="ghost" className="min-h-11" aria-pressed={tool === "draw"} onClick={() => { invalidateImport(); setTool("draw") }}>Draw</Button>
       <Button type="button" variant="ghost" className="min-h-11" aria-pressed={tool === "erase"} onClick={() => { invalidateImport(); setTool("erase") }}>Erase</Button>
       <Button type="button" variant="ghost" className="min-h-11" aria-pressed={tool === "pan"} onClick={() => { invalidateImport(); setTool("pan") }}>Pan</Button>
+      <Popover open={transformOpen} onOpenChange={open => { if (open) { finish(); invalidateImport() }; setTransformOpen(open) }}>
+        <PopoverTrigger asChild><Button type="button" variant="ghost" className="min-h-11">Transform</Button></PopoverTrigger>
+        <PopoverContent align="start" aria-label="Transform artwork" className="flex w-60 max-w-[calc(100vw-2rem)] flex-col p-1 motion-reduce:animate-none">
+          {([['flip-horizontal', 'Flip horizontal'], ['flip-vertical', 'Flip vertical'], ['rotate-clockwise', 'Rotate clockwise 90°']] as [MaskTransform, string][]).map(([transform, label]) => <Button key={transform} type="button" variant="ghost" className="min-h-11 justify-start" onClick={() => { command({ type: "replace", mask: transformMask(state.mask, transform) }); setTransformOpen(false) }}>{label}</Button>)}
+        </PopoverContent>
+      </Popover>
       <Button type="button" variant="ghost" className="min-h-11" disabled={!canUndo} onClick={() => command({ type: "undo" })}>Undo</Button>
       <Button type="button" variant="ghost" className="min-h-11" disabled={!state.future.length} onClick={() => command({ type: "redo" })}>Redo</Button>
       <Button type="button" variant="ghost" className="min-h-11" onClick={() => command({ type: "replace", mask: blankMask(size) })}>Clear</Button>

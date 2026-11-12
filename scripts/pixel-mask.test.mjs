@@ -1,7 +1,7 @@
 import test from "node:test"
 import assert from "node:assert/strict"
 import ts from "typescript"
-import { blankMask, starterMask, initialMaskState, maskReducer, paintMask, maskLine, cellAtPoint, moveMaskCell, maskExample, maskGridText, HISTORY_LIMIT } from "../lib/pixel-mask.ts"
+import { blankMask, starterMask, initialMaskState, maskReducer, paintMask, maskLine, cellAtPoint, moveMaskCell, maskExample, maskGridText, HISTORY_LIMIT, transformMask } from "../lib/pixel-mask.ts"
 
 test("one drag, including skipped cells, is one reversible transaction", () => {
   const initial = initialMaskState()
@@ -226,3 +226,51 @@ test("blank/full grid exports contain no ink or metadata and invalid grids are r
   }
   for (const mask of [null, [], Array(7).fill("......."), Array(8).fill("........."), Array(8).fill("...＃...."), Array(8).fill(".... ...")]) assert.throws(() => maskGridText(mask), /Mask must/)
 })
+
+
+test("transforms preserve asymmetric exact geometry and never mutate any supported grid", () => {
+  for (const size of [8, 16, 32]) {
+    const points = [[0, 1], [2, 0], [size - 1, 3], [size - 2, size - 1]];
+    const make = points => Array.from({ length: size }, (_, y) => Array.from({ length: size }, (_, x) => points.some(([px, py]) => px === x && py === y) ? '#' : '.').join(''));
+    const mask = Object.freeze(make(points)), original = [...mask];
+    for (const [transform, expected] of [
+      ['flip-horizontal', points.map(([x, y]) => [size - 1 - x, y])],
+      ['flip-vertical', points.map(([x, y]) => [x, size - 1 - y])],
+      ['rotate-clockwise', points.map(([x, y]) => [size - 1 - y, x])],
+    ]) {
+      const result = transformMask(mask, transform);
+      assert.deepEqual(result, make(expected)); assert.notEqual(result, mask);
+      assert.deepEqual(mask, original);
+      assert.equal(result.join('').split('#').length - 1, points.length);
+    }
+  }
+  assert.throws(() => transformMask(['bad'], 'flip-horizontal'), /8×8/);
+  assert.throws(() => transformMask(blankMask(), 'unknown'), /Choose/);
+});
+
+test("flip and rotation group identities hold at every size", () => {
+  for (const size of [8, 16, 32]) {
+    const mask = paintMask(blankMask(size), [1, size + 3, size * 3 - 1, size * size - 2], true);
+    const h = m => transformMask(m, 'flip-horizontal'), v = m => transformMask(m, 'flip-vertical'), r = m => transformMask(m, 'rotate-clockwise');
+    assert.deepEqual(h(h(mask)), mask); assert.deepEqual(v(v(mask)), mask);
+    assert.deepEqual(r(r(r(r(mask)))), mask);
+    assert.deepEqual(h(v(mask)), r(r(mask)));
+    assert.deepEqual(h(r(h(mask))), r(r(r(mask))));
+  }
+});
+
+test("each transform is one ink-preserving replace history step with exact undo/redo", () => {
+  for (const size of [8, 16, 32]) for (const ink of [null, '#fa127d']) for (const transform of ['flip-horizontal', 'flip-vertical', 'rotate-clockwise']) {
+    const initial = initialMaskState(paintMask(blankMask(size), [1, size + 3, size * size - 2], true), ink);
+    const changed = maskReducer(initial, { type: 'replace', mask: transformMask(initial.mask, transform) });
+    assert.equal(changed.ink, ink); assert.equal(changed.mask.length, size); assert.equal(changed.past.length, 1);
+    const undo = maskReducer(changed, { type: 'undo' });
+    assert.deepEqual(undo.mask, initial.mask); assert.equal(undo.ink, ink);
+    const redo = maskReducer(undo, { type: 'redo' });
+    assert.deepEqual(redo.mask, changed.mask); assert.equal(redo.ink, ink);
+    const different = maskReducer(undo, { type: 'replace', mask: transformMask(undo.mask, 'rotate-clockwise') });
+    assert.equal(different.future.length, 0);
+    const empty = initialMaskState(blankMask(size), ink);
+    assert.equal(maskReducer(empty, { type: 'replace', mask: transformMask(empty.mask, transform) }), empty);
+  }
+});

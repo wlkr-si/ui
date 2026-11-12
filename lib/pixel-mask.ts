@@ -37,6 +37,16 @@ export function resizeMask(mask: string[], size: number) {
   const offset = (size - mask.length) / 2
   return Array.from({ length: size }, (_, y) => Array.from({ length: size }, (_, x) => mask[y - offset]?.[x - offset] ?? ".").join(""))
 }
+export type MaskTransform = "flip-horizontal" | "flip-vertical" | "rotate-clockwise"
+/** Exact cell permutations; no interpolation, resize or ink changes. */
+export function transformMask(mask: string[], transform: MaskTransform) {
+  validMask(mask)
+  if (transform === "flip-horizontal") return mask.map(row => [...row].reverse().join(""))
+  if (transform === "flip-vertical") return [...mask].reverse()
+  if (transform === "rotate-clockwise") return mask.map((_, y) => mask.map((_, x) => mask[mask.length - 1 - x][y]).join(""))
+  throw new Error("Choose a horizontal flip, vertical flip or clockwise rotation.")
+}
+
 function finish(state: MaskState): MaskState {
   if (!state.stroke) return state
   const changed = !equal(state.stroke, state)

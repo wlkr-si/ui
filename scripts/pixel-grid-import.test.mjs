@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readGridFile, createGridImportSession } from '../lib/pixel-grid-import.ts';
-import { initialMaskState, maskReducer, maskGridText, blankMask } from '../lib/pixel-mask.ts';
+import { initialMaskState, maskReducer, maskGridText, blankMask, transformMask } from '../lib/pixel-mask.ts';
 import { parseGrid, MAX_GRID_BYTES } from './pixels.mjs';
 import { decodeArtwork, encodeArtwork } from '../lib/pixel-mask-link.ts';
 const rows = size => Array.from({length:size}, (_, y) => '.'.repeat(y) + '#' + '.'.repeat(size-y-1));
@@ -58,4 +58,21 @@ test('new editor actions, selection, cancellation and unmount invalidate pending
   const first=session.open(old.file,mask=>applied.push(mask));
   assert.equal(await session.open(blob(maskGridText(rows(16))),mask=>applied.push(mask)),'opened');
   old.resolve(maskGridText(rows(8)));assert.equal(await first,'stale');assert.deepEqual(applied,[rows(16)]);
+});
+
+
+test('transform intent invalidates a pending grid replacement without losing undoable artwork', async () => {
+  for (const size of [8,16,32]) for (const transform of ['flip-horizontal','flip-vertical','rotate-clockwise']) {
+    const session=createGridImportSession(), pending=delayed();
+    let state=initialMaskState(rows(size), '#fa127d');
+    const initial=state;
+    const reading=session.open(pending.file,mask=>{state=maskReducer(state,{type:'replace',mask})});
+    session.invalidate(); // The editor command path invalidates before dispatching replace.
+    state=maskReducer(state,{type:'replace',mask:transformMask(state.mask,transform)});
+    const transformed=state;
+    pending.resolve(maskGridText(blankMask(8)));
+    assert.equal(await reading,'stale'); assert.equal(state,transformed);
+    assert.deepEqual(maskReducer(state,{type:'undo'}).mask,initial.mask);
+    assert.equal(state.ink,initial.ink);
+  }
 });
