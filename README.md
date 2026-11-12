@@ -26,9 +26,11 @@ The gallery and focused tools use primary-domain canonical and social metadata w
 
 The gallery is available at **ui.wlkr.si**. The focused [contrast checker](https://ui.wlkr.si/contrast) previews opaque colour pairs, checks WCAG text thresholds, and shares pairs by URL. Optional AA text mixes never change the selected colour until applied. The existing **ui.wlkrlabs.com** host and installation namespace remain available. The current source is [wlkr-si/ui](https://github.com/wlkr-si/ui). Dated release and consumer-installation evidence is kept in [verification](docs/verification.md); a source or documentation commit does not itself deploy the gallery.
 
-The private package is version 0.14.0. See [the changelog](CHANGELOG.md) for the gallery milestone; distribution remains GitHub source and the public registry, not an npm package.
+The private package is version 0.15.0. See [the changelog](CHANGELOG.md) for the gallery milestone; distribution remains GitHub source and the public registry, not an npm package.
 
 ## Pixels CLI
+
+Pixels offers Flat SVG for the exact editable bitmap: transparent unit rectangles at 16 pixels per cell. Explicit ink stays exact; Theme freezes the current rendered opaque foreground in the file without changing the editor ink or share link. The existing SVG and PNG buttons still download projected preview snapshots; Download grid remains the strict editable text format. Source releases and live deployment receipts are qualified separately.
 
 In the Pixels editor, Examples starts an editable Spark 8, Robot 16 or Orbit 32 mask. Selection keeps the ink and replaces the grid in one Undo/Redo step. The robot reproduces the [original portable-pixels grid](https://wlkr.si/media/portable-pixels/robot-16.txt); the other two masks are original geometric artwork. The live [release receipt](https://ui.wlkr.si/build-info.json) identifies the deployed source.
 

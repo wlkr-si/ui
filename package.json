@@ -1,6 +1,6 @@
 {
   "name": "wlkr-ui",
-  "version": "0.14.0",
+  "version": "0.15.0",
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
@@ -18,7 +18,7 @@
     "test:contrast-options": "node --test scripts/contrast-options.test.mjs",
     "test:social-previews": "node --test scripts/social-preview.test.mjs",
     "pixels": "node scripts/pixels.mjs",
-    "test:pixels-cli": "node --test scripts/pixels-cli.test.mjs",
+    "test:pixels-cli": "node --test scripts/pixels-cli.test.mjs scripts/pixel-flat-svg.test.mjs",
     "contrast": "node scripts/contrast.mjs",
     "test:contrast-cli": "node --test scripts/contrast-cli.test.mjs",
     "test:grid-import": "node --test scripts/pixel-grid-import.test.mjs"
