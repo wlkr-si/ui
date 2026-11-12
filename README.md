@@ -26,7 +26,7 @@ The gallery and focused tools use primary-domain canonical and social metadata w
 
 The gallery is available at **ui.wlkr.si**. The focused [contrast checker](https://ui.wlkr.si/contrast) previews opaque colour pairs, checks WCAG text thresholds, and shares pairs by URL. Optional AA text mixes never change the selected colour until applied. The existing **ui.wlkrlabs.com** host and installation namespace remain available. The current source is [wlkr-si/ui](https://github.com/wlkr-si/ui). Dated release and consumer-installation evidence is kept in [verification](docs/verification.md); a source or documentation commit does not itself deploy the gallery.
 
-The private package is version 0.13.0. See [the changelog](CHANGELOG.md) for the gallery milestone; distribution remains GitHub source and the public registry, not an npm package.
+The private package is version 0.14.0. See [the changelog](CHANGELOG.md) for the gallery milestone; distribution remains GitHub source and the public registry, not an npm package.
 
 ## Pixels CLI
 
@@ -60,6 +60,8 @@ With project dependencies already installed, `pnpm pixels --grid ./mask.txt` is 
 The 13 CLI checks passed on Linux Node 24.22.3 and Node 26.8.2, and on macOS Node 26.5.0. A minimal fixture without installed dependencies also passed URL, JSON and SVG output checks with networking denied.
 
 ## Contrast CLI
+
+The Contrast tool’s optional CSS disclosure exports the selected opaque pair as normalized six-digit --foreground and --background variables in a :root block. It copies the selected colours without adjusting them or claiming they pass a contrast threshold. Output stays keyboard-focusable and selectable if clipboard access fails. Source releases and live deployment receipts are qualified separately.
 
 Use Node 24 or newer from this source checkout, without dependency installation. Foreground comes first, then background; hashes are optional:
 
