@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import { cn } from "@/lib/utils"
-import { lensArcAngle, lensBounceCurve, lensBounceSample, lensSquashMatrix, liquidDefaults, liquidLensFrame } from "@/lib/open-lens-motion"
+import { lensArcAngle, lensBounceCurve, normalizeLensAngle, lensBounceSample, lensSquashMatrix, liquidDefaults, liquidLensFrame } from "@/lib/open-lens-motion"
 
 export type WlkrLoaderProps = {
   variant?: "orbit" | "breathe" | "bars" | "dots"
@@ -75,7 +75,9 @@ export function WlkrLoader({ variant = "orbit", size = 48, duration = 1800, stag
   const id = `wlkr-lens-${React.useId().replace(/[^a-zA-Z0-9_-]/g, "")}`
   const rays = dimension < 96 ? 72 : 160
   const options = React.useMemo(() => ({ openingDistance, splitRadius, goo, squish, ripple, arcScale: scale, reverse }), [openingDistance, splitRadius, goo, squish, ripple, scale, reverse])
-  const still = cutThrough ? liquidLensFrame(fixed ?? start, options, rays) : undefined
+  // The closed rest pose is drawn as the plain vector mark: the surface-tension filter would alias small edges.
+  const resting = fixed !== undefined ? normalizeLensAngle(fixed) === 0 : !motion && !paused && normalizeLensAngle(start) === 0
+  const still = cutThrough && !resting ? liquidLensFrame(fixed ?? start, options, rays) : undefined
   const fluid = clamp(goo, 0, 24, liquidDefaults.goo) > 0
   const curve = React.useMemo(() => cutThrough && bounce && !loop ? lensBounceCurve(options) : null, [cutThrough, bounce, loop, options])
 
