@@ -7,3 +7,7 @@ allowBuilds:
   msw: false
   esbuild: true
   workerd: true
+# Miniflare pins vulnerable versions; qualify these narrow compatible fixes locally.
+overrides:
+  'miniflare>sharp': 0.35.5
+  'miniflare>undici': 7.30.1
