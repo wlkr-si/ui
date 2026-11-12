@@ -19,7 +19,15 @@
 
 /opengraph-image
   Content-Type: image/png
+  Cache-Control: public, max-age=0, must-revalidate, no-transform
 /pixels/opengraph-image
   Content-Type: image/png
+  Cache-Control: public, max-age=0, must-revalidate, no-transform
 /contrast/opengraph-image
   Content-Type: image/png
+  Cache-Control: public, max-age=0, must-revalidate, no-transform
+
+/
+  Cache-Control: public, max-age=0, must-revalidate, no-transform
+/index.html
+  Cache-Control: public, max-age=0, must-revalidate, no-transform
