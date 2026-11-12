@@ -55,6 +55,7 @@
 .dark .theme-moon { display:none; }
 .dark .brand-mark { content:url("/wlkr-mark-dark.svg"); }
 .header-nav { display:flex; align-items:center; gap:30px; font-size:13px; color:var(--muted-foreground); }
+.header-nav a { display:inline-flex; align-items:center; justify-content:center; min-width:44px; min-height:44px; }
 .header-nav a:hover,.text-link:hover { color:var(--foreground); }
 .icon-button { display:inline-grid; place-items:center; width:44px; height:44px; cursor:pointer; }
 .icon-button svg { width:19px; height:19px; }
@@ -223,7 +224,7 @@
 .contrast-controls { display:grid; grid-template-columns:minmax(0,1fr) 44px minmax(0,1fr); align-items:end; gap:16px; }
 .contrast-field { display:grid; gap:9px; color:var(--muted-foreground); font-size:13px; }
 .contrast-input-row { display:flex; min-width:0; align-items:center; gap:12px; border-bottom:1px solid var(--border); }
-.contrast-input-row input[type=color] { width:44px; height:44px; padding:5px; border:0; background:transparent; cursor:pointer; }
+.contrast-input-row input[type=color] { flex:0 0 44px; width:44px; height:44px; padding:5px; border:0; background:transparent; cursor:pointer; }
 .contrast-input-row input[type=text] { min-width:0; width:100%; height:44px; border:0; background:none; font:inherit; color:var(--foreground); font-variant-numeric:tabular-nums; }
 .contrast-swap { width:44px; height:44px; display:grid; place-items:center; background:none; border:1px solid var(--border); cursor:pointer; }
 .contrast-swap svg { width:17px; height:17px; }
