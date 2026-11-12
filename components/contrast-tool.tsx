@@ -7,7 +7,7 @@ import { canonicalContrastShareUrl, contrastSharePath, readContrastPair, type Co
 
 function Result({ label, threshold, ratio }: { label: string; threshold: number; ratio: number }) {
   const pass = meets(ratio, threshold)
-  return <div className="contrast-result" aria-label={`${label}: ${pass ? "Pass" : "Fail"}`}>
+  return <div className="contrast-result">
     <span>{label}</span><strong data-pass={pass}>{pass ? "Pass" : "Fail"}</strong>
   </div>
 }
@@ -78,9 +78,9 @@ export function ContrastTool() {
 
   return <section className="contrast-tool" aria-label="Text and background contrast">
     <div className="contrast-controls">
-      <label className="contrast-field"><span>Background</span><span className="contrast-input-row"><input aria-label="Background colour" type="color" value={pair.background} onChange={event => update("background", event.target.value)} /><input aria-label="Background hex value" type="text" inputMode="text" spellCheck={false} value={backgroundDraft ?? pair.background} maxLength={7} onChange={event => update("background", event.target.value)} onBlur={() => restoreDraft("background")} /></span></label>
+      <div className="contrast-field" role="group" aria-label="Background"><span>Background</span><span className="contrast-input-row"><input aria-label="Background colour" type="color" value={pair.background} onChange={event => update("background", event.target.value)} /><input aria-label="Background hex value" type="text" inputMode="text" spellCheck={false} value={backgroundDraft ?? pair.background} maxLength={7} onChange={event => update("background", event.target.value)} onBlur={() => restoreDraft("background")} /></span></div>
       <button className="contrast-swap" type="button" aria-label="Swap text and background colours" onClick={swap}><ArrowLeftRight aria-hidden="true" /></button>
-      <label className="contrast-field"><span>Text</span><span className="contrast-input-row"><input aria-label="Text colour" type="color" value={pair.text} onChange={event => update("text", event.target.value)} /><input aria-label="Text hex value" type="text" inputMode="text" spellCheck={false} value={textDraft ?? pair.text} maxLength={7} onChange={event => update("text", event.target.value)} onBlur={() => restoreDraft("text")} /></span></label>
+      <div className="contrast-field" role="group" aria-label="Text"><span>Text</span><span className="contrast-input-row"><input aria-label="Text colour" type="color" value={pair.text} onChange={event => update("text", event.target.value)} /><input aria-label="Text hex value" type="text" inputMode="text" spellCheck={false} value={textDraft ?? pair.text} maxLength={7} onChange={event => update("text", event.target.value)} onBlur={() => restoreDraft("text")} /></span></div>
     </div>
     <div className="contrast-preview" style={{ backgroundColor: pair.background, color: pair.text }}>
       <p className="contrast-preview-large">Large text</p>

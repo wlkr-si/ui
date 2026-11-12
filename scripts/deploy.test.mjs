@@ -196,6 +196,8 @@ test("local receipt verifies HEAD, catalog, and actual file bytes", async () => 
   await assert.rejects(localReceipt(async () => ({ status: 0, stdout: "0".repeat(40), stderr: "" }), read), /does not match HEAD/)
   await assert.rejects(localReceipt(run, async path => path === "out/r/item-0.json" ? "changed" : read(path)), /Local asset differs/)
   await assert.rejects(localReceipt(run, async path => path === "out/pixels.html" || path === "out/contrast.html" ? "changed" : read(path)), /Local asset differs/)
+  const pixelOnly = { ...receipt, pageSha256: { "/pixels": receipt.pageSha256["/pixels"] } }
+  await assert.rejects(localReceipt(run, async path => path === "out/build-info.json" ? JSON.stringify(pixelOnly) : read(path)), /missing \/pixels or \/contrast/)
   const missingPage = { ...receipt }; delete missingPage.pageSha256
   await assert.rejects(localReceipt(run, async path => path === "out/build-info.json" ? JSON.stringify(missingPage) : read(path)), /missing \/pixels/)
 })

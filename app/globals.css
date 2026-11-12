@@ -255,7 +255,7 @@
  .contrast-page { margin:20px auto 52px; }
  .contrast-controls { gap:9px; }
  .contrast-input-row { gap:4px; }
- .contrast-input-row input[type=color] { width:38px; }
+ .contrast-input-row input[type=color] { width:44px; }
  .contrast-input-row input[type=text] { font-size:12px; }
  .contrast-preview { min-height:175px; padding:18px; }
  .contrast-preview-large { font-size:26px; }

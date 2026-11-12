@@ -50,7 +50,7 @@ export async function localReceipt(run = processAdapter, read = readFile) {
   const catalog = JSON.parse(await read("out/registry.json", "utf8"))
   const paths = ["/registry.json", "/r/registry.json", ...catalog.items.map(item => `/r/${item.name}.json`)].sort()
   if (!isDeepStrictEqual(paths, Object.keys(receipt.registrySha256).sort())) throw new Error("Build receipt does not match the complete registry catalog.")
-  if (!receipt.pageSha256) throw new Error("Candidate receipt is missing /pixels; rebuild before deployment.")
+  if (!isDeepStrictEqual(Object.keys(receipt.pageSha256 || {}).sort(), ["/contrast", "/pixels"])) throw new Error("Candidate receipt is missing /pixels or /contrast; rebuild before deployment.")
   for (const [path, hash] of Object.entries({ ...receipt.registrySha256, ...receipt.pageSha256 })) if (sha(await read(path === "/pixels" ? "out/pixels.html" : path === "/contrast" ? "out/contrast.html" : `out${path}`)) !== hash) throw new Error(`Local asset differs from receipt: ${path}`)
   return receipt
 }
