@@ -4,6 +4,10 @@ React and TypeScript source components, a shadcn-compatible registry, and opt-in
 
 Source: https://github.com/wlkr-si/ui. Build identity: /build-info.json.
 
+## Animation room
+
+[Animation room](/animation) tunes the real loader and wordmark with two rigid body pieces opening around the arc, frame scrubbing, loop or one-turn playback, geometry, direction and backgrounds. Copy a settings link to reproduce a paused frame without an account or backend. Settings do not automatically change the studio homepage.
+
 ## Pixel drawing
 
 [Pixels](/pixels) is the focused drawing page. It reuses the gallery mask editor, ink, centred resize/crop, undo/redo, explicit Share and transparent SVG/PNG exports. React code opens on request. Transform offers horizontal/vertical flips and clockwise 90-degree rotation, preserving ink and size with one-step undo/redo. Open grid reads a local UTF-8 dot/hash file up to 4 KiB, keeping ink and one-step undo. Invalid, cancelled or stale reads leave artwork intact. Download grid saves exact dots/hash rows with one final newline in a size-based .txt file accepted by the Pixels CLI; ink stays in links or an explicit --ink flag. New canonical links use /pixels?mask=<token>#pixels; existing root v1/v2 links remain supported. No artwork is saved to a backend or browser storage.
@@ -28,7 +32,7 @@ The CLI installs original source and pulls stock shadcn dependencies directly fr
 - [Async action](/#async-action): Promise-aware action with pending, success, failure and retry states. [Source JSON](/r/async-action.json)
 - [Filter list](/#filter-list): An accessible searchable list with accent-insensitive matching and empty states. [Source JSON](/r/filter-list.json)
 - [Pixel object](/#pixel-object): A projected pixel sphere, custom point cloud, or mask with considerate motion controls. [Source JSON](/r/pixel-object.json)
-- [WLKR loader](/#wlkr-loader): The WLKR.SI arc rotates behind its fixed semicircle, with pause and reduced-motion support. [Source JSON](/r/wlkr-loader.json)
+- [WLKR loader](/#wlkr-loader): A tunable Open Lens loader with optional rigid split-body interaction, pause and reduced-motion support. [Source JSON](/r/wlkr-loader.json)
 - [WLKR theme](/#theme): Semantic light and dark tokens. Typography stays with your application. [Source JSON](/r/theme.json)
 - [Page intro](/#page-intro): Gallery typography with a width-stable binary heading reveal. [Source JSON](/r/page-intro.json)
 - [Index row](/#index-row): Borderless index link with three fixed digits that roll on hover and focus. [Source JSON](/r/index-row.json)

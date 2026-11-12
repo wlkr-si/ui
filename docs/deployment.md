@@ -55,7 +55,7 @@ The guarded release command inherits the caller's existing Wrangler environment 
 
 No rollback is attempted when ownership is uncertain, provider state cannot be read, or another deployment is observed. An unchanged version with a **different deployment ID** counts as a conflict too. Failed or unverified rollback is explicitly reported with candidate/prior IDs and a request to inspect current state. The command never blindly retries a traffic mutation.
 
-Each public GET times out after five seconds. Verification uses at most four concurrent requests, four full sweeps, and two seconds between sweeps. It bypasses browser caches and adds a per-run query string. Each provider CLI operation is bounded to two minutes; the local release check has a ten-minute process timeout. Network checks compare bytes rather than browser screenshots. They do not replace interaction or consumer-installation acceptance after component changes.
+Each public GET times out after five seconds. Verification uses at most four concurrent requests, twenty full sweeps, and three seconds between sweeps. It bypasses browser caches and adds a per-run query string. Each provider CLI operation is bounded to two minutes; the local release check has a ten-minute process timeout. Network checks compare bytes rather than browser screenshots. They do not replace interaction or consumer-installation acceptance after component changes.
 
 The local lock is resolved using `git rev-parse --git-path wlkr-ui-release.lock` and records its PID/start time without credentials. It is removed on ordinary success or failure. After a killed process or machine failure, inspect the recorded process and provider deployment before removing a confirmed stale lock. Do not remove a lock held by a running release. Locks serialize cooperating releases in this checkout; separate clones and dashboard/CLI publishers are not locked.
 
@@ -97,3 +97,7 @@ The `ui.wlkr.si` alias was attached with the studio website's `wlkr app add ui -
 To withdraw the new alias, use `wlkr app remove ui` from the authoritative studio registry and publish that registry change. This removes only its owned mapping; keep the legacy mapping and Worker source. A Worker-version rollback restores code, not DNS or domain mappings.
 
 Cloudflare [documents](https://developers.cloudflare.com/workers/wrangler/configuration/#routes-and-domains) that omitting both `route` and `routes` leaves route management outside Wrangler. The source config deliberately follows that model so separately managed aliases survive code releases.
+
+## Animation room release receipts
+
+New candidates require hashes for `/`, `/animation`, `/pixels` and `/contrast`, plus the existing registry and three social previews. The room uses the same no-transform response policy as the other tool pages. Historical one-, two- and three-page receipts remain valid for baseline and rollback verification; a new candidate missing the room is rejected. Verification still compares exact source, build time and bytes on both hosts, with up to twenty reads separated by three seconds to allow propagation. Receipt mismatch errors identify both observed host revisions/times. No write or rollback ownership guard is relaxed.
