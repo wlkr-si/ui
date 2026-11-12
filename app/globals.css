@@ -180,3 +180,6 @@
 .loader-canvas:focus-visible { outline:2px solid var(--ring);outline-offset:6px; }
 .site-footer .wlkr-footer-controls { gap:8px; }
 .site-footer .wlkr-footer-controls [data-slot=toggle-group] { gap:0; }
+
+.pixel-exports { display:flex; align-items:center; justify-content:flex-end; flex-wrap:wrap; gap:4px; margin-bottom:12px; }
+.pixel-export-error { width:100%; margin:4px 0 0; color:var(--foreground); font-size:12px; line-height:1.6; }
