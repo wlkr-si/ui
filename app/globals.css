@@ -273,7 +273,6 @@
 .contrast-aa-options { border-top:1px solid var(--border); }
 .contrast-aa-options summary { display:flex; align-items:center; min-height:44px; width:fit-content; padding-right:8px; font-size:13px; cursor:pointer; }
 .contrast-aa-content { display:grid; gap:14px; max-width:560px; padding:0 0 8px; }
-.contrast-aa-method { margin:0; font-size:12px; line-height:1.6; color:var(--muted-foreground); }
 .contrast-aa-list { display:grid; gap:4px; border:0; padding:0; margin:0; min-width:0; }
 .contrast-aa-list legend { margin-bottom:8px; font-size:12px; }
 .contrast-aa-choice { display:grid; grid-template-columns:20px 32px minmax(0,1fr); align-items:center; gap:12px; min-height:48px; min-width:0; padding:4px 0; cursor:pointer; }

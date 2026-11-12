@@ -26,6 +26,10 @@ The gallery is available at **ui.wlkr.si**. The focused [contrast checker](https
 
 The private package is version 0.6.0. See [the changelog](CHANGELOG.md) for the gallery milestone; distribution remains GitHub source and the public registry, not an npm package.
 
+## AA text options
+
+The optional chooser keeps the background fixed and evaluates text mixed toward black or white in 5% RGB steps, up to 20 steps per direction. It lists up to two distinct passing choices per direction, plus the current text when it already passes. Every listed choice meets the unrounded 4.5:1 normal-text threshold. Selecting a choice leaves the current pair unchanged until **Apply**.
+
 ## Develop and verify
 
 ```sh

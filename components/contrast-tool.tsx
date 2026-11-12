@@ -116,9 +116,8 @@ export function ContrastTool() {
     <details className="contrast-aa-options">
       <summary>AA text options</summary>
       <div className="contrast-aa-content">
-        <p className="contrast-aa-method">RGB mixes in 5% steps toward black or white, up to 20 steps. Each listed colour meets 4.5:1 for this background. Apply to change the text colour.</p>
         <fieldset className="contrast-aa-list">
-          <legend>Choose a text colour</legend>
+          <legend className="sr-only">Text colour</legend>
           {aaOptions.map(option => (
             <label className="contrast-aa-choice" key={option.color}>
               <input
