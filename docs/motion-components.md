@@ -43,20 +43,20 @@ Motion stops on explicit pause, off-screen intersection, hidden document, or red
 
 ## WlkrLoader
 
-The loader uses the current WLKR.SI Open Lens: the exact two paths and resting angle from the approved `wlkr-si/website` master `brand/open-lens.svg`. It inherits currentColor without a separate accent. Orbit rotates steadily while the halves gently open and close; Breathe rocks through a small angle with the same opening motion. Both remain within the square bounds.
+The loader uses the current WLKR.SI Open Lens: the exact two paths and resting angle from the approved `wlkr-si/website` master `brand/open-lens.svg`. It inherits currentColor without a separate accent. Only the arc rotates around the symbol center. It passes behind the fixed solid semicircle, disappears below the mouth and emerges on the other side. The body and resting proportions do not move.
 
 | Prop | Default | Meaning and bounds |
 | --- | --- | --- |
-| `variant` | `orbit` | `orbit` or `breathe`. Legacy `bars` and `dots` map to those respectively. |
+| `variant` | `orbit` | `orbit`. Earlier variant values remain accepted and use the same arc motion. |
 | `size` | 48 | Fixed square bounds in px, clamped 16–240. |
-| `duration` | 3,200 | Milliseconds per cycle, clamped 800–10,000. |
-| `stagger` | 120 | Phase delay between halves, clamped 0–2,000 ms. |
+| `duration` | 1,800 | Milliseconds per cycle, clamped 800–10,000. |
+| `stagger` | 120 | Deprecated compatibility input; does not change the arc motion. |
 | `label` | “Loading” | One accessible loading announcement. |
 | `decorative` | false | Hides the loader when another control already announces loading. |
-| `paused` | false | Freezes rotation and opening at their current positions. |
+| `paused` | false | Freezes rotation at their current positions. |
 | `className` | unset | Inherited color/layout composition. |
 
-CSS transforms provide motion without a JavaScript frame loop. Explicit pause, off-screen intersection and hidden documents freeze all animated groups. Reduced motion shows the unchanged static Open Lens. Observers and listeners clean up on unmount; animation never rewrites live-region text. The gallery exposes Orbit/Breathe, size, cycle duration, phase delay, Reset and click/keyboard pause; Usage reflects those settings.
+CSS transforms provide motion without a JavaScript frame loop. Explicit pause, off-screen intersection and hidden documents freeze all animated groups. Reduced motion shows the unchanged static Open Lens. Observers and listeners clean up on unmount; animation never rewrites live-region text. The gallery exposes size, cycle duration and Reset and click/keyboard pause; Usage reflects those settings.
 
 ## Provenance
 
