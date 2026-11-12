@@ -197,3 +197,7 @@
 .mask-cell[data-filled=true] { background:var(--foreground); border-color:var(--foreground); }
 .mask-cell:focus-visible { outline:2px solid var(--ring); outline-offset:1px; position:relative; z-index:1; }
 @media(max-width:680px) { .pixel-stage.mask-stage { grid-template-columns:minmax(0,1fr); justify-items:center; } }
+
+.mask-share { display:grid; gap:8px; min-width:0; margin:0 0 16px; }
+.mask-share input { width:100%; min-width:0; font-size:12px; }
+.mask-link-error { color:var(--foreground); font-size:12px; line-height:1.6; margin:8px 0 16px; max-width:52ch; }

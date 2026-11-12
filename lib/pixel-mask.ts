@@ -5,7 +5,7 @@ export type MaskState = { mask: string[]; past: string[][]; future: string[][]; 
 export type MaskAction = { type: "begin" } | { type: "end" } | { type: "undo" } | { type: "redo" } | { type: "paint"; cells: number[]; filled: boolean } | { type: "replace"; mask: string[] }
 export const blankMask = () => Array.from({ length: MASK_SIZE }, () => ".".repeat(MASK_SIZE))
 export const starterMask = () => [...starter]
-export const initialMaskState = (): MaskState => ({ mask: starterMask(), past: [], future: [], stroke: null })
+export const initialMaskState = (mask = starterMask()): MaskState => ({ mask: [...validMask(mask)], past: [], future: [], stroke: null })
 const equal = (a: string[], b: string[]) => a.every((row, i) => row === b[i])
 const validCell = (cell: number) => Number.isInteger(cell) && cell >= 0 && cell < MASK_SIZE * MASK_SIZE
 function validMask(mask: string[]) {

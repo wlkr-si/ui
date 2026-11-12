@@ -24,6 +24,8 @@ Use your project's configured import alias. Components are copied into your sour
 
 The gallery is available at **ui.wlkr.si**. The existing **ui.wlkrlabs.com** host and installation namespace remain available. The current source is [wlkr-si/ui](https://github.com/wlkr-si/ui). Dated release and consumer-installation evidence is kept in [verification](docs/verification.md); a source or documentation commit does not itself deploy the gallery.
 
+The private package is version 0.2.0. See [the changelog](CHANGELOG.md) for the gallery milestone; distribution remains GitHub source and the public registry, not an npm package.
+
 ## Develop and verify
 
 ```sh
@@ -116,7 +118,7 @@ The site uses installed, unchanged stock `Button`, `Input`, `Switch`, `Tabs`, `S
 
 ## Gallery controls and source panels
 
-The Pixel object playground also offers a gallery-only 8×8 mask editor. Draw or erase with a pointer, move with arrow keys and apply the selected tool with Space/Enter, or clear a focused cell with Delete. Undo/redo tracks up to 32 strokes or edits; Clear and Reset are undoable. Switching back to Object preserves the mask and the existing object settings. The Usage panel copies the actual mask as a valid React example, while SVG/PNG exports capture its real static preview. No drawing is sent to a server or saved in browser storage. The existing public `PixelObject.mask` API and registry item are unchanged.
+The Pixel object playground also offers a gallery-only 8×8 mask editor. Draw or erase with a pointer, move with arrow keys and apply the selected tool with Space/Enter, or clear a focused cell with Delete. Undo/redo tracks up to 32 strokes or edits; Clear and Reset are undoable. Switching back to Object preserves the mask and the existing object settings. The Usage panel copies the actual mask as a valid React example, while SVG/PNG exports capture its real static preview. Share explicitly copies a canonical URL containing a versioned 64-bit mask. Shared links load the exact grid with clean undo history; invalid or ambiguous links show feedback. Clipboard failure leaves a selectable URL, and unrelated query parameters are never included in generated links. Editing does not update or copy a URL automatically. Drawings are not saved through a backend or browser storage. The existing public `PixelObject.mask` API and registry item are unchanged.
 
 All gallery choice controls use the approved Soft combobox, composed from unchanged stock Command and Radix Popover. Its rounded rectangular popup shares `--control-surface` with the code panels: `#fafafa` in light mode and `#090909` in dark mode. Search, keyboard selection, empty states, and focus return stay accessible. These gallery controls are not additional registry items.
 
