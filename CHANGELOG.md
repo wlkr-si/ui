@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.11.0 — 2026-11-12
+
+- Added native Open grid for bounded local 8/16/32 UTF-8 dot/hash files, sharing the unchanged CLI parser. Valid imports retain ink and replace artwork in one undo step.
+- Discarded stale reads after newer editor intents, file selections or unmount; malformed, cancelled and oversized files preserve artwork. No uploads, persistence or dependencies.
+
+The package remains private; the GitHub source tag follows live acceptance. Registry items and CLI behavior are unchanged.
+
 ## 0.10.0 — 2026-11-11
 
 - Added a dependency-free Node 24+ Contrast CLI reusing the browser math and optional deterministic AA text choices. JSON retains exact ratios and explicit threshold booleans; human output rounds display only.
