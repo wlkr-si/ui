@@ -28,7 +28,7 @@ The gallery and focused tools use primary-domain canonical and social metadata w
 
 The gallery is available at **ui.wlkr.si**. The focused [contrast checker](https://ui.wlkr.si/contrast) previews opaque colour pairs, checks WCAG text thresholds, and shares pairs by URL. Optional AA text mixes never change the selected colour until applied. The existing **ui.wlkrlabs.com** host and installation namespace remain available. The current source is [wlkr-si/ui](https://github.com/wlkr-si/ui). Dated release and consumer-installation evidence is kept in [verification](docs/verification.md); a source or documentation commit does not itself deploy the gallery.
 
-The private package is version 0.16.0. See [the changelog](CHANGELOG.md) for the gallery milestone; distribution remains GitHub source and the public registry, not an npm package.
+The private package is version 0.17.0. See [the changelog](CHANGELOG.md) for the gallery milestone; distribution remains GitHub source and the public registry, not an npm package.
 
 ## Pixels CLI
 

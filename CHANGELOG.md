@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.17.0 — 2026-11-12
+
+- Liquid Open Lens: with `cutThrough`, the bowl parts only where the arc passes, pinches its inner material into a floating drop and seals behind it with a damped ripple. Surface tension fuses nearby shapes so pieces neck, snap and reconnect.
+- Animation room: Goo, Squish and Ripple controls replace the rigid opening-angle, open/close and split-gap controls. Older settings links keep their look and playback and take the liquid defaults.
+
 ## 0.15.2
 
 - Follow the viewed gallery section with the sidebar indicator and `aria-current`, including native anchors, manual scrolling, filters and layout changes. Navigation updates keep focus and URLs unchanged.
