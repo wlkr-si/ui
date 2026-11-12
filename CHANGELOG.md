@@ -3,6 +3,7 @@
 ## 0.2.0 — 2026-11-11
 
 - Added an 8×8 pixel mask editor with pointer/keyboard drawing, erasing, bounded undo/redo, and reversible Clear/Reset.
+- Kept anchor navigation immediate so shared artwork is stable before editing.
 - Added explicit sharing through compact validated canonical mask URLs, clean recipient undo history, invalid-link feedback, and a selectable clipboard fallback.
 - Added real transparent SVG/PNG snapshots of the rendered pixel frame and React examples containing the actual edited mask.
 - Made command scrollers keyboard accessible and updated gallery family/navigation links to WLKR.SI.

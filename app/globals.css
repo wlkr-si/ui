@@ -43,7 +43,7 @@
   a,button,input,summary { outline-offset:5px; }
   :focus-visible { outline:2px solid var(--ring); }
   ::selection { background:var(--brand); color:var(--brand-foreground); }
-  html { scroll-behavior:smooth; scroll-padding-top:3rem; }
+  html { scroll-padding-top:3rem; }
   button,a,summary { touch-action:manipulation; }
 }
 .shell { max-width:1512px; margin:auto; padding:0 6.2%; }
