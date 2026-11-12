@@ -4,7 +4,8 @@ import { open } from 'node:fs/promises';
 import { pathToFileURL } from 'node:url';
 import { decodeArtwork, encodeArtwork, maskShareUrl } from '../lib/pixel-mask-link.ts';
 
-export const MAX_GRID_BYTES = 4096;
+import { MAX_GRID_BYTES, parseGrid } from "../lib/pixel-grid-text.mjs";
+export { MAX_GRID_BYTES, parseGrid };
 export const HELP = `Usage: node scripts/pixels.mjs (--grid <file> | --mask <token>) [options]
 
   --grid <file>    Regular UTF-8 dots/# grid: 8×8, 16×16 or 32×32
@@ -41,14 +42,6 @@ export function parseArgs(args) {
   return options;
 }
 
-export function parseGrid(text) {
-  if (typeof text !== 'string' || text.length > MAX_GRID_BYTES) throw new Error('Grid exceeds the 4 KiB limit.');
-  const normalized = text.replace(/^\uFEFF/, '').replace(/\r\n/g, '\n');
-  const mask = (normalized.endsWith('\n') ? normalized.slice(0, -1) : normalized).split('\n');
-  try { encodeArtwork(mask); }
-  catch { throw new Error('Grid must have exactly 8, 16 or 32 equally sized rows of dots and hashes, with no spaces or blank rows.'); }
-  return mask;
-}
 
 export async function readGrid(path) {
   if (!constants.O_NONBLOCK || !constants.O_NOFOLLOW) throw new Error('Grid input needs nonblocking, no-follow file support on this platform.');

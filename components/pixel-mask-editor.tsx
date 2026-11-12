@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import { createGridImportSession } from "@/lib/pixel-grid-import"
 import { Input } from "@/components/ui/input"
 import { encodeArtwork, maskShareUrl } from "@/lib/pixel-mask-link"
 import { Button } from "@/components/ui/button"
@@ -10,6 +11,20 @@ import { blankMask, cellAtPoint, inkBackdrop, maskLine, maskReducer, MASK_SIZES,
 
 type Gesture = { pointer: number; kind: "paint"; last: number | null; filled: boolean } | { pointer: number; kind: "pan"; x: number; y: number; left: number; top: number }
 export function PixelMaskEditor({ state, dispatch }: { state: MaskState; dispatch: React.Dispatch<MaskAction> }) {
+  const imports = React.useRef(createGridImportSession())
+  const fileInput = React.useRef<HTMLInputElement>(null)
+  const [importStatus, setImportStatus] = React.useState<{ message: string; error: boolean } | null>(null)
+  function invalidateImport() { imports.current.invalidate(); setImportStatus(null) }
+  function edit(action: MaskAction) { invalidateImport(); dispatch(action) }
+  async function openGrid(file: File | undefined) {
+    if (!file) { invalidateImport(); return }
+    const input = fileInput.current
+    setImportStatus({ message: "Opening grid…", error: false })
+    const result = await imports.current.open(file, mask => { if (input?.isConnected) command({ type: "replace", mask }, Boolean(document.activeElement?.closest(".mask-grid"))) })
+    if (!input?.isConnected) return
+    if (result === "opened") setImportStatus({ message: "Grid opened.", error: false })
+    else if (result === "invalid") setImportStatus({ message: "Use an 8×8, 16×16 or 32×32 UTF-8 dot/hash grid, at most 4 KiB.", error: true })
+  }
   const size = state.mask.length
   const [tool, setTool] = React.useState<"draw" | "erase" | "pan">("draw")
   const [active, setActive] = React.useState(0)
@@ -35,19 +50,24 @@ export function PixelMaskEditor({ state, dispatch }: { state: MaskState; dispatc
       setTimeout(() => { shareInput.current?.focus(); shareInput.current?.select() }, 0)
     } finally { sharingRef.current = false; setSharing(false) }
   }
-  React.useEffect(() => () => dispatch({ type: "end" }), [dispatch])
+  React.useEffect(() => {
+    const current = imports.current, input = fileInput.current
+    const cancel = () => { current.invalidate(); setImportStatus(null) }
+    input?.addEventListener("cancel", cancel)
+    return () => { input?.removeEventListener("cancel", cancel); current.invalidate(); dispatch({ type: "end" }) }
+  }, [dispatch])
   function focus(cell: number, reveal = false) {
-    setActive(cell); cells.current[cell]?.focus({ preventScroll: true })
+    invalidateImport(); setActive(cell); cells.current[cell]?.focus({ preventScroll: true })
     if (reveal) cells.current[cell]?.scrollIntoView({ block: "nearest", inline: "nearest", behavior: "instant" })
   }
-  function finish() { if (stroke.current) { stroke.current = null; dispatch({ type: "end" }) } }
+  function finish() { if (stroke.current) { stroke.current = null; edit({ type: "end" }) } }
   function command(action: MaskAction, keepGridFocus = false) {
     finish()
-    const nextSize = ["resize", "undo", "redo", "reset"].includes(action.type) ? maskReducer(state, action).mask.length : size
+    const nextSize = ["replace", "resize", "undo", "redo", "reset"].includes(action.type) ? maskReducer(state, action).mask.length : size
     const offset = (nextSize - size) / 2
     const target = Math.max(0, Math.min(nextSize - 1, Math.floor(activeCell / size) + offset)) * nextSize + Math.max(0, Math.min(nextSize - 1, activeCell % size + offset))
     if (nextSize !== size) setActive(target)
-    dispatch(action)
+    edit(action)
     if (keepGridFocus) requestAnimationFrame(() => focus(target, true))
   }
   function point(event: React.PointerEvent<HTMLDivElement>) {
@@ -71,15 +91,18 @@ export function PixelMaskEditor({ state, dispatch }: { state: MaskState; dispatc
       <MaskInkControl key={state.ink || "theme"} ink={state.ink} onChange={ink => command({ type: "ink", ink })} />
     </div>
     <div className="mask-tools" role="group" aria-label="Mask tools">
-      <Button type="button" variant="ghost" className="min-h-11" aria-pressed={tool === "draw"} onClick={() => setTool("draw")}>Draw</Button>
-      <Button type="button" variant="ghost" className="min-h-11" aria-pressed={tool === "erase"} onClick={() => setTool("erase")}>Erase</Button>
-      <Button type="button" variant="ghost" className="min-h-11" aria-pressed={tool === "pan"} onClick={() => setTool("pan")}>Pan</Button>
+      <input ref={fileInput} type="file" accept=".txt,text/plain" hidden aria-label="Open grid file" onChange={event => { const file = event.currentTarget.files?.[0]; event.currentTarget.value = ""; void openGrid(file) }} />
+      <Button type="button" variant="ghost" className="min-h-11" onClick={() => { finish(); invalidateImport(); if (fileInput.current) { fileInput.current.value = ""; fileInput.current.click() } }}>Open grid</Button>
+      <Button type="button" variant="ghost" className="min-h-11" aria-pressed={tool === "draw"} onClick={() => { invalidateImport(); setTool("draw") }}>Draw</Button>
+      <Button type="button" variant="ghost" className="min-h-11" aria-pressed={tool === "erase"} onClick={() => { invalidateImport(); setTool("erase") }}>Erase</Button>
+      <Button type="button" variant="ghost" className="min-h-11" aria-pressed={tool === "pan"} onClick={() => { invalidateImport(); setTool("pan") }}>Pan</Button>
       <Button type="button" variant="ghost" className="min-h-11" disabled={!canUndo} onClick={() => command({ type: "undo" })}>Undo</Button>
       <Button type="button" variant="ghost" className="min-h-11" disabled={!state.future.length} onClick={() => command({ type: "redo" })}>Redo</Button>
       <Button type="button" variant="ghost" className="min-h-11" onClick={() => command({ type: "replace", mask: blankMask(size) })}>Clear</Button>
       <Button type="button" variant="ghost" className="min-h-11" aria-label="Reset mask" onClick={() => command({ type: "reset" })}>Reset</Button>
       <Button type="button" variant="ghost" className="min-h-11" disabled={sharing} onClick={share}>{sharing ? "Sharing…" : "Share"}</Button>
     </div>
+    {importStatus && <p role={importStatus.error ? "alert" : "status"} className={importStatus.error ? "mask-link-error" : "sr-only"}>{importStatus.message}</p>}
     {visibleShare && <div className="mask-share"><label className="sr-only" htmlFor={shareInputId}>Mask share URL</label><Input className="min-h-11" ref={shareInput} id={shareInputId} readOnly value={visibleShare.url} spellCheck={false} autoComplete="off" onFocus={event => event.currentTarget.select()} /><p role="status" aria-live="polite" className={visibleShare.error ? "mask-link-error" : "sr-only"}>{visibleShare.message}</p></div>}
     <p id={instructions} className="sr-only">{size} rows and {size} columns. Arrow keys move and reveal cells. Space or Enter applies Draw or Erase. Pan drags the detail view without painting. Delete clears a cell. Home and End move within a row; Control or Command moves to the grid ends. Control or Command Z undoes; Shift Z redoes. Shrinking crops the centre; Undo restores the previous size and pixels.</p>
     <div ref={viewport} className="mask-viewport">
@@ -88,23 +111,23 @@ export function PixelMaskEditor({ state, dispatch }: { state: MaskState; dispatc
           if (event.button !== 0 || !event.isPrimary || stroke.current) return
           const cell = point(event)
           if (cell === null) return
-          event.preventDefault(); event.currentTarget.setPointerCapture(event.pointerId)
+          invalidateImport(); event.preventDefault(); event.currentTarget.setPointerCapture(event.pointerId)
           if (tool === "pan" && viewport.current) { stroke.current = { pointer: event.pointerId, kind: "pan", x: event.clientX, y: event.clientY, left: viewport.current.scrollLeft, top: viewport.current.scrollTop }; return }
           stroke.current = { pointer: event.pointerId, kind: "paint", last: cell, filled: tool === "draw" }
-          dispatch({ type: "begin" }); dispatch({ type: "paint", cells: [cell], filled: tool === "draw" }); focus(cell)
+          edit({ type: "begin" }); edit({ type: "paint", cells: [cell], filled: tool === "draw" }); focus(cell)
         }}
         onPointerMove={event => {
           const current = stroke.current
           if (!current || current.pointer !== event.pointerId) return
           if (current.kind === "pan") { if (viewport.current) { viewport.current.scrollLeft = current.left - event.clientX + current.x; viewport.current.scrollTop = current.top - event.clientY + current.y }; return }
           const cell = point(event)
-          if (cell !== null) dispatch({ type: "paint", cells: current.last === null ? [cell] : maskLine(current.last, cell, size), filled: current.filled })
+          if (cell !== null) edit({ type: "paint", cells: current.last === null ? [cell] : maskLine(current.last, cell, size), filled: current.filled })
           current.last = cell
         }}
         onPointerUp={event => { if (stroke.current?.pointer === event.pointerId) { finish(); if (event.currentTarget.hasPointerCapture(event.pointerId)) event.currentTarget.releasePointerCapture(event.pointerId) } }} onPointerCancel={finish} onLostPointerCapture={finish}>
         {state.mask.map((row, y) => <div role="row" aria-rowindex={y + 1} key={y} style={{ gridTemplateColumns: `repeat(${size},minmax(0,1fr))` }}>{[...row].map((value, x) => {
           const cell = y * size + x, filled = value === "#"
-          return <button key={x} ref={node => { cells.current[cell] = node }} type="button" role="gridcell" className="mask-cell" data-mask-cell={cell} data-filled={filled} aria-colindex={x + 1} aria-selected={filled} aria-label={`Row ${y + 1}, column ${x + 1}, ${filled ? "filled" : "empty"}`} tabIndex={activeCell === cell ? 0 : -1} onFocus={() => setActive(cell)} onClick={event => { if (event.detail === 0 && tool !== "pan") command({ type: "paint", cells: [cell], filled: tool === "draw" }) }} />
+          return <button key={x} ref={node => { cells.current[cell] = node }} type="button" role="gridcell" className="mask-cell" data-mask-cell={cell} data-filled={filled} aria-colindex={x + 1} aria-selected={filled} aria-label={`Row ${y + 1}, column ${x + 1}, ${filled ? "filled" : "empty"}`} tabIndex={activeCell === cell ? 0 : -1} onFocus={() => { invalidateImport(); setActive(cell) }} onClick={event => { if (event.detail === 0 && tool !== "pan") command({ type: "paint", cells: [cell], filled: tool === "draw" }) }} />
         })}</div>)}
       </div>
     </div>
