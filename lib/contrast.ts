@@ -26,3 +26,53 @@ export function meets(ratio: number, threshold: number): boolean {
 export function canonicalHex(value: string, fallback: string): string {
   return parseOpaqueHex(value) ? value.toUpperCase() : fallback
 }
+
+export type AAOption = {
+  color: string
+  ratio: number
+  direction: "Current" | "Toward black" | "Toward white"
+}
+
+const AA_NORMAL_TEXT = 4.5
+const MIX_STEPS = 20
+const OPTIONS_PER_DIRECTION = 2
+
+export function mixRgb(color: RGB, target: 0 | 255, step: number): RGB {
+  const amount = Math.max(0, Math.min(1, step / MIX_STEPS))
+  return color.map(channel => Math.round(channel + (target - channel) * amount)) as unknown as RGB
+}
+
+function rgbToHex([red, green, blue]: RGB): string {
+  return `#${[red, green, blue].map(channel => channel.toString(16).padStart(2, "0")).join("").toUpperCase()}`
+}
+
+export function generateAAOptions(backgroundHex: string, textHex: string): AAOption[] {
+  const background = parseOpaqueHex(backgroundHex)
+  const text = parseOpaqueHex(textHex)
+  if (!background || !text) return []
+
+  const options: AAOption[] = []
+  const seen = new Set<string>()
+  const currentRatio = contrastRatio(background, text)
+  const currentHex = rgbToHex(text)
+
+  if (meets(currentRatio, AA_NORMAL_TEXT)) {
+    options.push({ color: currentHex, ratio: currentRatio, direction: "Current" })
+    seen.add(currentHex)
+  }
+
+  for (const [target, direction] of [[0, "Toward black"], [255, "Toward white"]] as const) {
+    let added = 0
+    for (let step = 1; step <= MIX_STEPS && added < OPTIONS_PER_DIRECTION; step += 1) {
+      const color = rgbToHex(mixRgb(text, target, step))
+      if (seen.has(color)) continue
+      const ratio = contrastRatio(background, parseOpaqueHex(color)!)
+      if (!meets(ratio, AA_NORMAL_TEXT)) continue
+      seen.add(color)
+      options.push({ color, ratio, direction })
+      added += 1
+    }
+  }
+
+  return options
+}

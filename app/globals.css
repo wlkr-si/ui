@@ -270,3 +270,17 @@
  .brand-mark { width:23px; height:27px; }
  .header-nav { gap:8px; font-size:11px; }
 }
+.contrast-aa-options { border-top:1px solid var(--border); }
+.contrast-aa-options summary { display:flex; align-items:center; min-height:44px; width:fit-content; padding-right:8px; font-size:13px; cursor:pointer; }
+.contrast-aa-content { display:grid; gap:14px; max-width:560px; padding:0 0 8px; }
+.contrast-aa-list { display:grid; gap:4px; border:0; padding:0; margin:0; min-width:0; }
+.contrast-aa-list legend { margin-bottom:8px; font-size:12px; }
+.contrast-aa-choice { display:grid; grid-template-columns:20px 32px minmax(0,1fr); align-items:center; gap:12px; min-height:48px; min-width:0; padding:4px 0; cursor:pointer; }
+.contrast-aa-choice input { width:16px; height:16px; margin:0; accent-color:var(--success); }
+.contrast-aa-swatch { width:28px; height:28px; border:1px solid var(--border); border-radius:2px; }
+.contrast-aa-choice-copy { display:grid; gap:3px; min-width:0; font-size:12px; }
+.contrast-aa-choice-copy strong { font-weight:550; }
+.contrast-aa-choice-copy>span { color:var(--muted-foreground); }
+.contrast-apply { min-height:44px; width:fit-content; padding:0 16px; border:1px solid var(--border); background:var(--foreground); color:var(--background); cursor:pointer; font-size:12px; }
+.contrast-apply:disabled { opacity:.5; cursor:default; }
+.contrast-aa-options :is(summary,input,button):focus-visible { outline:2px solid var(--ring); outline-offset:4px; }
