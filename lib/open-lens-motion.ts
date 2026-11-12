@@ -136,3 +136,103 @@ export function lensEase(progress: number, easing: "linear" | "smooth" = "linear
 export function lensArcAngle(progress: number, startAngle = 0, reverse = false, easing: "linear" | "smooth" = "linear"): number {
   return lensClamp(startAngle, -36000, 36000, 0) + (reverse ? -360 : 360) * lensEase(progress, easing)
 }
+
+function insideBowl(x: number, y: number) {
+  let inside = false
+  for (let i = 0, j = BOWL.length - 1; i < BOWL.length; j = i++) {
+    const [xi, yi] = BOWL[i], [xj, yj] = BOWL[j]
+    if ((yi > y) !== (yj > y) && x < (xj - xi) * (y - yi) / (yj - yi) + xi) inside = !inside
+  }
+  return inside
+}
+function bowlDistance(x: number, y: number) {
+  if (insideBowl(x, y)) return 0
+  let best = Infinity
+  for (let i = 0; i < BOWL.length; i++) {
+    const [ax, ay] = BOWL[i], [bx, by] = BOWL[(i + 1) % BOWL.length]
+    const ex = bx - ax, ey = by - ay, t = Math.max(0, Math.min(1, ((x - ax) * ex + (y - ay) * ey) / (ex * ex + ey * ey)))
+    best = Math.min(best, Math.hypot(x - ax - t * ex, y - ay - t * ey))
+  }
+  return best
+}
+/** Arc angles (degrees) at which an end cap first touches the bowl turning forward (positive) and backward (negative). */
+export function lensContactAngles(options: LensMotionOptions = {}): { forward: number; backward: number } {
+  const scale = lensClamp(options.arcScale ?? 1, .6, 1.2, 1), cap = 14 * scale
+  const touches = (theta: number, end: number) => {
+    const r = theta * Math.PI / 180, x = end * scale, y = -12 * scale
+    return bowlDistance(x * Math.cos(r) - y * Math.sin(r), x * Math.sin(r) + y * Math.cos(r)) <= cap
+  }
+  let forward = 0, backward = 0
+  while (forward < 90 && !touches(forward, 75)) forward += .25
+  while (backward > -90 && !touches(backward, -73)) backward -= .25
+  return { forward, backward }
+}
+
+/** Length of the bounce settle, in cycles, after the full pass. */
+export const LENS_BOUNCE_LENGTH = .9
+export type LensBounce = {
+  /** Arc degrees from rest, sampled across LENS_BOUNCE_LENGTH cycles. */
+  angle: number[]
+  /** Body squash, 0 at rest; positive compresses away from the impact. */
+  squash: number[]
+  /** Unit impact direction into the bowl, in the tilted mark frame. */
+  normal: [number, number]
+  /** Body pivot for the squash, in the tilted mark frame. */
+  pivot: [number, number]
+}
+/**
+ * The second attempt: the arc keeps its pass speed, meets the bowl at first contact,
+ * squashes in a few degrees, rebounds and settles home while the bowl jiggles like jelly.
+ * Deterministic, so scrubbing and playback agree.
+ */
+export function lensBounceCurve(options: LensMotionOptions = {}, samples = 540): LensBounce {
+  const { forward, backward } = lensContactAngles(options)
+  const scale = lensClamp(options.arcScale ?? 1, .6, 1.2, 1)
+  const dir = options.reverse ? -1 : 1
+  const home = 2 * Math.PI / .42, damping = 2 * .5 * home
+  const wall = 2 * Math.PI / .085, wallDamping = 2 * .35 * wall
+  const jelly = 2 * Math.PI / .13, jellyDamping = 2 * .22 * jelly
+  const steps = 8, dt = LENS_BOUNCE_LENGTH / (samples * steps)
+  let angle = 0, speed = 360 * dir, hit = false, squash = 0, squashSpeed = 0
+  const angles = [0], squashes = [0]
+  for (let i = 1; i <= samples; i++) {
+    for (let s = 0; s < steps; s++) {
+      // Coast freely until first contact; afterwards the mark is pulled home.
+      hit ||= angle > forward || angle < backward
+      const press = Math.max(0, angle - forward, backward - angle)
+      let force = hit ? -home * home * angle - damping * speed : 0
+      if (angle > forward) force += -wall * wall * (angle - forward) - wallDamping * speed
+      if (angle < backward) force += -wall * wall * (angle - backward) - wallDamping * speed
+      speed += force * dt; angle += speed * dt
+      // The body is a damped jelly driven by how far the arc presses into it.
+      squashSpeed += (jelly * jelly * (press - squash) - jellyDamping * squashSpeed) * dt; squash += squashSpeed * dt
+    }
+    // Land exactly on the rest pose at the end.
+    const land = 1 - smooth((i / samples - .8) / .2)
+    angles.push(angle * land); squashes.push(squash * land)
+  }
+  const peak = Math.max(...squashes.map(Math.abs)) || 1
+  // Impact direction: from the striking cap centre toward the nearest bowl point.
+  const contact = dir > 0 ? forward : backward, end = dir > 0 ? 75 : -73, r = contact * Math.PI / 180
+  const cx = end * scale * Math.cos(r) + 12 * scale * Math.sin(r), cy = end * scale * Math.sin(r) - 12 * scale * Math.cos(r)
+  let best = Infinity, nx = 0, ny = 1
+  for (let i = 0; i < BOWL.length; i++) {
+    const [ax, ay] = BOWL[i], [bx, by] = BOWL[(i + 1) % BOWL.length]
+    const ex = bx - ax, ey = by - ay, t = Math.max(0, Math.min(1, ((cx - ax) * ex + (cy - ay) * ey) / (ex * ex + ey * ey)))
+    const px = ax + t * ex, py = ay + t * ey, d = Math.hypot(px - cx, py - cy)
+    if (d < best) { best = d; nx = (px - cx) / (d || 1); ny = (py - cy) / (d || 1) }
+  }
+  return { angle: angles, squash: squashes.map(value => value / peak), normal: [nx, ny], pivot: [-6, 58] }
+}
+export function lensBounceSample(curve: LensBounce, progress: number): { angle: number; squash: number } {
+  const at = lensClamp(progress, 0, 1, 1) * (curve.angle.length - 1), i = Math.min(curve.angle.length - 2, Math.floor(at)), k = at - i
+  return { angle: curve.angle[i] + (curve.angle[i + 1] - curve.angle[i]) * k, squash: curve.squash[i] + (curve.squash[i + 1] - curve.squash[i]) * k }
+}
+/** SVG matrix squashing the body along the impact direction (strength 0–1 of the peak, about 14%). */
+export function lensSquashMatrix(curve: LensBounce, squash: number): string {
+  const j = squash * .14, [nx, ny] = curve.normal, [px, py] = curve.pivot
+  // Compress along the impact, bulge across it, and give a little push away from the arc.
+  const a = 1 - j * nx * nx + j / 2 * ny * ny, b = -j * nx * ny - j / 2 * nx * ny, d = 1 - j * ny * ny + j / 2 * nx * nx
+  const tx = px - (a * px + b * py) + nx * j * 40, ty = py - (b * px + d * py) + ny * j * 40
+  return `matrix(${a.toFixed(5)} ${b.toFixed(5)} ${b.toFixed(5)} ${d.toFixed(5)} ${tx.toFixed(3)} ${ty.toFixed(3)})`
+}

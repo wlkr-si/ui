@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.18.0 — 2026-11-12
+
+- Hover bounce: with liquid mode and `bounce`, the arc makes one full pass, keeps its speed into a second attempt, strikes the bowl at first contact, squashes in while the bowl jiggles, rebounds and settles into the symbol. The animation room adds Hover bounce playback.
+
 ## 0.17.0 — 2026-11-12
 
 - Liquid Open Lens: with `cutThrough`, the bowl parts only where the arc passes, pinches its inner material into a floating drop and seals behind it with a damped ripple. Surface tension fuses nearby shapes so pieces neck, snap and reconnect.

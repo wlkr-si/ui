@@ -3,7 +3,7 @@ import assert from "node:assert/strict"
 import { defaultAnimationSettings, validateAnimationSettings, animationSettingsHash, parseAnimationSettingsHash } from "../lib/animation-room-settings.ts"
 
 test("a shared room preserves every visual and playback setting without changing defaults", () => {
-  const custom = { ...defaultAnimationSettings, duration: 3210, size: 208, arcScale: .81, goo: 6.5, squish: .4, ripple: .9, tilt: 17, frame: 233.5, reverse: true, guides: true, easing: "smooth", background: "checkerboard", view: "wordmark", playback: "hover" }
+  const custom = { ...defaultAnimationSettings, duration: 3210, size: 208, arcScale: .81, goo: 6.5, squish: .4, ripple: .9, tilt: 17, frame: 233.5, reverse: true, guides: true, easing: "smooth", background: "checkerboard", view: "wordmark", playback: "bounce" }
   assert.deepEqual(parseAnimationSettingsHash(animationSettingsHash(custom)), custom)
   const received = parseAnimationSettingsHash(animationSettingsHash(custom)); received.size = 48
   assert.equal(custom.size, 208)
