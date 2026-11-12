@@ -113,7 +113,7 @@ test("query parsing is bounded and rejects duplicate/empty mask parameters", asy
   const { readMaskSearch, MAX_MASK_QUERY, encodeMask } = await import("../lib/pixel-mask-link.ts")
   const token = encodeMask(starterMask())
   assert.deepEqual(readMaskSearch("?campaign=unrelated"), { kind: "none" })
-  assert.deepEqual(readMaskSearch(`?campaign=private&mask=${token}&other=private`), { kind: "valid", mask: starterMask() })
+  assert.deepEqual(readMaskSearch(`?campaign=private&mask=${token}&other=private`), { kind: "valid", mask: starterMask(), ink: null })
   for (const query of ["?mask=", "?mask", `?mask=${token}&mask=${token}`, "?mask=%FF", "?mask=v2.0000000000000000", "?mask=" + "0".repeat(MAX_MASK_QUERY)]) assert.deepEqual(readMaskSearch(query), { kind: "invalid" })
 })
 test("canonical sharing exposes only the mask and never a caller URL", async () => {
@@ -125,7 +125,7 @@ test("canonical sharing exposes only the mask and never a caller URL", async () 
   assert.deepEqual([...url.searchParams.keys()], ["mask"])
   assert.equal(url.hash, "#pixel-object")
   assert.ok(link.length < 80)
-  assert.deepEqual(readMaskSearch(url.search), { kind: "valid", mask: starterMask() })
+  assert.deepEqual(readMaskSearch(url.search), { kind: "valid", mask: starterMask(), ink: null })
 })
 test("recipient initialization contains only the shared mask with clean undo", () => {
   const mask = paintMask(blankMask(), [0, 9, 63], true)
@@ -136,4 +136,69 @@ test("recipient initialization contains only the shared mask with clean undo", (
   assert.equal(maskReducer(initial, { type: "undo" }), initial)
   const edited = maskReducer(initial, { type: "paint", cells: [1], filled: true })
   assert.deepEqual(maskReducer(edited, { type: "undo" }).mask, mask)
+})
+
+test("centred resize preserves pixels and crop undo restores off-canvas artwork and ink", async () => {
+  const { resizeMask } = await import("../lib/pixel-mask.ts")
+  const corners = paintMask(blankMask(), [0, 7, 56, 63], true)
+  const enlarged = resizeMask(corners, 16)
+  assert.equal(enlarged[4][4], "#"); assert.equal(enlarged[11][11], "#")
+  assert.deepEqual(resizeMask(enlarged, 8), corners)
+  let state = initialMaskState(paintMask(blankMask(32), [0, 1023, 16 * 32 + 16], true), "#ff3366")
+  const original = state.mask
+  state = maskReducer(state, { type: "resize", size: 8 })
+  assert.equal(state.mask.join("").split("#").length - 1, 1)
+  assert.equal(state.mask[4][4], "#")
+  state = maskReducer(state, { type: "ink", ink: "#FFFFFF" })
+  assert.equal(state.ink, "#ffffff")
+  state = maskReducer(state, { type: "undo" })
+  assert.equal(state.ink, "#ff3366")
+  state = maskReducer(state, { type: "undo" })
+  assert.deepEqual(state.mask, original); assert.equal(state.ink, "#ff3366")
+  state = maskReducer(state, { type: "redo" }); assert.equal(state.mask.length, 8)
+  state = maskReducer(state, { type: "reset" }); assert.equal(state.mask.length, 8); assert.equal(state.ink, null)
+  state = maskReducer(state, { type: "undo" }); assert.equal(state.ink, "#ff3366")
+  assert.throws(() => resizeMask(corners, 1024), /Choose/)
+})
+test("large-grid navigation, connected strokes and pointer bounds cover 1024 cells", () => {
+  assert.equal(moveMaskCell(0, "End", true, 32), 1023)
+  assert.equal(moveMaskCell(1023, "ArrowDown", false, 32), 1023)
+  assert.equal(moveMaskCell(1023, "Home", false, 32), 992)
+  assert.equal(maskLine(0, 1023, 32).length, 32)
+  assert.equal(cellAtPoint(829, 829, 830, 830, 32), 1023)
+  assert.equal(cellAtPoint(830, 829, 830, 830, 32), null)
+})
+test("new artwork codec round-trips every size and explicit ink, retaining legacy v1", async () => {
+  const { encodeArtwork, decodeArtwork, encodeMask, maskShareUrl } = await import("../lib/pixel-mask-link.ts")
+  assert.equal(encodeArtwork(starterMask(), null), encodeMask(starterMask()))
+  assert.deepEqual(decodeArtwork(encodeMask(starterMask())), { mask: starterMask(), ink: null })
+  for (const size of [8, 16, 32]) for (const ink of [null, "#ff3366", "#ffffff"]) for (const full of [false, true]) {
+    const mask = Array(size).fill((full ? "#" : ".").repeat(size))
+    const token = encodeArtwork(mask, ink)
+    assert.ok(token.length <= 269)
+    assert.deepEqual(decodeArtwork(token), { mask, ink })
+    assert.deepEqual([...new URL(maskShareUrl(mask, ink)).searchParams.keys()], ["mask"])
+  }
+})
+test("new codec rejects malformed sizes, colours, payload lengths and oversized input", async () => {
+  const { decodeArtwork, encodeArtwork } = await import("../lib/pixel-mask-link.ts")
+  for (const value of ["v2.64.ff3366." + "0".repeat(16), "v2.08.ff3366." + "0".repeat(16), "v2.8.t." + "0".repeat(16), "v2.16.FF3366." + "0".repeat(64), "v2.16.red." + "0".repeat(64), "v2.32.ff3366." + "0".repeat(255), "v2.32.ff3366." + "0".repeat(257), "v2.32.ff3366." + "g".repeat(256), "v2.32.ff3366." + "0".repeat(100000), null]) assert.throws(() => decodeArtwork(value), /Invalid mask link/)
+  for (const ink of ["red", "#fff", "#FF3366", "#000000;display:none", "0".repeat(100000)]) assert.throws(() => encodeArtwork(blankMask(32), ink), /Invalid mask link/)
+})
+test("actual generated React examples type-check against unchanged PixelObject props", async () => {
+  const { mkdir, mkdtemp, writeFile, rm } = await import("node:fs/promises")
+  const { resolve } = await import("node:path")
+  await mkdir(".task", { recursive: true })
+  const directory = await mkdtemp(".task/typed-mask-")
+  try {
+    const files = []
+    for (const size of [8, 16, 32]) {
+      const path = resolve(directory, `mask-${size}.tsx`)
+      await writeFile(path, maskExample(paintMask(blankMask(size), [0, size * size - 1], true), size === 8 ? null : "#ff3366"))
+      files.push(path)
+    }
+    const program = ts.createProgram(files, { target: ts.ScriptTarget.ES2020, module: ts.ModuleKind.ESNext, moduleResolution: ts.ModuleResolutionKind.Bundler, jsx: ts.JsxEmit.ReactJSX, strict: true, skipLibCheck: true, noEmit: true, baseUrl: process.cwd(), paths: { "@/components/wlkr/pixel-object": ["registry/wlkr/pixel-object.tsx"], "@/*": ["./*"] }, esModuleInterop: true })
+    const errors = ts.getPreEmitDiagnostics(program).filter(diagnostic => diagnostic.category === ts.DiagnosticCategory.Error)
+    assert.deepEqual(errors.map(diagnostic => ts.flattenDiagnosticMessageText(diagnostic.messageText, "\n")), [])
+  } finally { await rm(directory, { recursive: true, force: true }) }
 })

@@ -24,7 +24,7 @@ Use your project's configured import alias. Components are copied into your sour
 
 The gallery is available at **ui.wlkr.si**. The existing **ui.wlkrlabs.com** host and installation namespace remain available. The current source is [wlkr-si/ui](https://github.com/wlkr-si/ui). Dated release and consumer-installation evidence is kept in [verification](docs/verification.md); a source or documentation commit does not itself deploy the gallery.
 
-The private package is version 0.2.0. See [the changelog](CHANGELOG.md) for the gallery milestone; distribution remains GitHub source and the public registry, not an npm package.
+The private package is version 0.3.0. See [the changelog](CHANGELOG.md) for the gallery milestone; distribution remains GitHub source and the public registry, not an npm package.
 
 ## Develop and verify
 
@@ -118,7 +118,13 @@ The site uses installed, unchanged stock `Button`, `Input`, `Switch`, `Tabs`, `S
 
 ## Gallery controls and source panels
 
-The Pixel object playground also offers a gallery-only 8×8 mask editor. Draw or erase with a pointer, move with arrow keys and apply the selected tool with Space/Enter, or clear a focused cell with Delete. Undo/redo tracks up to 32 strokes or edits; Clear and Reset are undoable. Switching back to Object preserves the mask and the existing object settings. The Usage panel copies the actual mask as a valid React example, while SVG/PNG exports capture its real static preview. Share explicitly copies a canonical URL containing a versioned 64-bit mask. Shared links load the exact grid with clean undo history; invalid or ambiguous links show feedback. Clipboard failure leaves a selectable URL, and unrelated query parameters are never included in generated links. Editing does not update or copy a URL automatically. Drawings are not saved through a backend or browser storage. The existing public `PixelObject.mask` API and registry item are unchanged.
+The Pixel object playground offers 8×8, 16×16 and 32×32 masks with theme-relative or explicit six-digit hex ink. Grid changes centre the artwork; shrinking crops it. Undo/redo tracks 32 strokes or artwork edits and restores cropped pixels, size and ink together. Clear keeps the current size and ink; Reset returns to the original 8×8 theme-relative starter and is undoable. Switching to Object preserves mask state and the existing object settings.
+
+Large grids use a scrollable detail view with at least 24px cells. Draw, Erase and Pan work with pointers; arrow keys reveal focused cells, Home/End move within a row, and Control/Command Home/End reach the grid ends. There is one grid tab stop even for 1,024 cells. Keyboard Undo preserves grid focus across size changes. Anchor navigation and focus reveal are immediate, including on first load.
+
+Ink controls remain in the page theme. Only the editable artwork and rendered preview receive chosen ink, with a contrasting view backdrop. SVG/PNG exports retain transparency and the exact rendered colour; the backdrop is excluded. The Usage panel copies a React example with the actual mask, adequate projection resolution and a typed colour/backdrop wrapper when needed. Larger masks use resolution 19 or 38 so the unchanged PixelObject projection does not merge distinct edited cells.
+
+Share explicitly copies a canonical URL. Legacy `v1` links remain unchanged: 8×8 and theme-relative. Bounded `v2` links carry size, explicit RGB ink (or Theme), and exact bitmap data. Explicit colours survive recipient display-theme changes; Theme intentionally follows the recipient. Tokens are at most 269 characters and query parsing is capped at 2,048 characters. Invalid or ambiguous links show feedback and valid recipients start with clean undo history. Clipboard failure leaves a selectable URL; unrelated query parameters are excluded and edits never copy or update a URL automatically. Artwork is not saved through a backend or browser storage. The public `PixelObject.mask` contract and registry item are unchanged.
 
 All gallery choice controls use the approved Soft combobox, composed from unchanged stock Command and Radix Popover. Its rounded rectangular popup shares `--control-surface` with the code panels: `#fafafa` in light mode and `#090909` in dark mode. Search, keyboard selection, empty states, and focus return stay accessible. These gallery controls are not additional registry items.
 
