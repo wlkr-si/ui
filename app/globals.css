@@ -48,12 +48,12 @@
 }
 .shell { max-width:1512px; margin:auto; padding:0 6.2%; }
 .site-header { height:120px; display:flex; align-items:center; justify-content:space-between; }
-.identity { display:inline-flex; align-items:center; gap:15px; font-size:24px; letter-spacing:-1.2px; font-weight:680; }
-.brand-mark { width:27px; height:31px; }
+.identity { display:inline-flex; align-items:center; gap:10px; font-size:24px; letter-spacing:-1.2px; font-weight:680; }
+.brand-mark { display:inline-flex; width:40px; height:40px; margin-left:-4px; line-height:0; }
+.brand-mark .wlkr-loader { width:100% !important; height:100% !important; }
 .theme-sun { display:none; }
 .dark .theme-sun { display:block; }
 .dark .theme-moon { display:none; }
-.dark .brand-mark { content:url("/wlkr-mark-dark.svg"); }
 .header-nav { display:flex; align-items:center; gap:30px; font-size:13px; color:var(--muted-foreground); }
 .header-nav a { display:inline-flex; align-items:center; justify-content:center; min-width:44px; min-height:44px; }
 .header-nav a:hover,.text-link:hover { color:var(--foreground); }
@@ -266,8 +266,8 @@
 }
 @media(max-width:380px) {
  .site-header { gap:12px; }
- .identity { gap:8px; font-size:18px; letter-spacing:-.8px; }
- .brand-mark { width:23px; height:27px; }
+ .identity { gap:6px; font-size:18px; letter-spacing:-.8px; }
+ .brand-mark { width:32px; height:32px; margin-left:-3px; }
  .header-nav { gap:8px; font-size:11px; }
 }
 .contrast-aa-options { border-top:1px solid var(--border); }

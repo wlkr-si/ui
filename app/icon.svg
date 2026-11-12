@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1024" height="1024" viewBox="0 0 1024 1024" fill="#ffffff" role="img" aria-label="WLKR.SI"><title>WLKR.SI Open Lens</title><style>@media (prefers-color-scheme: dark) { .background { fill: #ffffff } .ink { fill: #010101 } }</style><rect class="background" width="1024" height="1024" fill="#010101"/><g class="ink" fill="#ffffff" transform="translate(512 512) scale(4)"><g id="lens" transform="rotate(-24)">
+  <path transform="translate(0 -7)" d="M-87,-5 C-87,-53 -47,-92 1,-92 C49,-92 89,-53 89,-5
+    C89,3 83,9 75,9 C67,9 61,3 61,-5
+    C61,-38 34,-64 1,-64 C-32,-64 -59,-38 -59,-5
+    C-59,3 -65,9 -73,9 C-81,9 -87,3 -87,-5 Z"/>
+  <path transform="translate(0 8)" d="M-92,24 C-94,17 -89,12 -82,12 H68
+    C76,12 81,18 79,25 C70,65 35,91 -7,91
+    C-48,91 -82,64 -92,24 Z"/>
+</g></g></svg>

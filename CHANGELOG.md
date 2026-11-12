@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.21.0 — 2026-11-12
+
+- The header, browser icons and social previews use the WLKR.SI Open Lens mark instead of the old six-cell mark. The header mark plays the same quick liquid hover bounce as wlkr.si.
+
 ## 0.20.0 — 2026-11-12
 
 - Gallery: the WLKR loader shows the liquid loop by default, with Loop/Hover bounce playback, a Liquid switch, and Usage code that is a complete hover example for Hover bounce.
