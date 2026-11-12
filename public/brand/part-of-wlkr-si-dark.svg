@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="184" height="32" viewBox="0 0 184 32" fill="#ffffff" color="#ffffff" role="img" aria-label="Part of WLKR.SI"><title>Part of WLKR.SI</title><g transform="translate(16 16) scale(0.107)"><g id="lens" transform="rotate(-24)">
+  <path transform="translate(0 -7)" d="M-87,-5 C-87,-53 -47,-92 1,-92 C49,-92 89,-53 89,-5
+    C89,3 83,9 75,9 C67,9 61,3 61,-5
+    C61,-38 34,-64 1,-64 C-32,-64 -59,-38 -59,-5
+    C-59,3 -65,9 -73,9 C-81,9 -87,3 -87,-5 Z"/>
+  <path transform="translate(0 8)" d="M-92,24 C-94,17 -89,12 -82,12 H68
+    C76,12 81,18 79,25 C70,65 35,91 -7,91
+    C-48,91 -82,64 -92,24 Z"/>
+</g></g><text x="36" y="20" font-family="monospace" font-size="12">Part of</text><g transform="translate(96 8) scale(0.15)"><g id="letters">
+  <g fill="none" stroke="currentColor" stroke-width="19.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M11 18 C15 40 18 65 23 76 Q26 84 32 84 Q39 84 43 76 L55 49 L67 76 Q71 84 78 84 Q84 84 88 76 C94 62 98 39 102 18"/>
+    <path transform="translate(120 0)" d="M13 18 V67 Q13 83 30 83 H55"/>
+    <path transform="translate(188 0)" d="M13 18 V83 M15 58 C33 56 47 42 60 19 M35 52 C47 60 54 71 64 83"/>
+    <path transform="translate(271 0)" d="M13 83 V28 Q13 17 24 17 H38 C54 17 64 25 64 37 C64 50 54 57 38 57 H15 M38 57 C50 63 57 73 65 83"/>
+    <path transform="translate(392 0)" d="M58 24 C48 17 37 15 27 17 C16 19 9 26 9 35 C9 45 18 49 32 52 C49 56 60 61 60 71 C60 81 49 86 35 86 C24 86 13 83 5 77"/>
+    <path transform="translate(470 0)" d="M13 18 V83"/>
+  </g>
+  <circle cx="365" cy="84" r="9.75" fill="currentColor"/>
+</g></g></svg>
