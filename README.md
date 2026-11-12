@@ -2,7 +2,7 @@
 
 React components for interfaces with a little more character: pixel objects, animated text, accessible actions and a public shadcn-compatible registry.
 
-[Explore the components](https://ui.wlkr.si) · [Component API](docs/page-components.md) · [Motion API](docs/motion-components.md) · [Contribute](https://github.com/wlkr-si/.github/blob/main/CONTRIBUTING.md)
+[Explore the components](https://ui.wlkr.si) · [Animation room](https://ui.wlkr.si/animation) · [Component API](docs/page-components.md) · [Motion API](docs/motion-components.md) · [Contribute](https://github.com/wlkr-si/.github/blob/main/CONTRIBUTING.md)
 
 <a href="https://ui.wlkr.si/#pixel-object"><picture><source media="(prefers-color-scheme: dark)" srcset="docs/images/gallery-dark.png"><img src="docs/images/gallery-light.png" alt="Actual Pixel object component in the wlkr/ui gallery, with preview, export and customization controls." width="1280"></picture></a>
 
@@ -28,7 +28,7 @@ The gallery and focused tools use primary-domain canonical and social metadata w
 
 The gallery is available at **ui.wlkr.si**. The focused [contrast checker](https://ui.wlkr.si/contrast) previews opaque colour pairs, checks WCAG text thresholds, and shares pairs by URL. Optional AA text mixes never change the selected colour until applied. The existing **ui.wlkrlabs.com** host and installation namespace remain available. The current source is [wlkr-si/ui](https://github.com/wlkr-si/ui). Dated release and consumer-installation evidence is kept in [verification](docs/verification.md); a source or documentation commit does not itself deploy the gallery.
 
-The private package is version 0.15.2. See [the changelog](CHANGELOG.md) for the gallery milestone; distribution remains GitHub source and the public registry, not an npm package.
+The private package is version 0.16.0. See [the changelog](CHANGELOG.md) for the gallery milestone; distribution remains GitHub source and the public registry, not an npm package.
 
 ## Pixels CLI
 
@@ -161,7 +161,7 @@ The [WLKR.SI website](https://wlkr.si) uses Astro and this registry. Other Astro
 | `async-action` | One promise at a time, accessible pending/success/error, retry on next click | `action: () => Promise<unknown>`, `children`, optional `pendingLabel`, `successLabel`, `failureLabel` (visible), `errorLabel` (announcement), `disabled` |
 | `filter-list` | Search labels, descriptions and keywords; case/accent insensitive multiword match, live count, clear and empty feedback | `items: { id, label, description?, keywords? }[]`, optional `label`, `placeholder` |
 | `pixel-object` | Project a rotating sphere, normalized 3D point cloud, or #/space mask into an SVG pixel grid | optional `points: PixelPoint[]`, `mask: string[]`, `resolution`, `size`, `label`, `rotating`, `className`; exported `spherePoints(count?)` |
-| `wlkr-loader` | Original six-cell WLKR mark with bars/dots beats, fixed SVG bounds, and a single loading announcement | `variant`, `size`, `duration`, `stagger`, `label`, `decorative`, `paused`, `className` |
+| `wlkr-loader` | Original six-cell WLKR mark with Open Lens motion, fixed SVG bounds, and a single loading announcement | `variant`, `size`, `duration`, `stagger`, `label`, `decorative`, `paused`, `className` |
 | `theme` | Semantic light/dark tokens; app-controlled typography | Apply `.dark` to document root for dark mode |
 
 The public collection has eleven original components, typography styles, and the theme (13 items). See [page component contracts](docs/page-components.md) for page additions and the morph API. See [the motion component API](docs/motion-components.md) for controls, presets, timing, and input precedence. Their interaction styles travel with their source; no site-only stylesheet is required.
@@ -222,3 +222,7 @@ See [the deployment runbook](docs/deployment.md). `pnpm deploy:check` builds and
 ## Upstream provenance
 
 Created from the official [shadcn registry starter](https://github.com/shadcn-ui/registry-template) at commit `906f859db0125965cba71c51da1707c0a4c6d045`. The full upstream history and attribution remain in Git. Project-specific licensing and the terms above apply.
+
+## Animation room
+
+[Open the animation room](https://ui.wlkr.si/animation) to tune the real loader and wordmark. The arc slides between two rigid pieces of the semicircle as they move apart and settle back together. Adjust motion and geometry, pause or scrub exact frames, compare backgrounds, then copy a link to share the same settings. The room does not apply settings to the studio homepage.

@@ -82,13 +82,18 @@
       "name": "wlkr-loader",
       "type": "registry:component",
       "title": "WLKR loader",
-      "description": "The WLKR.SI arc rotates behind its fixed semicircle, with pause and reduced-motion support.",
+      "description": "A tunable Open Lens loader with optional rigid split-body interaction, pause and reduced-motion support.",
       "author": "WLKR Labs",
       "files": [
         {
           "path": "registry/wlkr/wlkr-loader.tsx",
           "type": "registry:component",
           "target": "components/wlkr/wlkr-loader.tsx"
+        },
+        {
+          "path": "lib/open-lens-motion.ts",
+          "type": "registry:lib",
+          "target": "lib/open-lens-motion.ts"
         }
       ]
     },

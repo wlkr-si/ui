@@ -13,6 +13,7 @@ function run(...args) {
 
 requireClean()
 const revision = execFileSync("git", ["rev-parse", "HEAD"], { encoding: "utf8" }).trim()
+execFileSync(process.execPath, ["--test", "scripts/animation-room-settings.test.mjs", "scripts/open-lens-motion.test.mjs"], { stdio: "inherit" })
 run("test:release")
 run("test:gallery")
 run("test:mask")
@@ -29,5 +30,5 @@ run("test:social-previews")
 // Registry generation must reproduce the committed static artifacts exactly.
 requireClean()
 const catalog = JSON.parse(await readFile("out/registry.json", "utf8"))
-for (const path of ["out/build-info.json", "out/llms.txt", "out/index.html", "out/pixels.html", "out/contrast.html", "out/opengraph-image", "out/pixels/opengraph-image", "out/contrast/opengraph-image", "out/404.html", "out/registry.json", "out/r/registry.json", ...catalog.items.map(item => `out/r/${item.name}.json`)]) await access(path)
+for (const path of ["out/build-info.json", "out/llms.txt", "out/index.html", "out/animation.html", "out/pixels.html", "out/contrast.html", "out/opengraph-image", "out/pixels/opengraph-image", "out/contrast/opengraph-image", "out/404.html", "out/registry.json", "out/r/registry.json", ...catalog.items.map(item => `out/r/${item.name}.json`)]) await access(path)
 console.log(`Static release verified from ${revision}.`)

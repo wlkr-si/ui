@@ -28,8 +28,9 @@ export function validateReceipt(receipt) {
   const pages = receipt.pageSha256
   const legacyPages = ["/pixels"]
   const currentPages = ["/contrast", "/pixels"]
-  const newPages = ["/", "/contrast", "/pixels"]
-  if (pages !== undefined && (![legacyPages, currentPages, newPages].some(paths => isDeepStrictEqual(Object.keys(pages).sort(), paths)) || Object.values(pages).some(hash => !/^[0-9a-f]{64}$/.test(hash)))) throw new Error("Invalid page receipt: expected the known page SHA-256 path set.")
+  const galleryPages = ["/", "/contrast", "/pixels"]
+  const newPages = ["/", "/animation", "/contrast", "/pixels"]
+  if (pages !== undefined && (![legacyPages, currentPages, galleryPages, newPages].some(paths => isDeepStrictEqual(Object.keys(pages).sort(), paths)) || Object.values(pages).some(hash => !/^[0-9a-f]{64}$/.test(hash)))) throw new Error("Invalid page receipt: expected the known page SHA-256 path set.")
   const images = receipt.imageSha256
   const expectedImages = ["/contrast/opengraph-image", "/opengraph-image", "/pixels/opengraph-image"]
   if (images !== undefined && (!isDeepStrictEqual(Object.keys(images).sort(), expectedImages) || Object.values(images).some(hash => !/^[0-9a-f]{64}$/.test(hash)))) throw new Error("Invalid image receipt: expected the three social preview SHA-256 values.")
@@ -57,15 +58,15 @@ export async function localReceipt(run = processAdapter, read = readFile) {
   const catalog = JSON.parse(await read("out/registry.json", "utf8"))
   const paths = ["/registry.json", "/r/registry.json", ...catalog.items.map(item => `/r/${item.name}.json`)].sort()
   if (!isDeepStrictEqual(paths, Object.keys(receipt.registrySha256).sort())) throw new Error("Build receipt does not match the complete registry catalog.")
-  if (!isDeepStrictEqual(Object.keys(receipt.pageSha256 || {}).sort(), ["/", "/contrast", "/pixels"])) throw new Error("Candidate receipt is missing the gallery, Pixels or Contrast page; rebuild before deployment.")
+  if (!isDeepStrictEqual(Object.keys(receipt.pageSha256 || {}).sort(), ["/", "/animation", "/contrast", "/pixels"])) throw new Error("Candidate receipt is missing the gallery, Animation room, Pixels or Contrast page; rebuild before deployment.")
   if (!isDeepStrictEqual(Object.keys(receipt.imageSha256 || {}).sort(), ["/contrast/opengraph-image", "/opengraph-image", "/pixels/opengraph-image"])) throw new Error("Candidate receipt is missing one of the three social previews; rebuild before deployment.")
-  const pageFiles = { "/": "out/index.html", "/pixels": "out/pixels.html", "/contrast": "out/contrast.html" }
+  const pageFiles = { "/animation": "out/animation.html", "/": "out/index.html", "/pixels": "out/pixels.html", "/contrast": "out/contrast.html" }
   const assetHashes = { ...receipt.registrySha256, ...receipt.pageSha256, ...receipt.imageSha256 }
   for (const [path, hash] of Object.entries(assetHashes)) if (sha(await read(pageFiles[path] || `out${path}`)) !== hash) throw new Error(`Local asset differs from receipt: ${path}`)
   return receipt
 }
 
-export async function verifyHosts(expected, { fetchImpl = fetch, sleep = ms => new Promise(resolve => setTimeout(resolve, ms)), attempts = 4, delayMs = 2000, timeoutMs = 5000, nonce = randomUUID() } = {}) {
+export async function verifyHosts(expected, { fetchImpl = fetch, sleep = ms => new Promise(resolve => setTimeout(resolve, ms)), attempts = 20, delayMs = 3000, timeoutMs = 5000, nonce = randomUUID() } = {}) {
   let failure
   for (let attempt = 0; attempt < attempts; attempt++) {
     try {
@@ -79,7 +80,7 @@ export async function verifyHosts(expected, { fetchImpl = fetch, sleep = ms => n
       if (failed) throw failed.reason
       const receipts = received.map(result => result.value)
       const target = expected || receipts[0]
-      if (receipts.some(receipt => !isDeepStrictEqual(receipt, target))) throw new Error("Public build receipt differs from the exact expected receipt on one or both hosts.")
+      if (receipts.some(receipt => !isDeepStrictEqual(receipt, target))) throw new Error(`Public build receipt differs from the exact expected receipt: expected ${target.sourceCommit}@${target.builtAt}; ${receipts.map((receipt, index) => `${HOSTS[index]}=${receipt.sourceCommit}@${receipt.builtAt}`).join("; ")}`)
       const checks = HOSTS.flatMap(host => Object.entries({ ...target.registrySha256, ...target.pageSha256, ...target.imageSha256 }).map(([path, hash]) => ({ host, path, hash })))
       for (let offset = 0; offset < checks.length; offset += 4) {
         const batch = await Promise.allSettled(checks.slice(offset, offset + 4).map(async ({ host, path, hash }) => {

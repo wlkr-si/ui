@@ -10,15 +10,16 @@ const NEW = "22222222-2222-4222-8222-222222222222"
 const OTHER = "33333333-3333-4333-8333-333333333333"
 const digest = value => createHash("sha256").update(value).digest("hex")
 const paths = ["/registry.json", "/r/registry.json", ...Array.from({ length: 13 }, (_, i) => `/r/item-${i}.json`)]
-const pagePaths = ["/", "/pixels", "/contrast"]
+const pagePaths = ["/", "/pixels", "/contrast", "/animation"]
 const imagePaths = ["/opengraph-image", "/pixels/opengraph-image", "/contrast/opengraph-image"]
 function artifact(letter, current = false) {
   const bodies = Object.fromEntries(paths.map(path => [path, JSON.stringify({ path, source: letter })]))
   bodies["/"] = `<html><h1>Gallery ${letter}</h1></html>`
   bodies["/pixels"] = `<html><h1>Pixels ${letter}</h1></html>`
+  bodies["/animation"] = `<html><h1>Animation room ${letter}</h1></html>`
   bodies["/contrast"] = `<html><h1>Contrast ${letter}</h1></html>`
   for (const path of imagePaths) bodies[path] = `PNG bytes ${path} ${letter}`
-  const pageSha256 = Object.fromEntries((current ? pagePaths : pagePaths.slice(1)).map(path => [path, digest(bodies[path])]))
+  const pageSha256 = Object.fromEntries((current ? pagePaths : ["/pixels", "/contrast"]).map(path => [path, digest(bodies[path])]))
   const receipt = { sourceCommit: letter.repeat(40), builtAt: "2026-11-11T00:00:00.000Z", pageSha256, registrySha256: Object.fromEntries(paths.map(path => [path, digest(bodies[path])])) }
   if (current) receipt.imageSha256 = Object.fromEntries(imagePaths.map(path => [path, digest(bodies[path])]))
   return { bodies, receipt }
@@ -198,13 +199,13 @@ test("local receipt verifies HEAD, catalog, and actual file bytes", async () => 
   const bodies = { ...candidate.bodies, "/registry.json": catalog }
   const receipt = { ...candidate.receipt, registrySha256: { ...candidate.receipt.registrySha256, "/registry.json": digest(catalog) } }
   const run = async () => ({ status: 0, stdout: receipt.sourceCommit, stderr: "" })
-  const read = async path => path === "out/build-info.json" ? JSON.stringify(receipt) : bodies[path === "out/index.html" ? "/" : path === "out/pixels.html" ? "/pixels" : path === "out/contrast.html" ? "/contrast" : path.slice(3)]
+  const read = async path => path === "out/build-info.json" ? JSON.stringify(receipt) : bodies[path === "out/animation.html" ? "/animation" : path === "out/index.html" ? "/" : path === "out/pixels.html" ? "/pixels" : path === "out/contrast.html" ? "/contrast" : path.slice(3)]
   assert.deepEqual(await localReceipt(run, read), receipt)
   await assert.rejects(localReceipt(async () => ({ status: 0, stdout: "0".repeat(40), stderr: "" }), read), /does not match HEAD/)
   await assert.rejects(localReceipt(run, async path => path === "out/r/item-0.json" ? "changed" : read(path)), /Local asset differs/)
-  await assert.rejects(localReceipt(run, async path => ["out/index.html", "out/pixels.html", "out/contrast.html", "out/opengraph-image", "out/pixels/opengraph-image", "out/contrast/opengraph-image"].includes(path) ? "changed" : read(path)), /Local asset differs/)
+  await assert.rejects(localReceipt(run, async path => ["out/animation.html", "out/index.html", "out/pixels.html", "out/contrast.html", "out/opengraph-image", "out/pixels/opengraph-image", "out/contrast/opengraph-image"].includes(path) ? "changed" : read(path)), /Local asset differs/)
   const pixelOnly = { ...receipt, pageSha256: { "/pixels": receipt.pageSha256["/pixels"] } }
-  await assert.rejects(localReceipt(run, async path => path === "out/build-info.json" ? JSON.stringify(pixelOnly) : read(path)), /missing the gallery, Pixels or Contrast page/)
+  await assert.rejects(localReceipt(run, async path => path === "out/build-info.json" ? JSON.stringify(pixelOnly) : read(path)), /missing the gallery, Animation room, Pixels or Contrast page/)
   const missingPage = { ...receipt }; delete missingPage.pageSha256
   await assert.rejects(localReceipt(run, async path => path === "out/build-info.json" ? JSON.stringify(missingPage) : read(path)), /missing the gallery/)
   const missingImage = { ...receipt, imageSha256: { ...receipt.imageSha256 } }; delete missingImage.imageSha256["/contrast/opengraph-image"]
@@ -312,3 +313,25 @@ test("a focused-page-only failure rolls back and verifies the previous release",
   assert.equal(state.version, OLD)
   for (const host of HOSTS) assert.ok(state.requests.filter(url => url === host + "/pixels").length >= 2)
 })
+
+
+test("room bytes are checked on both hosts and legacy three-page receipts remain valid", async () => {
+ const { state, adapters } = fixture(); state.version = NEW;
+ for(const host of HOSTS) await assert.rejects(verifyHosts(candidate.receipt, { ...adapters, attempts:1, fetchImpl:(url,init)=>new URL(url).origin===host && new URL(url).pathname==="/animation" ? Promise.resolve(new Response("wrong room")) : adapters.fetchImpl(url,init) }), /asset SHA-256 mismatch/);
+ const old = {...candidate.receipt, pageSha256:{...candidate.receipt.pageSha256}}; delete old.pageSha256["/animation"];
+ assert.deepEqual(validateReceipt(old), old);
+ await assert.rejects(localReceipt(async()=>({status:0,stdout:old.sourceCommit,stderr:""}),async path=>path==="out/build-info.json"?JSON.stringify(old):path==="out/registry.json"?JSON.stringify({items:paths.slice(2).map(path=>({name:path.slice(3,-5)}))}):""), /missing the gallery, Animation room/);
+});
+
+test("a temporarily stale host cannot pass until both exact candidate receipts agree", async () => {
+ const { state, adapters } = fixture(); state.version = NEW;
+ let staleReads = 0, waits = 0;
+ const result = await verifyHosts(candidate.receipt, { ...adapters, attempts:3, delayMs:0, sleep:async()=>{waits++}, fetchImpl:(url,init)=>{
+  const p=new URL(url);
+  if(p.origin===HOSTS[1] && p.pathname==="/build-info.json" && staleReads++<2) return Promise.resolve(new Response(JSON.stringify(prior.receipt)));
+  return adapters.fetchImpl(url,init);
+ }});
+ assert.deepEqual(result,candidate.receipt);
+ assert.equal(waits,2);
+ assert.equal(state.restores,0);
+});

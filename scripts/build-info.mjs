@@ -10,6 +10,7 @@ const info = {
   builtAt: new Date().toISOString(),
   registrySha256,
   pageSha256: {
+    "/animation": createHash("sha256").update(await readFile("out/animation.html")).digest("hex"),
     "/": createHash("sha256").update(await readFile("out/index.html")).digest("hex"),
     "/pixels": createHash("sha256").update(await readFile("out/pixels.html")).digest("hex"),
     "/contrast": createHash("sha256").update(await readFile("out/contrast.html")).digest("hex"),

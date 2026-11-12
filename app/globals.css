@@ -288,3 +288,10 @@
 .pixels-heading,.contrast-heading { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:12px; margin-bottom:28px; }
 .pixels-heading h1,.contrast-heading h1 { margin-bottom:0; }
 .pixels-cli-link,.contrast-cli-link { display:inline-flex; align-items:center; min-height:44px; min-width:44px; padding:8px 0; font-size:13px; }
+
+/* The tool navigation wraps rather than squeezing new tools off small screens. */
+@media(max-width:620px){
+ .site-header{height:auto;min-height:88px;flex-wrap:wrap;gap:8px;padding-block:18px;}
+ .header-nav{flex-wrap:wrap;}
+}
+@media(max-width:420px){.header-nav{width:100%;}}

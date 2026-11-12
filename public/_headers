@@ -31,3 +31,10 @@
   Cache-Control: public, max-age=0, must-revalidate, no-transform
 /index.html
   Cache-Control: public, max-age=0, must-revalidate, no-transform
+
+/animation
+  Cache-Control: public, max-age=0, must-revalidate, no-transform
+/animation/
+  Cache-Control: public, max-age=0, must-revalidate, no-transform
+/animation.html
+  Cache-Control: public, max-age=0, must-revalidate, no-transform
