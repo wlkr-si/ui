@@ -23,5 +23,5 @@ export const metadata: Metadata = {
 }
 
 export default function ContrastPage() {
-  return <div className="site shell"><a href="#contrast" className="sr-only focus:not-sr-only">Skip to contrast checker</a><SiteHeader /><main className="contrast-page" id="contrast" tabIndex={-1}><h1>Contrast</h1><ContrastTool /></main><SiteFooter /></div>
+  return <div className="site shell"><a href="#contrast" className="sr-only focus:not-sr-only">Skip to contrast checker</a><SiteHeader /><main className="contrast-page" id="contrast" tabIndex={-1}><div className="contrast-heading"><h1>Contrast</h1><a className="contrast-cli-link" href="https://github.com/wlkr-si/ui/blob/main/README.md#contrast-cli">Use CLI</a></div><ContrastTool /></main><SiteFooter /></div>
 }
