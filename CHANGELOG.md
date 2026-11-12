@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.3.0 — 2026-11-11
+
+- Added practical 8×8, 16×16 and 32×32 masks with centred resize/crop, reversible size and ink changes, and a scrollable 1,024-cell detail editor with pointer Pan and one keyboard tab stop.
+- Added approved ink choices and validated custom hex colour, isolated from editor controls, with a contrasting artwork backdrop and transparent image exports.
+- Added bounded versioned links preserving size and explicit colour across display themes while keeping legacy v1 links unchanged.
+- Generated React examples now reproduce the artwork and colour wrapper and are type-checked against the unchanged component API.
+- Preserved immediate first-load anchor navigation and keyboard focus when undoing across grid sizes.
+
+The package remains private; a GitHub source tag follows live acceptance. Registry contracts and the legacy installation namespace are unchanged.
+
 ## 0.2.0 — 2026-11-11
 
 - Added an 8×8 pixel mask editor with pointer/keyboard drawing, erasing, bounded undo/redo, and reversible Clear/Reset.
