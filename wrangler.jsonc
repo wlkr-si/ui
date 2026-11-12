@@ -9,8 +9,5 @@
     "directory": "./out",
     "not_found_handling": "404-page",
     "html_handling": "drop-trailing-slash"
-  },
-  "routes": [
-    { "pattern": "ui.wlkrlabs.com", "custom_domain": true }
-  ]
+  }
 }

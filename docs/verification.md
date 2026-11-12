@@ -149,3 +149,11 @@ A fresh empty configured React 19/TypeScript 6/Vite 8 consumer at `/var/folders/
 The public gallery passed keyboard preset selection of Wave, numbered source display (168 lines) with exact raw-text copy, dynamic code updates (16 lines), wrapping, and light/dark shared surfaces matching `#fafafa` and `#090909`. At a 390 px viewport there was no horizontal overflow. Reduced-motion checks showed no disclosure animation; browser error logs were empty. The archived control studies route remains `noindex, nofollow`.
 
 Release evidence is preserved locally under ignored `output/releases/controls-2026-10-23/` and `output/playwright/live-soft-controls*.png`. This entry updates documentation only; it does not create another application release.
+
+## Studio family gallery update — 2026-11-11
+
+Source `2dedd50f8f4b9d4cd48fd7507ea9340cd1f54982` passed the complete committed-source release check and was published as Worker version `d14f504d-7baa-4510-869e-53bc9d4e0846`. Previous version `08d0a08d-520d-4bb5-81ab-cf2b1e3c5208` remains available for recovery. The change adds the unchanged canonical WLKR.SI family badge and updates studio/source links; original component and registry code are unchanged.
+
+The live build receipt matched that exact source. All 15 registry endpoints matched their recorded SHA-256 hashes on both `ui.wlkrlabs.com` and the newly attached `ui.wlkr.si` alias. Both hosts serve byte-identical build receipts. At 320px, the gallery has no horizontal overflow; manual light/dark selections show the correct badge artwork, the studio link points to `https://wlkr.si`, and browser page errors are empty.
+
+The alias is owned by the studio app registry receipt. Its creation changed no legacy address, installer namespace, license or attribution. Later documentation/configuration commits can produce a newer live source receipt without changing these original registry artifacts.
