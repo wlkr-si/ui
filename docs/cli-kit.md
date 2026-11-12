@@ -88,3 +88,7 @@ SHA-256 list. Repeated Node 24/26 generation produced the same 21,402-byte ZIP:
     586a2d5cff8f9e5e84258204539aa5e1334e6ecb734e33d0c6ea9393fea09832
 
 These are local archive/consumer checks, not public-download or hosted-CI proof.
+
+### Public download qualification
+
+The [v0.12.0 ZIP](https://github.com/wlkr-si/ui/releases/download/v0.12.0/wlkr-cli-v0.12.0.zip) is published as release asset 738573846 (21,402 bytes), with the SHA-256 above. The unauthenticated public download matched the candidate bytes. Independent extraction, CRC/manifest checks and actual 8/16/32 grid/ink/URL/token/SVG and Contrast checks passed on macOS Node 26.5.0 and Linux Node 26.8.2, with an empty PATH inside a CommonJS parent. Node 24.22.3 consumer qualification above used the identical local candidate. This asset publication did not deploy the gallery.

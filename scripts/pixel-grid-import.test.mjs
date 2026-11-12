@@ -76,3 +76,22 @@ test('transform intent invalidates a pending grid replacement without losing und
     assert.equal(state.ink,initial.ink);
   }
 });
+
+import { PIXEL_EXAMPLES } from '../lib/pixel-examples.ts';
+test('opening or selecting examples discards pending imports and selection remains undoable', async () => {
+  for (const example of PIXEL_EXAMPLES) for (const intent of ['open', 'select']) {
+    const session=createGridImportSession(), pending=delayed();
+    let state=initialMaskState(rows(8), '#336699');
+    const original=state;
+    const reading=session.open(pending.file,mask=>{state=maskReducer(state,{type:'replace',mask})});
+    session.invalidate();
+    if (intent==='select') state=maskReducer(state,{type:'replace',mask:[...example.mask]});
+    const expected=state;
+    pending.resolve(maskGridText(blankMask(8)));
+    assert.equal(await reading,'stale'); assert.equal(state,expected); assert.equal(state.ink,original.ink);
+    if(intent==='select') {
+      assert.equal(state.past.length,1);
+      assert.deepEqual(maskReducer(state,{type:'undo'}).mask,original.mask);
+    } else assert.equal(state,original);
+  }
+});

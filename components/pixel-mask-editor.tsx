@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import { PIXEL_EXAMPLES } from "@/lib/pixel-examples"
 import { createGridImportSession } from "@/lib/pixel-grid-import"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { Input } from "@/components/ui/input"
@@ -26,6 +27,7 @@ export function PixelMaskEditor({ state, dispatch }: { state: MaskState; dispatc
     if (result === "opened") setImportStatus({ message: "Grid opened.", error: false })
     else if (result === "invalid") setImportStatus({ message: "Use an 8×8, 16×16 or 32×32 UTF-8 dot/hash grid, at most 4 KiB.", error: true })
   }
+  const [examplesOpen, setExamplesOpen] = React.useState(false)
   const [transformOpen, setTransformOpen] = React.useState(false)
   const size = state.mask.length
   const [tool, setTool] = React.useState<"draw" | "erase" | "pan">("draw")
@@ -95,6 +97,15 @@ export function PixelMaskEditor({ state, dispatch }: { state: MaskState; dispatc
     <div className="mask-tools" role="group" aria-label="Mask tools">
       <input ref={fileInput} type="file" accept=".txt,text/plain" hidden aria-label="Open grid file" onChange={event => { const file = event.currentTarget.files?.[0]; event.currentTarget.value = ""; void openGrid(file) }} />
       <Button type="button" variant="ghost" className="min-h-11" onClick={() => { finish(); invalidateImport(); if (fileInput.current) { fileInput.current.value = ""; fileInput.current.click() } }}>Open grid</Button>
+      <Popover open={examplesOpen} onOpenChange={open => { if (open) { finish(); invalidateImport() }; setExamplesOpen(open) }}>
+        <PopoverTrigger asChild><Button type="button" variant="ghost" className="min-h-11">Examples</Button></PopoverTrigger>
+        <PopoverContent align="start" aria-label="Pixel examples" className="flex w-52 max-w-[calc(100vw-2rem)] flex-col p-1 motion-reduce:animate-none">
+          {PIXEL_EXAMPLES.map(example => <Button key={example.id} type="button" variant="ghost" className="min-h-11 justify-start gap-3" onClick={() => { command({ type: "replace", mask: [...example.mask] }); setExamplesOpen(false) }}>
+            <svg aria-hidden="true" width="24" height="24" viewBox={"0 0 " + example.mask.length + " " + example.mask.length} fill="currentColor" shapeRendering="crispEdges">{example.mask.flatMap((row, y) => [...row].flatMap((cell, x) => cell === "#" ? [<rect key={x + "-" + y} x={x} y={y} width="1" height="1" />] : []))}</svg>
+            {example.label}
+          </Button>)}
+        </PopoverContent>
+      </Popover>
       <Button type="button" variant="ghost" className="min-h-11" aria-pressed={tool === "draw"} onClick={() => { invalidateImport(); setTool("draw") }}>Draw</Button>
       <Button type="button" variant="ghost" className="min-h-11" aria-pressed={tool === "erase"} onClick={() => { invalidateImport(); setTool("erase") }}>Erase</Button>
       <Button type="button" variant="ghost" className="min-h-11" aria-pressed={tool === "pan"} onClick={() => { invalidateImport(); setTool("pan") }}>Pan</Button>
