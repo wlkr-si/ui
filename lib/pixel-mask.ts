@@ -104,3 +104,8 @@ export function maskExample(mask: string[], ink: string | null = null) {
   const object = `<PixelObject\n  label="Custom pixel mask"\n  mask={[\n${mask.map(row => `    ${JSON.stringify(row)}`).join(",\n")}\n  ]}\n  resolution={${maskResolution(mask.length)}}\n  dotShape="square"\n  rotating={false}\n/>`
   return `import { PixelObject } from "@/components/wlkr/pixel-object"\n\n` + (ink ? `<div style={{ color: ${JSON.stringify(ink)}, backgroundColor: ${JSON.stringify(inkBackdrop(ink))}, width: 260 }}>\n${object.split("\n").map(line => "  " + line).join("\n")}\n</div>` : object)
 }
+
+/** Exact editable grid accepted by the CLI; ink is deliberately separate. */
+export function maskGridText(mask: string[]) {
+  return validMask(mask).join("\n") + "\n"
+}

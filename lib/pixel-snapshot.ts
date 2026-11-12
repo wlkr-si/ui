@@ -38,10 +38,14 @@ export async function pixelPng(snapshot: ReturnType<typeof capturePixelSvg>) {
 }
 
 export function downloadPixelSnapshot(blob: Blob, format: "svg" | "png") {
+  downloadPixelFile(blob, `pixel-object.${format}`)
+}
+
+export function downloadPixelFile(blob: Blob, filename: string) {
   const url = URL.createObjectURL(blob)
   const link = document.createElement("a")
   link.href = url
-  link.download = `pixel-object.${format}`
+  link.download = filename
   document.body.append(link)
   try { link.click() }
   finally {

@@ -1,7 +1,7 @@
 import test from "node:test"
 import assert from "node:assert/strict"
 import ts from "typescript"
-import { blankMask, starterMask, initialMaskState, maskReducer, paintMask, maskLine, cellAtPoint, moveMaskCell, maskExample, HISTORY_LIMIT } from "../lib/pixel-mask.ts"
+import { blankMask, starterMask, initialMaskState, maskReducer, paintMask, maskLine, cellAtPoint, moveMaskCell, maskExample, maskGridText, HISTORY_LIMIT } from "../lib/pixel-mask.ts"
 
 test("one drag, including skipped cells, is one reversible transaction", () => {
   const initial = initialMaskState()
@@ -201,4 +201,28 @@ test("actual generated React examples type-check against unchanged PixelObject p
     const errors = ts.getPreEmitDiagnostics(program).filter(diagnostic => diagnostic.category === ts.DiagnosticCategory.Error)
     assert.deepEqual(errors.map(diagnostic => ts.flattenDiagnosticMessageText(diagnostic.messageText, "\n")), [])
   } finally { await rm(directory, { recursive: true, force: true }) }
+})
+
+test("editable grid serialization preserves exact cells with one final LF for every size", async () => {
+  const { parseGrid } = await import("./pixels.mjs")
+  for (const size of [8, 16, 32]) {
+    const mask = paintMask(blankMask(size), [0, size - 1, size + 2, size * size - 1], true)
+    const before = [...mask], text = maskGridText(mask)
+    assert.equal(text, mask.join("\n") + "\n")
+    assert.equal(Buffer.byteLength(text, "utf8"), size * (size + 1))
+    assert.equal(text.endsWith("\n\n"), false)
+    assert.equal(text.includes("\r"), false)
+    assert.deepEqual(parseGrid(text), mask)
+    assert.deepEqual(mask, before)
+  }
+})
+test("blank/full grid exports contain no ink or metadata and invalid grids are rejected", async () => {
+  const { parseGrid } = await import("./pixels.mjs")
+  for (const size of [8, 16, 32]) for (const char of [".", "#"]) {
+    const mask = Array(size).fill(char.repeat(size)), text = maskGridText(mask)
+    assert.deepEqual(text.split("\n"), [...mask, ""])
+    assert.equal((text.match(/#/g) || []).length, char === "#" ? size * size : 0)
+    assert.deepEqual(parseGrid(text), mask)
+  }
+  for (const mask of [null, [], Array(7).fill("......."), Array(8).fill("........."), Array(8).fill("...＃...."), Array(8).fill(".... ...")]) assert.throws(() => maskGridText(mask), /Mask must/)
 })
