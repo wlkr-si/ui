@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import { cn } from "@/lib/utils"
-import { lensArcAngle, liquidDefaults, liquidLensFrame } from "@/lib/open-lens-motion"
+import { LENS_BOUNCE_LENGTH, lensArcAngle, lensBounceCurve, lensBounceSample, lensSquashMatrix, liquidDefaults, liquidLensFrame } from "@/lib/open-lens-motion"
 
 export type WlkrLoaderProps = {
   variant?: "orbit" | "breathe" | "bars" | "dots"
@@ -37,6 +37,8 @@ export type WlkrLoaderProps = {
   frame?: number
   startAngle?: number
   loop?: boolean
+  /** With liquid mode and loop off: after the full pass the arc tries again, bounces off the bowl at first contact and settles. Starts from rest. */
+  bounce?: boolean
   restartKey?: number
   onCycleComplete?: () => void
 }
@@ -54,12 +56,13 @@ const styles = `
 @media(prefers-reduced-motion:reduce){.wlkr-loader .wlkr-loader-arc{animation-play-state:paused!important}}
 `
 
-export function WlkrLoader({ variant = "orbit", size = 48, duration = 1800, stagger = 120, label = "Loading", decorative = false, paused = false, className, cutThrough = false, openingDistance = liquidDefaults.openingDistance, splitRadius = liquidDefaults.splitRadius, goo = liquidDefaults.goo, squish = liquidDefaults.squish, ripple = liquidDefaults.ripple, arcScale = 1, tilt = -24, reverse = false, easing = "linear", frame, startAngle = 0, loop = true, restartKey = 0, onCycleComplete }: WlkrLoaderProps) {
+export function WlkrLoader({ variant = "orbit", size = 48, duration = 1800, stagger = 120, label = "Loading", decorative = false, paused = false, className, cutThrough = false, openingDistance = liquidDefaults.openingDistance, splitRadius = liquidDefaults.splitRadius, goo = liquidDefaults.goo, squish = liquidDefaults.squish, ripple = liquidDefaults.ripple, arcScale = 1, tilt = -24, reverse = false, easing = "linear", frame, startAngle = 0, loop = true, bounce = false, restartKey = 0, onCycleComplete }: WlkrLoaderProps) {
   const root = React.useRef<HTMLSpanElement>(null)
   const innerRef = React.useRef<SVGPathElement>(null)
   const outerRef = React.useRef<SVGPathElement>(null)
   const arcRef = React.useRef<SVGGElement>(null)
   const blurRef = React.useRef<SVGFEGaussianBlurElement>(null)
+  const jellyRef = React.useRef<SVGGElement>(null)
   const progress = React.useRef(0)
   const completed = React.useRef(onCycleComplete)
   const [motion, setMotion] = React.useState(false)
@@ -74,6 +77,7 @@ export function WlkrLoader({ variant = "orbit", size = 48, duration = 1800, stag
   const options = React.useMemo(() => ({ openingDistance, splitRadius, goo, squish, ripple, arcScale: scale, reverse }), [openingDistance, splitRadius, goo, squish, ripple, scale, reverse])
   const still = cutThrough ? liquidLensFrame(fixed ?? start, options, rays) : undefined
   const fluid = clamp(goo, 0, 24, liquidDefaults.goo) > 0
+  const curve = React.useMemo(() => cutThrough && bounce && !loop ? lensBounceCurve(options) : null, [cutThrough, bounce, loop, options])
 
   const transform = `translate(128 128) rotate(${angle})`
   const motionStyle = {
@@ -96,7 +100,8 @@ export function WlkrLoader({ variant = "orbit", size = 48, duration = 1800, stag
   React.useEffect(() => { progress.current = 0 }, [restartKey, start, cutThrough])
   React.useEffect(() => {
     if (!cutThrough || fixed !== undefined || !motion) return
-    const draw = (turn: number) => {
+    const draw = (turn: number, squash = 0) => {
+      if (curve) jellyRef.current?.setAttribute("transform", lensSquashMatrix(curve, squash))
       const next = liquidLensFrame(turn, options, rays)
       innerRef.current?.setAttribute("d", next.inner)
       outerRef.current?.setAttribute("d", next.outer)
@@ -106,15 +111,16 @@ export function WlkrLoader({ variant = "orbit", size = 48, duration = 1800, stag
     let request = 0, origin: number | undefined
     const step = (now: number) => {
       origin ??= now - progress.current * beat
-      const elapsed = (now - origin) / beat
-      if (!loop && elapsed >= 1) { progress.current = 1; draw(lensArcAngle(1, start, reverse, easing)); completed.current?.(); return }
+      const elapsed = (now - origin) / beat, total = curve ? 1 + LENS_BOUNCE_LENGTH : 1
+      if (!loop && elapsed >= total) { progress.current = total; draw(lensArcAngle(1, start, reverse, easing)); completed.current?.(); return }
       progress.current = loop ? elapsed % 1 : elapsed
-      draw(lensArcAngle(progress.current, start, reverse, easing))
+      const bounce = curve && progress.current > 1 ? lensBounceSample(curve, (progress.current - 1) / LENS_BOUNCE_LENGTH) : { angle: 0, squash: 0 }
+      draw(lensArcAngle(Math.min(1, progress.current), start, reverse, easing) + bounce.angle, bounce.squash)
       request = requestAnimationFrame(step)
     }
     request = requestAnimationFrame(step)
     return () => cancelAnimationFrame(request)
-  }, [cutThrough, fixed, motion, beat, loop, start, reverse, easing, options, rays, restartKey])
+  }, [cutThrough, fixed, motion, beat, loop, start, reverse, easing, options, rays, restartKey, curve])
   const arc = () => <g ref={arcRef} className="wlkr-loader-arc" style={motionStyle} data-visible-arc="true" onAnimationEnd={event => { if (event.target === event.currentTarget && !loop && !cutThrough) onCycleComplete?.() }}>
     <g transform={`${transform} scale(${scale})`}><path transform="translate(0 -7)" d={arcPath} fill="currentColor" /></g>
   </g>
@@ -131,7 +137,7 @@ export function WlkrLoader({ variant = "orbit", size = 48, duration = 1800, stag
         </filter>}
       </defs>
       {still ? <g filter={fluid ? `url(#${id}-goo)` : undefined}>
-        <g className="wlkr-loader-body" transform={transform}><path ref={innerRef} data-piece="inner" d={still.inner} fill="currentColor" /><path ref={outerRef} data-piece="outer" d={still.outer} fill="currentColor" /></g>
+        <g className="wlkr-loader-body" transform={transform}><g ref={jellyRef}><path ref={innerRef} data-piece="inner" d={still.inner} fill="currentColor" /><path ref={outerRef} data-piece="outer" d={still.outer} fill="currentColor" /></g></g>
         {arc()}
       </g> : <><g clipPath={`url(#${id}-cover)`}>{arc()}</g>{body()}</>}
     </svg>

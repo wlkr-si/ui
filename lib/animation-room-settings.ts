@@ -15,7 +15,7 @@ export type AnimationRoomSettings = {
   easing: "linear" | "smooth"
   background: "light" | "dark" | "checkerboard"
   view: "loader" | "wordmark"
-  playback: "loop" | "hover"
+  playback: "loop" | "hover" | "bounce"
   frame: number
 }
 export const defaultAnimationSettings: AnimationRoomSettings = {
@@ -30,7 +30,7 @@ export function validateAnimationSettings(value: unknown): AnimationRoomSettings
   if (Object.keys(data).length !== keys.length || Object.keys(data).some(key => !keys.includes(key)) || data.version !== 3) return null
   for (const [key, [min, max]] of Object.entries(ranges)) if (typeof data[key] !== "number" || !Number.isFinite(data[key]) || (data[key] as number) < min || (data[key] as number) > max) return null
   for (const key of ["reverse", "cutThrough", "guides"]) if (typeof data[key] !== "boolean") return null
-  if (!["linear", "smooth"].includes(data.easing as string) || !["light", "dark", "checkerboard"].includes(data.background as string) || !["loader", "wordmark"].includes(data.view as string) || !["loop", "hover"].includes(data.playback as string)) return null
+  if (!["linear", "smooth"].includes(data.easing as string) || !["light", "dark", "checkerboard"].includes(data.background as string) || !["loader", "wordmark"].includes(data.view as string) || !["loop", "hover", "bounce"].includes(data.playback as string)) return null
   return Object.fromEntries(keys.map(key => [key, data[key]])) as AnimationRoomSettings
 }
 export function animationSettingsHash(settings: AnimationRoomSettings): string {

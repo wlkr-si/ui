@@ -48,11 +48,11 @@ function RoomContent({ initial, shared, invalid }: { initial: AnimationRoomSetti
     try { const matrix = new DOMMatrixReadOnly(getComputedStyle(arc).transform); return normalized(Math.atan2(matrix.b, matrix.a) * 180 / Math.PI) } catch { return settings.frame }
   }
   const stop = () => { const angle = currentAngle(); update("frame", angle); setStartAngle(angle); setPlaying(false) }
-  const play = () => { clearShare(); if (matchMedia("(prefers-reduced-motion: reduce)").matches) { setPlaying(false); return } setStartAngle(settings.frame); setRestart(value => value + 1); setPlaying(true) }
+  const play = () => { clearShare(); if (matchMedia("(prefers-reduced-motion: reduce)").matches) { setPlaying(false); return } setStartAngle(settings.playback === "bounce" ? 0 : settings.frame); setRestart(value => value + 1); setPlaying(true) }
   const scrub = (angle: number) => { update("frame", angle); setStartAngle(angle); setPlaying(false) }
   const reset = () => { setSettings({ ...defaultAnimationSettings }); setStartAngle(0); setPlaying(true); setRestart(value => value + 1); clearShare() }
   const finish = () => { setPlaying(false); update("frame", normalized(startAngle)) }
-  const hover = () => { if (settings.playback === "hover" && !playing && !matchMedia("(prefers-reduced-motion: reduce)").matches && matchMedia("(hover: hover) and (pointer: fine)").matches) play() }
+  const hover = () => { if (settings.playback !== "loop" && !playing && !matchMedia("(prefers-reduced-motion: reduce)").matches && matchMedia("(hover: hover) and (pointer: fine)").matches) play() }
   const share = async () => {
     const generation = ++shareGeneration.current
     const frame = playing ? currentAngle() : settings.frame
@@ -64,7 +64,7 @@ function RoomContent({ initial, shared, invalid }: { initial: AnimationRoomSetti
   React.useEffect(() => { if (copyState === "manual") { linkInput.current?.focus(); linkInput.current?.select() } }, [copyState])
   const mark = <div className={styles.mark} style={{ width: settings.size }}>
     {settings.guides && <svg className={styles.guides} viewBox="0 0 256 256" aria-hidden="true"><circle cx="128" cy="128" r={settings.splitRadius} /><path d="M128 12V244M12 128H244" /><circle cx="128" cy="128" r="3" /></svg>}
-    <WlkrLoader size={settings.size} duration={settings.duration} cutThrough={settings.cutThrough} openingDistance={settings.openingDistance} splitRadius={settings.splitRadius} goo={settings.goo} squish={settings.squish} ripple={settings.ripple} arcScale={settings.arcScale} tilt={settings.tilt} reverse={settings.reverse} easing={settings.easing} frame={playing ? undefined : settings.frame / 360} startAngle={startAngle} loop={settings.playback === "loop"} restartKey={restart} paused={!playing} onCycleComplete={finish} decorative />
+    <WlkrLoader size={settings.size} duration={settings.duration} cutThrough={settings.cutThrough} openingDistance={settings.openingDistance} splitRadius={settings.splitRadius} goo={settings.goo} squish={settings.squish} ripple={settings.ripple} arcScale={settings.arcScale} tilt={settings.tilt} reverse={settings.reverse} easing={settings.easing} frame={playing ? undefined : settings.frame / 360} startAngle={startAngle} loop={settings.playback === "loop"} bounce={settings.playback === "bounce"} restartKey={restart} paused={!playing} onCycleComplete={finish} decorative />
   </div>
   return <div className={styles.room}>
     {invalid && <p role="alert" className={styles.notice}>That settings link is invalid.</p>}
@@ -84,11 +84,11 @@ function RoomContent({ initial, shared, invalid }: { initial: AnimationRoomSetti
   <circle cx="365" cy="84" r="9.75" fill="currentColor"/>
 </g></svg></div>}
         </div>
-        <div className={styles.transport}><Button variant="outline" onClick={playing ? stop : play}>{playing ? "Pause" : settings.playback === "hover" ? "Play once" : "Play"}</Button><Button variant="ghost" onClick={() => scrub(0)}>Start frame</Button><Button variant="ghost" onClick={reset}>Reset</Button></div>
+        <div className={styles.transport}><Button variant="outline" onClick={playing ? stop : play}>{playing ? "Pause" : settings.playback === "loop" ? "Play" : "Play once"}</Button><Button variant="ghost" onClick={() => scrub(0)}>Start frame</Button><Button variant="ghost" onClick={reset}>Reset</Button></div>
         <div className={styles.scrubber}><RangeControl label="Frame" value={settings.frame} onChange={scrub} min={0} max={360} step={1} unit="°" /></div>
       </section>
       <section className={styles.controls} aria-label="Animation controls">
-        <ChoiceControl label="Playback" value={settings.playback} onChange={value => { clearShare(); const playback = value as AnimationRoomSettings["playback"]; setSettings(current => ({ ...current, playback, frame: 0 })); setStartAngle(0); setPlaying(playback === "loop"); setRestart(value => value + 1) }} options={[{ value: "loop", label: "Loop" }, { value: "hover", label: "Hover once" }]} />
+        <ChoiceControl label="Playback" value={settings.playback} onChange={value => { clearShare(); const playback = value as AnimationRoomSettings["playback"]; setSettings(current => ({ ...current, playback, frame: 0 })); setStartAngle(0); setPlaying(playback === "loop"); setRestart(value => value + 1) }} options={[{ value: "loop", label: "Loop" }, { value: "hover", label: "Hover once" }, { value: "bounce", label: "Hover bounce" }]} />
         <ChoiceControl label="Background" value={settings.background} onChange={value => update("background", value as AnimationRoomSettings["background"])} options={[{ value: "light", label: "Light" }, { value: "dark", label: "Dark" }, { value: "checkerboard", label: "Checkerboard" }]} />
         <div className={styles.switches}><Toggle label="Liquid" checked={settings.cutThrough} onChange={value => { update("cutThrough", value); setStartAngle(playing ? currentAngle() : settings.frame); setRestart(value => value + 1) }} /><Toggle label="Reverse" checked={settings.reverse} onChange={value => { clearShare(); const frame = currentAngle(); setSettings(current => ({ ...current, reverse: value, frame })); setStartAngle(frame); setRestart(value => value + 1) }} /><Toggle label="Center guides" checked={settings.guides} onChange={value => update("guides", value)} /></div>
         <RangeControl label="Cycle duration" value={settings.duration} onChange={value => update("duration", value)} min={800} max={10000} step={100} unit="ms" />
