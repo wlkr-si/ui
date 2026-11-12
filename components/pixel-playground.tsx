@@ -9,7 +9,8 @@ import { CodePanel } from "@/components/code-panel"
 import { Disclosure } from "@/components/disclosure"
 import { PixelObject, type PixelObjectProps } from "@/registry/wlkr/pixel-object"
 import { PixelMaskEditor } from "@/components/pixel-mask-editor"
-import { initialMaskState, maskExample, maskReducer } from "@/lib/pixel-mask"
+import { blankMask, initialMaskState, maskExample, maskReducer, type MaskAction } from "@/lib/pixel-mask"
+import { MAX_MASK_QUERY, encodeMask, readMaskSearch, type MaskLink } from "@/lib/pixel-mask-link"
 import { capturePixelSvg, pixelPng, downloadPixelSnapshot } from "@/lib/pixel-snapshot"
 import { ChoiceControl, RangeControl } from "@/components/playground-controls"
 
@@ -22,13 +23,29 @@ const presets:Record<string,Settings>={
   still:{...defaults,rotating:false,rotationSpeed:0,pattern:"steady"},
 }
 const presetOptions=[{value:"sphere",label:"Pixel sphere"},{value:"disco",label:"Disco"},{value:"wave",label:"Wave"},{value:"still",label:"Still"}]
+function subscribeMaskLink(notify: () => void) {
+  window.addEventListener("popstate", notify)
+  return () => window.removeEventListener("popstate", notify)
+}
+const clientMaskSearch = () => window.location.search.slice(0, MAX_MASK_QUERY + 1)
+const serverMaskSearch = () => ""
 export function PixelPlayground() {
+  const search = React.useSyncExternalStore(subscribeMaskLink, clientMaskSearch, serverMaskSearch)
+  const shared = readMaskSearch(search)
+  return <PixelPlaygroundContent key={shared.kind === "valid" ? encodeMask(shared.mask) : shared.kind} shared={shared} />
+}
+function PixelPlaygroundContent({ shared }: { shared: MaskLink }) {
   const [settings,setSettings]=React.useState<Settings>({...defaults})
   const [preset,setPreset]=React.useState("sphere")
   const [restart,setRestart]=React.useState(0)
   const [morph,setMorph]=React.useState(false)
-  const [maskMode, setMaskMode] = React.useState(false)
-  const [maskState, dispatchMask] = React.useReducer(maskReducer, undefined, initialMaskState)
+  const [maskMode, setMaskMode] = React.useState(shared.kind !== "none")
+  const [linkError, setLinkError] = React.useState(shared.kind === "invalid")
+  const [maskState, dispatchMask] = React.useReducer(maskReducer, shared.kind === "valid" ? shared.mask : shared.kind === "invalid" ? blankMask() : undefined, initialMaskState)
+  const editMask = React.useCallback((action: MaskAction) => {
+    dispatchMask(action)
+    if (action.type === "paint" || action.type === "replace") setLinkError(false)
+  }, [])
   const previewRef = React.useRef<HTMLDivElement>(null)
   const exportingRef = React.useRef(false)
   const [exporting, setExporting] = React.useState<"svg" | "png" | null>(null)
@@ -54,7 +71,7 @@ export function PixelPlayground() {
   function update<K extends keyof Settings>(key:K,value:Settings[K]) {setSettings(current=>({...current,[key]:value}));setPreset("custom");if(key==="delay")setRestart(value=>value+1)}
   function apply(name:string){setSettings({...presets[name]??defaults});setPreset(name);setMorph(false);setRestart(value=>value+1)}
   const code=maskMode ? maskExample(maskState.mask) : `import { PixelObject } from "@/components/wlkr/pixel-object"\n\n<PixelObject\n  label="Pixel sphere"\n${morph?'  morph={{ shapes: ["sphere", "cube", "torus"], duration: 8 }}\n':""}${Object.entries(settings).filter(([key,value])=>value!==undefined&&value!==defaults[key as keyof Settings]).map(([key,value])=>`  ${key}=${typeof value==="string"?JSON.stringify(value):`{${value}}`}\n`).join("")}/>`
-  return <Tabs defaultValue="preview" className="docs-tabs mt-6"><TabsList aria-label="Pixel object view"><TabsTrigger value="preview">Preview</TabsTrigger><TabsTrigger value="usage">Usage</TabsTrigger></TabsList><TabsContent value="preview"><div className="pixel-source" role="group" aria-label="Pixel source"><Button type="button" variant="ghost" className="min-h-11" aria-pressed={!maskMode} onClick={() => setMaskMode(false)}>Object</Button><Button type="button" variant="ghost" className="min-h-11" aria-pressed={maskMode} onClick={() => setMaskMode(true)}>Mask</Button></div><div className={maskMode ? "preview mask-preview" : "preview"}><div ref={previewRef} className={maskMode ? "preview-content pixel-stage mask-stage" : "preview-content pixel-stage"}>{maskMode && <PixelMaskEditor state={maskState} dispatch={dispatchMask} />}{maskMode ? <PixelObject key="mask" label="Custom pixel mask" mask={maskState.mask} resolution={8} dotShape="square" rotating={false} /> : <PixelObject key="object" {...settings} restartKey={restart} morph={morph?{shapes:["sphere","cube","torus"],duration:8}:undefined}/>}</div></div><div className="pixel-exports" role="group" aria-label="Download pixel object"><Button type="button" variant="ghost" className="min-h-11 min-w-14" aria-label="Download SVG snapshot" disabled={exporting !== null} onClick={() => exportSnapshot("svg")}>{exporting === "svg" ? "SVG…" : "SVG"}</Button><Button type="button" variant="ghost" className="min-h-11 min-w-14" aria-label="Download PNG snapshot" disabled={exporting !== null} onClick={() => exportSnapshot("png")}>{exporting === "png" ? "PNG…" : "PNG"}</Button><p role="status" aria-live="polite" className={exportStatus.error ? "pixel-export-error" : "sr-only"}>{exportStatus.message}</p></div>{!maskMode && <Disclosure title="Customize" description="Shape, movement, and light" className="customize"><div className="customize-heading"><ChoiceControl label="Preset" value={preset} onChange={apply} options={preset==="custom"?[{value:"custom",label:"Custom"},...presetOptions]:presetOptions}/><Button type="button" variant="ghost" onClick={()=>apply("sphere")}>Reset</Button></div><label className="demo-option mb-6"><Switch checked={morph} onCheckedChange={value=>{setMorph(value);setPreset("custom")}}/>Morph sphere, cube, and torus</label><FieldGroup className="customize-grid">
+  return <Tabs defaultValue="preview" className="docs-tabs mt-6"><TabsList aria-label="Pixel object view"><TabsTrigger value="preview">Preview</TabsTrigger><TabsTrigger value="usage">Usage</TabsTrigger></TabsList><TabsContent value="preview"><div className="pixel-source" role="group" aria-label="Pixel source"><Button type="button" variant="ghost" className="min-h-11" aria-pressed={!maskMode} onClick={() => setMaskMode(false)}>Object</Button><Button type="button" variant="ghost" className="min-h-11" aria-pressed={maskMode} onClick={() => setMaskMode(true)}>Mask</Button></div>{maskMode && linkError && <p className="mask-link-error" role="alert">Invalid mask link. Draw a new mask or use a valid share link.</p>}<div className={maskMode ? "preview mask-preview" : "preview"}><div ref={previewRef} className={maskMode ? "preview-content pixel-stage mask-stage" : "preview-content pixel-stage"}>{maskMode && <PixelMaskEditor state={maskState} dispatch={editMask} />}{maskMode ? <PixelObject key="mask" label="Custom pixel mask" mask={maskState.mask} resolution={8} dotShape="square" rotating={false} /> : <PixelObject key="object" {...settings} restartKey={restart} morph={morph?{shapes:["sphere","cube","torus"],duration:8}:undefined}/>}</div></div><div className="pixel-exports" role="group" aria-label="Download pixel object"><Button type="button" variant="ghost" className="min-h-11 min-w-14" aria-label="Download SVG snapshot" disabled={exporting !== null} onClick={() => exportSnapshot("svg")}>{exporting === "svg" ? "SVG…" : "SVG"}</Button><Button type="button" variant="ghost" className="min-h-11 min-w-14" aria-label="Download PNG snapshot" disabled={exporting !== null} onClick={() => exportSnapshot("png")}>{exporting === "png" ? "PNG…" : "PNG"}</Button><p role="status" aria-live="polite" className={exportStatus.error ? "pixel-export-error" : "sr-only"}>{exportStatus.message}</p></div>{!maskMode && <Disclosure title="Customize" description="Shape, movement, and light" className="customize"><div className="customize-heading"><ChoiceControl label="Preset" value={preset} onChange={apply} options={preset==="custom"?[{value:"custom",label:"Custom"},...presetOptions]:presetOptions}/><Button type="button" variant="ghost" onClick={()=>apply("sphere")}>Reset</Button></div><label className="demo-option mb-6"><Switch checked={morph} onCheckedChange={value=>{setMorph(value);setPreset("custom")}}/>Morph sphere, cube, and torus</label><FieldGroup className="customize-grid">
     <ChoiceControl label="Dot shape" value={settings.dotShape} onChange={value=>update("dotShape",value as Settings["dotShape"])} options={[{value:"square",label:"Square"},{value:"rounded",label:"Rounded"},{value:"circle",label:"Circle"}]}/>
     <ChoiceControl label="Pattern" value={settings.pattern} onChange={value=>update("pattern",value as Settings["pattern"])} options={[{value:"steady",label:"Steady"},{value:"scatter",label:"Scatter"},{value:"wave",label:"Wave"},{value:"scan",label:"Scan"}]}/>
     <RangeControl label="Dot size" value={settings.dotSize??5.2} min={1} max={12} step={.2} unit="px" onChange={value=>update("dotSize",value)}/>

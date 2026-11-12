@@ -6,7 +6,7 @@ export const showcaseExamples: Record<string, string> = {
   "pixel-object": `import { PixelObject, spherePoints } from "@/components/wlkr/pixel-object"\n\n<PixelObject label="Pixel sphere" points={spherePoints(420)} />\n\n// Or give it your own flat mask, with motion disabled.\n<PixelObject\n  mask={["  #  ", " ### ", "#####"]}\n  rotating={false}\n  label="Pixel triangle"\n/>`,
   "page-intro": `import { PageIntro } from "@/components/wlkr/page-intro"\n\n<PageIntro title={"Less.\\nBetter."} description="A clear starting point." />`,
   "index-row": `import { IndexRow } from "@/components/wlkr/index-row"\n\n<IndexRow number={7} title="Brand Studio" description="Considered tools for a clear identity." href="/projects/studio">In progress</IndexRow>`,
-  "text-link": `import { TextLink } from "@/components/wlkr/text-link"\n\n<TextLink href="https://wlkrlabs.com" preview={{ title: "WLKR Labs", description: "A small studio building useful things." }}>Explore the studio</TextLink>`,
+  "text-link": `import { TextLink } from "@/components/wlkr/text-link"\n\n<TextLink href="https://wlkr.si" preview={{ title: "WLKR.SI", description: "A small studio building useful things." }}>Explore the studio</TextLink>`,
   "theme-toggle": `import { ThemeToggle } from "@/components/wlkr/theme-toggle"\n\n<ThemeToggle showLabel />\n// Uses wlkr-theme storage; follows system preferences until selected.`,
   "footer-controls": `import { FooterControls } from "@/components/wlkr/footer-controls"\n\n<FooterControls agentHref="/llms.txt" />\n// Supply a real Markdown or plain-text page owned by your app.`,
   typography: `// Use the stylesheet path printed by the CLI.

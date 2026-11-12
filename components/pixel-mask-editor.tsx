@@ -1,6 +1,8 @@
 "use client"
 
 import * as React from "react"
+import { Input } from "@/components/ui/input"
+import { encodeMask, maskShareUrl } from "@/lib/pixel-mask-link"
 import { Button } from "@/components/ui/button"
 import { blankMask, cellAtPoint, maskLine, MASK_SIZE, moveMaskCell, starterMask, type MaskAction, type MaskState } from "@/lib/pixel-mask"
 
@@ -10,6 +12,28 @@ export function PixelMaskEditor({ state, dispatch }: { state: MaskState; dispatc
   const cells = React.useRef<(HTMLButtonElement | null)[]>([])
   const stroke = React.useRef<{ pointer: number; last: number | null; filled: boolean } | null>(null)
   const instructions = React.useId()
+  const shareInputId = React.useId()
+  const shareInput = React.useRef<HTMLInputElement>(null)
+  const sharingRef = React.useRef(false)
+  const [sharing, setSharing] = React.useState(false)
+  const [shared, setShared] = React.useState<{ key: string; url: string; message: string; error: boolean } | null>(null)
+  const maskKey = encodeMask(state.mask)
+  const visibleShare = shared?.key === maskKey ? shared : null
+  async function share() {
+    if (sharingRef.current) return
+    finish()
+    sharingRef.current = true
+    setSharing(true)
+    const url = maskShareUrl(state.mask)
+    setShared({ key: maskKey, url, message: "Copying link…", error: false })
+    try {
+      await navigator.clipboard.writeText(url)
+      setShared({ key: maskKey, url, message: "Link copied.", error: false })
+    } catch {
+      setShared({ key: maskKey, url, message: "Copy unavailable. Select the link.", error: true })
+      setTimeout(() => { shareInput.current?.focus(); shareInput.current?.select() }, 0)
+    } finally { sharingRef.current = false; setSharing(false) }
+  }
   React.useEffect(() => () => dispatch({ type: "end" }), [dispatch])
   function focus(cell: number) { setActive(cell); cells.current[cell]?.focus({ preventScroll: true }) }
   function finish() { if (stroke.current) { stroke.current = null; dispatch({ type: "end" }) } }
@@ -37,7 +61,9 @@ export function PixelMaskEditor({ state, dispatch }: { state: MaskState; dispatc
       <Button type="button" variant="ghost" className="min-h-11" disabled={!state.future.length} onClick={() => command({ type: "redo" })}>Redo</Button>
       <Button type="button" variant="ghost" className="min-h-11" onClick={() => command({ type: "replace", mask: blankMask() })}>Clear</Button>
       <Button type="button" variant="ghost" className="min-h-11" aria-label="Reset mask" onClick={() => command({ type: "replace", mask: starterMask() })}>Reset</Button>
+      <Button type="button" variant="ghost" className="min-h-11" disabled={sharing} onClick={share}>{sharing ? "Sharing…" : "Share"}</Button>
     </div>
+    {visibleShare && <div className="mask-share"><label className="sr-only" htmlFor={shareInputId}>Mask share URL</label><Input className="min-h-11" ref={shareInput} id={shareInputId} readOnly value={visibleShare.url} spellCheck={false} autoComplete="off" onFocus={event => event.currentTarget.select()} /><p role="status" aria-live="polite" className={visibleShare.error ? "mask-link-error" : "sr-only"}>{visibleShare.message}</p></div>}
     <p id={instructions} className="sr-only">Eight rows and eight columns. Arrow keys move. Space or Enter applies Draw or Erase. Delete clears a cell. Home and End move within a row; Control or Command moves to the grid ends. Control or Command Z undoes; Shift Z redoes.</p>
     <div className="mask-grid" role="grid" aria-label="Pixel mask" aria-rowcount={MASK_SIZE} aria-colcount={MASK_SIZE} aria-multiselectable="true" aria-describedby={instructions} onKeyDown={keydown}
       onPointerDown={event => {
