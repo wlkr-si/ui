@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import { viewedSection } from "@/lib/gallery-section"
 import { showcaseExamples, tokenReference, registryConfig } from "@/lib/code-samples"
 import { CodePanel } from "@/components/code-panel"
 import { Disclosure } from "@/components/disclosure"
@@ -68,19 +69,49 @@ function Demo({ id }: { id: string }) {
 export function Showcase({ sources, highlights = {} }: { sources: Record<string, string>; highlights?: Record<string, string> }) {
   const [query, setQuery] = React.useState("")
   const searchRef = React.useRef<HTMLInputElement>(null)
+  const [currentSection, setCurrentSection] = React.useState<string | null>(null)
   React.useEffect(() => {
     const keydown = (event: KeyboardEvent) => { if ((event.metaKey || event.ctrlKey) && event.key === "k") { event.preventDefault(); searchRef.current?.focus(); searchRef.current?.scrollIntoView({ block: "center" }) } }
     window.addEventListener("keydown", keydown)
     return () => window.removeEventListener("keydown", keydown)
   }, [])
-  const filtered = entries.filter(entry => `${entry.name} ${entry.description} ${entry.keywords}`.toLowerCase().includes(query.toLowerCase().trim()))
+  const filtered = React.useMemo(() => entries.filter(entry => `${entry.name} ${entry.description} ${entry.keywords}`.toLowerCase().includes(query.toLowerCase().trim())), [query])
+  React.useEffect(() => {
+    const sections = filtered.map(entry => document.getElementById(entry.id)).filter((section): section is HTMLElement => section !== null)
+    let frame = 0, disposed = false
+    const measure = () => {
+      frame = 0
+      if (disposed) return
+      // Match the native anchor landing position, including the existing CSS insets.
+      const padding = parseFloat(getComputedStyle(document.documentElement).scrollPaddingTop) || 0
+      const margin = sections[0] ? parseFloat(getComputedStyle(sections[0]).scrollMarginTop) || 0 : 0
+      const bounds = sections.map(section => { const rect = section.getBoundingClientRect(); return { id: section.id, top: rect.top, bottom: rect.bottom } })
+      const current = viewedSection(bounds, window.innerHeight, padding + margin + 1)
+      setCurrentSection(previous => previous === current ? previous : current)
+    }
+    const schedule = () => { if (!disposed && !frame) frame = requestAnimationFrame(measure) }
+    const observer = new ResizeObserver(schedule)
+    sections.forEach(section => observer.observe(section))
+    window.addEventListener("scroll", schedule, { passive: true })
+    window.addEventListener("resize", schedule)
+    window.addEventListener("hashchange", schedule)
+    schedule()
+    return () => {
+      disposed = true
+      observer.disconnect()
+      window.removeEventListener("scroll", schedule)
+      window.removeEventListener("resize", schedule)
+      window.removeEventListener("hashchange", schedule)
+      if (frame) cancelAnimationFrame(frame)
+    }
+  }, [filtered])
   return <div className="site shell">
     <a href="#collection" className="sr-only focus:not-sr-only">Skip to components</a>
     <SiteHeader />
     <main>
       <div className="hero"><h1>Interfaces,<br />reduced.</h1><div className="hero-note"><a href="#collection">Explore the collection <ArrowDown aria-hidden="true" /></a></div></div>
       <div className="workbench" id="collection">
-        <aside className="index" aria-label="Component index"><p className="index-label">The collection</p><div className="search-row"><Search aria-hidden="true" /><label className="sr-only" htmlFor="component-search">Search components</label><input ref={searchRef} id="component-search" type="search" placeholder="Search components…" value={query} onChange={event => setQuery(event.target.value)} />{query && <button className="icon-button" aria-label="Clear component search" onClick={() => { setQuery(""); searchRef.current?.focus() }}><X /></button>}</div><nav className="index-links" aria-label="Components">{filtered.map((entry, i) => <a className={i === 0 ? "active" : ""} key={entry.id} href={`#${entry.id}`}>{entry.name}</a>)}</nav><p className="index-foot" role="status">{query ? `${filtered.length} matching sections` : ""}</p></aside>
+        <aside className="index" aria-label="Component index"><p className="index-label">The collection</p><div className="search-row"><Search aria-hidden="true" /><label className="sr-only" htmlFor="component-search">Search components</label><input ref={searchRef} id="component-search" type="search" placeholder="Search components…" value={query} onChange={event => setQuery(event.target.value)} />{query && <button className="icon-button" aria-label="Clear component search" onClick={() => { setQuery(""); searchRef.current?.focus() }}><X /></button>}</div><nav className="index-links" aria-label="Components">{filtered.map(entry => <a className={entry.id === currentSection ? "active" : ""} aria-current={entry.id === currentSection ? "location" : undefined} key={entry.id} href={`#${entry.id}`}>{entry.name}</a>)}</nav><p className="index-foot" role="status">{query ? `${filtered.length} matching sections` : ""}</p></aside>
         <div className="min-w-0">{filtered.length === 0 && <div className="component-section"><h2 className="text-2xl tracking-tight">Nothing here by that name.</h2><p className="mt-3 text-sm text-muted-foreground">Try “copy”, “search”, or “theme”.</p><Button variant="ghost" onClick={() => setQuery("")}>Clear search</Button></div>}
         {filtered.map(entry => <section className="component-section" id={entry.id} key={entry.id} aria-labelledby={`${entry.id}-title`}><div className="component-heading"><div><h2 id={`${entry.id}-title`}>{entry.name}</h2><p>{entry.description}</p></div><span className="component-origin">{entry.id === "primitives" ? "shadcn/ui" : entry.id === "foundations" ? "WLKR system" : "WLKR original"}</span></div>
         {entry.id === "foundations" ? <div className="foundation"><div className="swatches">{[["Canvas", "var(--background)"], ["Ink", "var(--foreground)"], ["Quiet", "var(--muted-foreground)"], ["WLKR green", "var(--brand)"]].map(([name, color]) => <div className="swatch" key={name}><i style={{background:color}} /><span>{name}</span></div>)}</div><h3>Meaning before appearance.</h3><p>Canvas, foreground, muted, and accent describe a purpose. Their values change with the light. Green marks a useful moment; it never has to carry the message alone.</p><h3 className="mt-8">One typeface. Room to breathe.</h3><p>Geist. A compact scale. Tight display typography and comfortable reading lengths. Focus stays visible. Motion follows interaction and respects reduced-motion preferences.</p><div className="install-line mt-5"><CopyCommand command="pnpm dlx shadcn@latest add @wlkr/theme" /></div><Disclosure title="Token reference" icon={Code2}><CodePanel code={tokenReference} filename="tokens.txt" language="text" /></Disclosure></div> : <>

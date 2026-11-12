@@ -14,6 +14,7 @@ function run(...args) {
 requireClean()
 const revision = execFileSync("git", ["rev-parse", "HEAD"], { encoding: "utf8" }).trim()
 run("test:release")
+run("test:gallery")
 run("test:mask")
 run("test:grid-import")
 run("test:pixels-cli")
