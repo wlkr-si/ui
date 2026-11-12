@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 
 const styles = `
+.wlkr-copy-command:focus-visible{outline:2px solid var(--ring,currentColor);outline-offset:3px}
 .wlkr-copy-icon{width:16px;height:16px;overflow:visible}
 .wlkr-copy-icon g{transform-origin:12px 12px;transition:opacity 180ms ease,transform 180ms ease}
 .wlkr-copy-icon g[data-visible=false]{opacity:0;transform:scale(.65) rotate(-12deg)}
@@ -39,7 +40,7 @@ export function CopyCommand({ command, className }: { command: string; className
   return (
     <div className={cn("relative flex min-w-0 items-center gap-4", className)}>
       <style>{styles}</style>
-      <code className="min-w-0 flex-1 overflow-x-auto py-3 text-sm whitespace-pre">{command}</code>
+      <code tabIndex={0} className="wlkr-copy-command min-w-0 flex-1 overflow-x-auto py-3 text-sm whitespace-pre">{command}</code>
       <Button type="button" variant="ghost" size="icon" onClick={copy} disabled={state === "copying"} style={{ width: 44, height: 44, flexShrink: 0, padding: 0 }} aria-label={state === "copied" ? "Command copied; copy again" : state === "error" ? "Copy failed; try again" : "Copy command"}>
         <svg className="wlkr-copy-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
           <g data-visible={state === "idle" || state === "copying"}><rect x="8" y="8" width="12" height="12" rx="2" /><path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3" /></g>
