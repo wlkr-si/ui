@@ -48,8 +48,9 @@ export function SocialPreview({ kind }: { kind: PreviewKind }) {
     ? <div style={{ display: "flex", width: 430, height: 300, alignItems: "center", justifyContent: "center", background: "#111111", border: "1px solid #303030" }}><PixelArt /></div>
     : <ContrastSample />
 
-  return <div style={{ display: "flex", flexDirection: "column", width: 1200, height: 630, padding: "46px 64px", background: black, color: white, fontFamily: "Geist", borderTop: "8px solid " + green }}>
-    <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+  return <div style={{ position: "relative", display: "flex", width: 1200, height: 630, background: black, color: white, fontFamily: "Geist" }}>
+    <div style={{ position: "absolute", left: 0, top: 0, width: 1200, height: 8, background: green }} />
+    <div style={{ position: "absolute", left: 64, top: 46, width: 1072, height: 40, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
       <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
         {/* eslint-disable-next-line @next/next/no-img-element -- next/og rasterizes this local SVG into the build-time PNG */}
         <img src={mark} alt="" width={38} height={38} />
@@ -58,13 +59,13 @@ export function SocialPreview({ kind }: { kind: PreviewKind }) {
       {/* eslint-disable-next-line @next/next/no-img-element -- next/og rasterizes this local SVG into the build-time PNG */}
       <img src={endorsement} alt="Part of WLKR.SI" width={184} height={32} />
     </div>
-    <div style={{ display: "flex", flex: 1, alignItems: "center", justifyContent: "space-between", gap: 48 }}>
+    <div style={{ position: "absolute", left: 64, top: 144, width: 1072, height: 350, display: "flex", alignItems: "center", justifyContent: "space-between", gap: 48 }}>
       <div style={{ display: "flex", flexDirection: "column", width: 490 }}>
         <span style={{ marginTop: 18, fontSize: 72, lineHeight: 1.04, letterSpacing: -3, fontWeight: 600 }}>{title}</span>
       </div>
       {art}
     </div>
-    <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", borderTop: "1px solid #343434", paddingTop: 18, color: "#A0A0A0", fontSize: 16 }}>
+    <div style={{ position: "absolute", left: 64, bottom: 46, width: 1072, height: 40, display: "flex", alignItems: "center", justifyContent: "space-between", borderTop: "1px solid #343434", paddingTop: 18, color: "#A0A0A0", fontSize: 16 }}>
       <span>ui.wlkr.si</span>
     </div>
   </div>
