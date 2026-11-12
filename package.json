@@ -12,7 +12,8 @@
     "release:check": "node scripts/release-check.mjs",
     "deploy:check": "pnpm build && wrangler deploy --dry-run",
     "deploy": "node scripts/deploy.mjs",
-    "test:release": "node --test scripts/deploy.test.mjs"
+    "test:release": "node --test scripts/deploy.test.mjs",
+    "test:mask": "node --test scripts/pixel-mask.test.mjs"
   },
   "dependencies": {
     "class-variance-authority": "^0.7.1",

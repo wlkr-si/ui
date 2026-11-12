@@ -116,6 +116,8 @@ The site uses installed, unchanged stock `Button`, `Input`, `Switch`, `Tabs`, `S
 
 ## Gallery controls and source panels
 
+The Pixel object playground also offers a gallery-only 8×8 mask editor. Draw or erase with a pointer, move with arrow keys and apply the selected tool with Space/Enter, or clear a focused cell with Delete. Undo/redo tracks up to 32 strokes or edits; Clear and Reset are undoable. Switching back to Object preserves the mask and the existing object settings. The Usage panel copies the actual mask as a valid React example, while SVG/PNG exports capture its real static preview. No drawing is sent to a server or saved in browser storage. The existing public `PixelObject.mask` API and registry item are unchanged.
+
 All gallery choice controls use the approved Soft combobox, composed from unchanged stock Command and Radix Popover. Its rounded rectangular popup shares `--control-surface` with the code panels: `#fafafa` in light mode and `#090909` in dark mode. Search, keyboard selection, empty states, and focus return stay accessible. These gallery controls are not additional registry items.
 
 Source panels provide line numbers, exact raw-text copy, and wrapping. Static syntax highlighting runs at build time with Shiki; the client receives highlighted markup without a highlighter engine. Dynamic examples remain readable plain code as their values change. Stock Collapsible powers quiet disclosure motion and respects reduced motion. The archived `/prototypes/controls` comparison route is marked `noindex, nofollow`.
