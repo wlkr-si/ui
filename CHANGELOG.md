@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.15.2
+
+- Follow the viewed gallery section with the sidebar indicator and `aria-current`, including native anchors, manual scrolling, filters and layout changes. Navigation updates keep focus and URLs unchanged.
+
 ## 0.15.1
 
 - Remove repeated gallery hero and idle sidebar taglines.
