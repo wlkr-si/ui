@@ -18,11 +18,14 @@ export type AnimationRoomSettings = {
   playback: "loop" | "hover" | "bounce"
   frame: number
 }
+/** Hovers run quicker than the continuous loading loop: a full pass, and a short bounce. */
+export const hoverDuration = 650
+export const bounceDuration = 350
 export const defaultAnimationSettings: AnimationRoomSettings = {
   version: 3, duration: 1800, size: 200, openingDistance: 40, splitRadius: 74, goo: 11, squish: .7, ripple: .22, arcScale: 1, tilt: -24, reverse: false,
   cutThrough: true, guides: false, easing: "linear", background: "light", view: "loader", playback: "loop", frame: 0,
 }
-const ranges = { duration: [800, 10000], size: [48, 240], arcScale: [.6, 1.2], tilt: [-60, 60], frame: [0, 360], openingDistance: [0, 100], splitRadius: [40, 100], goo: [0, 24], squish: [0, 1], ripple: [0, 1] } as const
+const ranges = { duration: [300, 10000], size: [48, 240], arcScale: [.6, 1.2], tilt: [-60, 60], frame: [0, 360], openingDistance: [0, 100], splitRadius: [40, 100], goo: [0, 24], squish: [0, 1], ripple: [0, 1] } as const
 export function validateAnimationSettings(value: unknown): AnimationRoomSettings | null {
   if (!value || typeof value !== "object" || Array.isArray(value)) return null
   const data = value as Record<string, unknown>

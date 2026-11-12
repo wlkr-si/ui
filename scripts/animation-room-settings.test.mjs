@@ -1,6 +1,6 @@
 import test from "node:test"
 import assert from "node:assert/strict"
-import { defaultAnimationSettings, validateAnimationSettings, animationSettingsHash, parseAnimationSettingsHash } from "../lib/animation-room-settings.ts"
+import { defaultAnimationSettings, hoverDuration, bounceDuration, validateAnimationSettings, animationSettingsHash, parseAnimationSettingsHash } from "../lib/animation-room-settings.ts"
 
 test("a shared room preserves every visual and playback setting without changing defaults", () => {
   const custom = { ...defaultAnimationSettings, duration: 3210, size: 208, arcScale: .81, goo: 6.5, squish: .4, ripple: .9, tilt: 17, frame: 233.5, reverse: true, guides: true, easing: "smooth", background: "checkerboard", view: "wordmark", playback: "bounce" }
@@ -9,6 +9,7 @@ test("a shared room preserves every visual and playback setting without changing
   assert.equal(custom.size, 208)
   assert.equal(defaultAnimationSettings.size, 200)
   assert.equal(defaultAnimationSettings.cutThrough, true)
+  assert.ok(bounceDuration <= 400 && bounceDuration < hoverDuration && hoverDuration < 1000 && validateAnimationSettings({ ...defaultAnimationSettings, playback: "bounce", duration: bounceDuration }))
 })
 test("invalid or unsupported links never reach component controls", () => {
   for (const hash of ["", "#pixels=other", "#motion=%", "#motion=null", "#motion=%5B%5D", "#motion=" + "x".repeat(8193)]) assert.equal(parseAnimationSettingsHash(hash), null)
@@ -23,7 +24,7 @@ test("invalid or unsupported links never reach component controls", () => {
   assert.equal(validateAnimationSettings({ ...defaultAnimationSettings, goo: undefined }), null)
 })
 test("boundary settings remain usable and unknown prototype keys are rejected", () => {
-  const boundaries = { ...defaultAnimationSettings, duration: 800, size: 48, arcScale: 1.2, goo: 24, squish: 0, ripple: 1, tilt: -60, frame: 360 }
+  const boundaries = { ...defaultAnimationSettings, duration: 300, size: 48, arcScale: 1.2, goo: 24, squish: 0, ripple: 1, tilt: -60, frame: 360 }
   assert.deepEqual(parseAnimationSettingsHash(animationSettingsHash(boundaries)), boundaries)
   const unsafe = JSON.parse(JSON.stringify(defaultAnimationSettings).replace('"version":3', '"version":3,"__proto__":{"polluted":true}'))
   assert.equal(validateAnimationSettings(unsafe), null)

@@ -6,7 +6,7 @@ import { FieldLabel } from "@/components/ui/field"
 import { Switch } from "@/components/ui/switch"
 import { ChoiceControl, RangeControl } from "@/components/playground-controls"
 import { WlkrLoader } from "@/registry/wlkr/wlkr-loader"
-import { animationSettingsHash, defaultAnimationSettings, parseAnimationSettingsHash, type AnimationRoomSettings } from "@/lib/animation-room-settings"
+import { animationSettingsHash, defaultAnimationSettings, hoverDuration, bounceDuration, parseAnimationSettingsHash, type AnimationRoomSettings } from "@/lib/animation-room-settings"
 import styles from "./animation-room.module.css"
 
 function createMotionHashStore() {
@@ -88,10 +88,10 @@ function RoomContent({ initial, shared, invalid }: { initial: AnimationRoomSetti
         <div className={styles.scrubber}><RangeControl label="Frame" value={settings.frame} onChange={scrub} min={0} max={360} step={1} unit="°" /></div>
       </section>
       <section className={styles.controls} aria-label="Animation controls">
-        <ChoiceControl label="Playback" value={settings.playback} onChange={value => { clearShare(); const playback = value as AnimationRoomSettings["playback"]; setSettings(current => ({ ...current, playback, frame: 0 })); setStartAngle(0); setPlaying(playback === "loop"); setRestart(value => value + 1) }} options={[{ value: "loop", label: "Loop" }, { value: "hover", label: "Hover once" }, { value: "bounce", label: "Hover bounce" }]} />
+        <ChoiceControl label="Playback" value={settings.playback} onChange={value => { clearShare(); const playback = value as AnimationRoomSettings["playback"]; setSettings(current => ({ ...current, playback, frame: 0, duration: playback === "loop" ? defaultAnimationSettings.duration : playback === "bounce" ? bounceDuration : hoverDuration })); setStartAngle(0); setPlaying(playback === "loop"); setRestart(value => value + 1) }} options={[{ value: "loop", label: "Loop" }, { value: "hover", label: "Hover once" }, { value: "bounce", label: "Hover bounce" }]} />
         <ChoiceControl label="Background" value={settings.background} onChange={value => update("background", value as AnimationRoomSettings["background"])} options={[{ value: "light", label: "Light" }, { value: "dark", label: "Dark" }, { value: "checkerboard", label: "Checkerboard" }]} />
         <div className={styles.switches}><Toggle label="Liquid" checked={settings.cutThrough} onChange={value => { update("cutThrough", value); setStartAngle(playing ? currentAngle() : settings.frame); setRestart(value => value + 1) }} /><Toggle label="Reverse" checked={settings.reverse} onChange={value => { clearShare(); const frame = currentAngle(); setSettings(current => ({ ...current, reverse: value, frame })); setStartAngle(frame); setRestart(value => value + 1) }} /><Toggle label="Center guides" checked={settings.guides} onChange={value => update("guides", value)} /></div>
-        <RangeControl label="Cycle duration" value={settings.duration} onChange={value => update("duration", value)} min={800} max={10000} step={100} unit="ms" />
+        <RangeControl label="Cycle duration" value={settings.duration} onChange={value => update("duration", value)} min={300} max={10000} step={50} unit="ms" />
         <RangeControl label="Size" value={settings.size} onChange={value => update("size", value)} min={48} max={240} step={4} unit="px" />
         <RangeControl label="Arc size" value={settings.arcScale * 100} onChange={value => update("arcScale", value / 100)} min={60} max={120} step={1} unit="%" />
         {settings.cutThrough && <>

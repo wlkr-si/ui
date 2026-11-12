@@ -168,10 +168,8 @@ export function lensContactAngles(options: LensMotionOptions = {}): { forward: n
   return { forward, backward }
 }
 
-/** Length of the bounce settle, in cycles, after the full pass. */
-export const LENS_BOUNCE_LENGTH = .9
 export type LensBounce = {
-  /** Arc degrees from rest, sampled across LENS_BOUNCE_LENGTH cycles. */
+  /** Arc degrees from rest, sampled evenly across the whole bounce. */
   angle: number[]
   /** Body squash, 0 at rest; positive compresses away from the impact. */
   squash: number[]
@@ -181,26 +179,28 @@ export type LensBounce = {
   pivot: [number, number]
 }
 /**
- * The second attempt: the arc keeps its pass speed, meets the bowl at first contact,
- * squashes in a few degrees, rebounds and settles home while the bowl jiggles like jelly.
+ * Hover bounce, in the bounce's own time (0–1 of its duration): the arc eases forward
+ * from rest, reaches the bowl at first contact a quarter of the way in, squashes a few
+ * degrees in, rebounds and settles home while the bowl jiggles like jelly.
  * Deterministic, so scrubbing and playback agree.
  */
-export function lensBounceCurve(options: LensMotionOptions = {}, samples = 540): LensBounce {
+export function lensBounceCurve(options: LensMotionOptions = {}, samples = 360): LensBounce {
   const { forward, backward } = lensContactAngles(options)
   const scale = lensClamp(options.arcScale ?? 1, .6, 1.2, 1)
   const dir = options.reverse ? -1 : 1
-  const home = 2 * Math.PI / .42, damping = 2 * .5 * home
-  const wall = 2 * Math.PI / .085, wallDamping = 2 * .35 * wall
-  const jelly = 2 * Math.PI / .13, jellyDamping = 2 * .22 * jelly
-  const steps = 8, dt = LENS_BOUNCE_LENGTH / (samples * steps)
-  let angle = 0, speed = 360 * dir, hit = false, squash = 0, squashSpeed = 0
+  const reach = .25, push = 2 * (dir > 0 ? forward : -backward) / (reach * reach)
+  const home = 2 * Math.PI / .3, damping = 2 * .6 * home
+  const wall = 2 * Math.PI / .2, wallDamping = 2 * .3 * wall
+  const jelly = 2 * Math.PI / .2, jellyDamping = 2 * .22 * jelly
+  const steps = 8, dt = 1 / (samples * steps)
+  let angle = 0, speed = 0, hit = false, squash = 0, squashSpeed = 0
   const angles = [0], squashes = [0]
   for (let i = 1; i <= samples; i++) {
     for (let s = 0; s < steps; s++) {
-      // Coast freely until first contact; afterwards the mark is pulled home.
+      // Push toward the bowl until first contact; afterwards the mark is pulled home.
       hit ||= angle > forward || angle < backward
       const press = Math.max(0, angle - forward, backward - angle)
-      let force = hit ? -home * home * angle - damping * speed : 0
+      let force = hit ? -home * home * angle - damping * speed : push * dir
       if (angle > forward) force += -wall * wall * (angle - forward) - wallDamping * speed
       if (angle < backward) force += -wall * wall * (angle - backward) - wallDamping * speed
       speed += force * dt; angle += speed * dt
