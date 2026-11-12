@@ -68,6 +68,8 @@ Supply exactly two opaque six-digit sRGB hex colours. The CLI uses the unchanged
 
 There are no network requests, credentials, file inputs or output files; output goes to stdout. Invalid, duplicate or unknown arguments produce a generic error without echoing input. Exit 0 means a valid result, including failing pairs; exit 1 means invalid arguments. With existing project dependencies installed, `pnpm contrast 000000 ffffff` is a shortcut. `pnpm test:contrast-cli` runs native no-network commands and exact shared-helper/threshold/suggestion checks, also included in `pnpm release:check`.
 
+The seven CLI checks passed on Linux Node 24.22.3 and 26.8.2, and macOS Node 26.5.0, including real native commands with networking forbidden and no installed dependencies.
+
 ## AA text options
 
 The optional chooser keeps the background fixed and evaluates text mixed toward black or white in 5% RGB steps, up to 20 steps per direction. It lists up to two distinct passing choices per direction, plus the current text when it already passes. Every listed choice meets the unrounded 4.5:1 normal-text threshold. Selecting a choice leaves the current pair unchanged until **Apply**.
