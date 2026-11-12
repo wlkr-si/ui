@@ -4,7 +4,7 @@ React components for interfaces with a little more character: pixel objects, ani
 
 [Explore the components](https://ui.wlkr.si) · [Component API](docs/page-components.md) · [Motion API](docs/motion-components.md) · [Contribute](https://github.com/wlkr-si/.github/blob/main/CONTRIBUTING.md)
 
-<a href="https://ui.wlkr.si/#pixel-object"><picture><source media="(prefers-color-scheme: dark)" srcset="docs/images/gallery-dark.png"><img src="docs/images/gallery-light.png" alt="Actual Pixel object component in the wlkr/ui gallery, with preview, export and customization controls." width="1280" height="900"></picture></a>
+<a href="https://ui.wlkr.si/#pixel-object"><picture><source media="(prefers-color-scheme: dark)" srcset="docs/images/gallery-dark.png"><img src="docs/images/gallery-light.png" alt="Actual Pixel object component in the wlkr/ui gallery, with preview, export and customization controls." width="1280"></picture></a>
 
 <a href="https://wlkr.si"><picture><source media="(prefers-color-scheme: dark)" srcset="https://wlkr.si/brand/part-of-wlkr-si-dark.svg"><img src="https://wlkr.si/brand/part-of-wlkr-si-light.svg" alt="Part of WLKR.SI" width="184" height="32"></picture></a>
 
