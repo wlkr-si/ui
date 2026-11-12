@@ -82,7 +82,7 @@
       "name": "wlkr-loader",
       "type": "registry:component",
       "title": "WLKR loader",
-      "description": "The WLKR.SI Open Lens mark with orbit and breathing motion, pause and reduced-motion support.",
+      "description": "The WLKR.SI arc rotates behind its fixed semicircle, with pause and reduced-motion support.",
       "author": "WLKR Labs",
       "files": [
         {
