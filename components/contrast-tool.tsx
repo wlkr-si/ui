@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import { ArrowLeftRight, Copy } from "lucide-react"
-import { contrastRatio, meets, parseOpaqueHex } from "@/lib/contrast"
+import { contrastRatio, generateAAOptions, meets, parseOpaqueHex } from "@/lib/contrast"
 import { canonicalContrastShareUrl, contrastSharePath, readContrastPair, type ContrastPair } from "@/lib/contrast-link"
 
 function Result({ label, threshold, ratio }: { label: string; threshold: number; ratio: number }) {
@@ -23,6 +23,7 @@ export function ContrastTool() {
   )
   const pair: ContrastPair = readContrastPair(search)
   const [copyState, setCopyState] = React.useState("")
+  const [selectedAAColor, setSelectedAAColor] = React.useState<string | null>(null)
   const [backgroundDraft, setBackgroundDraft] = React.useState<string | null>(null)
   const [textDraft, setTextDraft] = React.useState<string | null>(null)
   const shareRef = React.useRef<HTMLInputElement>(null)
@@ -33,12 +34,21 @@ export function ContrastTool() {
   const fg = parseOpaqueHex(pair.text)!
   const ratio = contrastRatio(bg, fg)
   const shareUrl = canonicalContrastShareUrl(pair)
+  const aaOptions = generateAAOptions(pair.background, pair.text)
+  const selectedColor = aaOptions.some(option => option.color === selectedAAColor)
+    ? selectedAAColor
+    : aaOptions.some(option => option.color === pair.text)
+      ? pair.text
+      : null
 
   function update(key: keyof ContrastPair, value: string) {
     copyAttempt.current += 1
     setCopyState("")
     if (key === "background") setBackgroundDraft(value)
-    else setTextDraft(value)
+    else {
+      setTextDraft(value)
+      setSelectedAAColor(null)
+    }
     if (!parseOpaqueHex(value)) return
     const normalized = value.toUpperCase()
     if (key === "background") setBackgroundDraft(null)
@@ -56,9 +66,20 @@ export function ContrastTool() {
   function swap() {
     copyAttempt.current += 1
     setCopyState("")
+    setSelectedAAColor(null)
     const nextPair = { background: pair.text, text: pair.background }
     setBackgroundDraft(null)
     setTextDraft(null)
+    window.history.replaceState(null, "", contrastSharePath(nextPair))
+    window.dispatchEvent(new PopStateEvent("popstate"))
+  }
+
+  function applyAAColor() {
+    if (!selectedColor || selectedColor === pair.text) return
+    copyAttempt.current += 1
+    setCopyState("")
+    setSelectedAAColor(null)
+    const nextPair = { ...pair, text: selectedColor }
     window.history.replaceState(null, "", contrastSharePath(nextPair))
     window.dispatchEvent(new PopStateEvent("popstate"))
   }
@@ -92,6 +113,32 @@ export function ContrastTool() {
       <div className="contrast-result-row"><span>Normal text</span><Result label="Normal text AA" threshold={4.5} ratio={ratio} /><Result label="Normal text AAA" threshold={7} ratio={ratio} /></div>
       <div className="contrast-result-row"><span>Large text</span><Result label="Large text AA" threshold={3} ratio={ratio} /><Result label="Large text AAA" threshold={4.5} ratio={ratio} /></div>
     </div>
+    <details className="contrast-aa-options">
+      <summary>AA text options</summary>
+      <div className="contrast-aa-content">
+        <p className="contrast-aa-method">RGB mixes in 5% steps toward black or white, up to 20 steps. Each listed colour meets 4.5:1 for this background. Apply to change the text colour.</p>
+        <fieldset className="contrast-aa-list">
+          <legend>Choose a text colour</legend>
+          {aaOptions.map(option => (
+            <label className="contrast-aa-choice" key={option.color}>
+              <input
+                type="radio"
+                name="contrast-aa-color"
+                value={option.color}
+                checked={selectedColor === option.color}
+                onChange={() => setSelectedAAColor(option.color)}
+              />
+              <span className="contrast-aa-swatch" style={{ backgroundColor: option.color }} aria-hidden="true" />
+              <span className="contrast-aa-choice-copy">
+                <strong>{option.color}</strong>
+                <span>{option.direction === "Current" ? "Current text" : option.direction} · {option.ratio.toFixed(2)}:1</span>
+              </span>
+            </label>
+          ))}
+        </fieldset>
+        <button className="contrast-apply" type="button" disabled={!selectedColor || selectedColor === pair.text} onClick={applyAAColor}>Apply</button>
+      </div>
+    </details>
     <p className="contrast-scope">Opaque sRGB colour pair · Text contrast only · <a href="https://www.w3.org/TR/WCAG22/#contrast-minimum" target="_blank" rel="noreferrer">WCAG 2.2</a></p>
     <div className="contrast-share">
       <label htmlFor="contrast-share-url">Share this pair</label>

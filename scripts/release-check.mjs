@@ -16,6 +16,7 @@ const revision = execFileSync("git", ["rev-parse", "HEAD"], { encoding: "utf8" }
 run("test:release")
 run("test:mask")
 run("test:contrast")
+run("test:contrast-options")
 run("build")
 run("lint")
 run("typecheck")
