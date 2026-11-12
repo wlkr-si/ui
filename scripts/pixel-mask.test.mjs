@@ -274,3 +274,60 @@ test("each transform is one ink-preserving replace history step with exact undo/
     assert.equal(maskReducer(empty, { type: 'replace', mask: transformMask(empty.mask, transform) }), empty);
   }
 });
+
+import { PIXEL_EXAMPLES } from "../lib/pixel-examples.ts"
+import { createHash } from "node:crypto"
+import { execFileSync } from "node:child_process"
+import { mkdtemp, writeFile, rm } from "node:fs/promises"
+import { tmpdir } from "node:os"
+import { join } from "node:path"
+
+test("original examples are strict, immutable, distinct artwork with exact robot provenance", async () => {
+  const { parseGrid } = await import("./pixels.mjs")
+  assert.deepEqual(PIXEL_EXAMPLES.map(example => example.mask.length), [8, 16, 32])
+  assert.equal(new Set(PIXEL_EXAMPLES.map(example => example.id)).size, 3)
+  assert.equal(new Set(PIXEL_EXAMPLES.map(example => example.mask.join(""))).size, 3)
+  for (const {mask} of PIXEL_EXAMPLES) {
+    const rows = [...mask]
+    assert.deepEqual(parseGrid(maskGridText(rows)), rows)
+    assert.ok(mask.some(row => row.includes("#")) && mask.some(row => row.includes(".")))
+    assert.ok(Object.isFrozen(mask))
+  }
+  const robot = maskGridText([...PIXEL_EXAMPLES[1].mask])
+  assert.equal(Buffer.byteLength(robot), 272)
+  assert.equal(createHash("sha256").update(robot).digest("hex"), "d30d2b1663011503d2b0434ebd1c6a1cc786add6b6572b996f58e0f9d94158f0")
+})
+
+test("each original example round-trips through the actual unchanged CLI JSON, URL, mask and SVG", async t => {
+  const dir = await mkdtemp(join(tmpdir(), "wlkr-examples-"))
+  t.after(() => rm(dir, { recursive: true, force: true }))
+  const run = (...args) => execFileSync(process.execPath, ["scripts/pixels.mjs", ...args], { encoding: "utf8" }).trim()
+  for (const example of PIXEL_EXAMPLES) {
+    const file = join(dir, example.id + ".txt"), mask = [...example.mask]
+    await writeFile(file, maskGridText(mask))
+    for (const ink of [null, "#336699"]) {
+      const flags = ink ? ["--ink", ink] : []
+      const json = JSON.parse(run("--grid", file, "--format", "json", ...flags))
+      assert.deepEqual(json.mask, mask); assert.equal(json.size, mask.length); assert.equal(json.ink, ink)
+      assert.equal(run("--grid", file, ...flags), json.url)
+      assert.deepEqual(JSON.parse(run("--mask", json.token, "--format", "json")), json)
+      const svg = run("--mask", json.token, "--format", "svg", "--ink", ink || "#171717")
+      assert.ok(svg.includes('viewBox="0 0 ' + mask.length + " " + mask.length + '"'))
+      assert.equal((svg.match(/<rect /g) || []).length, mask.join("").split("#").length - 1)
+    }
+  }
+})
+
+test("example replacement retains ink and exact one-step undo/redo across previous sizes", () => {
+  for (const example of PIXEL_EXAMPLES) for (const size of [8,16,32]) for (const ink of [null, "#336699"]) {
+    const original = initialMaskState(paintMask(blankMask(size), [0, size * size - 1], true), ink)
+    const selected = maskReducer(original, {type:"replace", mask:[...example.mask]})
+    assert.deepEqual(selected.mask, [...example.mask]); assert.equal(selected.ink, ink); assert.equal(selected.past.length, 1)
+    const undo = maskReducer(selected, {type:"undo"})
+    assert.deepEqual(undo.mask, original.mask); assert.equal(undo.ink, ink)
+    const redo = maskReducer(undo, {type:"redo"})
+    assert.deepEqual(redo.mask, selected.mask); assert.equal(redo.ink, ink)
+    const repeat = maskReducer(selected, {type:"replace", mask:[...example.mask]})
+    assert.equal(repeat, selected)
+  }
+})
