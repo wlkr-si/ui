@@ -43,22 +43,21 @@ Motion stops on explicit pause, off-screen intersection, hidden document, or red
 
 ## WlkrLoader
 
-The approved Open Lens paths remain fixed in proportion at the defaults. Only the arc rotates. Existing copied usages retain the previous behind-body motion because `cutThrough` defaults to false. The animation room explicitly enables the new cut-through behavior while the owner tunes it; it does not publish choices to the homepage.
+The approved Open Lens paths remain fixed in proportion at the defaults. Existing copied usages retain the previous behind-body motion because `cutThrough` defaults to false. The animation room enables liquid motion while the owner tunes it; it does not publish choices to the homepage.
 
-With `cutThrough`, a fixed circular boundary divides the solid semicircle into two complete rigid pieces: an inner cap and an outer curved rim. The pieces translate in opposite directions as the positive-ink arc slides between them, then settle together. No moving mask deletes a strip from the body and no color inversion simulates the split. The complementary circle clip and mask define the unchanging piece geometry; a .4-unit shared edge prevents a resting antialias seam. Opening follows the arc from the right side through the lower half to the left side; reverse mirrors the passage. A resting split gap is optional and vertical, so looping remains continuous at the seam.
+With `cutThrough`, the body behaves like liquid. A split line follows the arc's own centre, dividing the bowl into an inner cap and an outer rim. The groove opens only where the arc is inside the bowl, so the arc dips in with a meniscus, pinches the inner material into a floating drop, then the two sides flow back together behind it with a small damped ripple. An SVG surface-tension filter (blur, alpha threshold, clipped back to the source) fuses anything closer than the goo radius, so pieces neck, snap and reconnect instead of sliding rigidly. Surface tension relaxes at rest, where the frame is exactly the closed mark. Reverse leads with the other end of the arc.
 
 | Prop | Default | Meaning and bounds |
 | --- | --- | --- |
 | `variant` | `orbit` | Compatibility input; previous variant names use the same arc motion. |
 | `size` | 48 | Square size, clamped 16–240 px. |
 | `duration` | 1,800 | Cycle duration, clamped 800–10,000 ms. |
-| `cutThrough` | false | Separate the two physical body pieces for the arc passage. |
-| `cutGap` | 0 | Compatibility name for resting split gap, clamped 0–24 SVG units. |
-| `openingDistance` | 64 | Additional piece separation during contact, clamped 0–100 SVG units. |
-| `splitRadius` | 74 | Fixed circle dividing cap and rim, clamped 40–100 SVG units. |
-| `openingAngle` | 0 | Offset of the separation direction, clamped -90–90 degrees. |
-| `openAt` | 10 | Contact opening angle, clamped 0–120 degrees. |
-| `closeAt` | 350 | Contact closing angle, clamped 240–360 degrees. |
+| `cutThrough` | false | Liquid mode: the bowl parts around the arc and seals behind it. |
+| `openingDistance` | 40 | How far the groove opens around the arc, clamped 0–100 SVG units. |
+| `splitRadius` | 74 | Split line radius around the arc centre, clamped 40–100 SVG units. |
+| `goo` | 11 | Surface tension radius, clamped 0–24 SVG units; 0 removes the filter. |
+| `squish` | .7 | Share of the opening that lifts the rim instead of thinning the drop, 0–1. |
+| `ripple` | .22 | Ripple as the bowl seals, 0–1. |
 | `arcScale` | 1 | Arc size relative to the approved path, clamped .6–1.2. |
 | `tilt` | -24 | Symbol resting tilt, clamped -60–60 degrees. |
 | `reverse` | false | Reverse the cycle direction. |
@@ -66,21 +65,22 @@ With `cutThrough`, a fixed circular boundary divides the solid semicircle into t
 | `frame` | unset | Exact static turn from 0–1; supplying it suspends animation. Frame is an angle, independent of easing/direction. |
 | `startAngle` | 0 | Starting orientation in degrees for live playback. |
 | `loop` | true | False performs one turn and keeps its final pose. |
-| `restartKey` | 0 | Change to restart both arc layers together. |
-| `onCycleComplete` | unset | Once-mode callback from the visible arc only. |
-| `paused` | false | Freeze the current CSS animation phase. |
+| `restartKey` | 0 | Change to restart the turn. |
+| `onCycleComplete` | unset | Once-mode callback after the final pose. |
+| `paused` | false | Freeze the current phase. |
 | `label` | “Loading” | One accessible loading announcement. |
 | `decorative` | false | Hide when another control already announces loading. |
+| `cutGap`, `openingAngle`, `openAt`, `closeAt` | unset | Deprecated rigid-motion inputs; ignored. |
 | `stagger` | 120 | Deprecated compatibility input; no longer changes motion. |
 | `className` | unset | Inherited color/layout composition. |
 
-CSS transforms provide motion without a JavaScript frame loop. `lib/open-lens-motion.ts` is the shared pure pose/timing model and ships with the registry component. Piece keyframes sample the actual globally eased arc angle at 720 timeline intervals, with linear interpolation between samples. Smooth timing inverts the CSS cubic Bezier x coordinate before evaluating y; it does not ease each small piece segment independently. Explicit frame inspection computes the exact pose from the same function. Opening is a velocity-continuous quick rise, clear passage and settlement; only translation moves the pieces. Explicit pause, off-screen intersection, hidden documents and reduced motion suspend continuous animation. An explicitly selected static frame remains inspectable with reduced motion. Observers and listeners clean up on unmount; animation never rewrites live-region text.
+Without `cutThrough`, a CSS transform rotates the arc with no JavaScript frame loop. Liquid mode draws each frame from `lib/open-lens-motion.ts`, the shared pure geometry that ships with the registry component: rays cast from the arc centre rebuild both pieces (72 rays below 96 px, 160 above), and only the two body paths, the blur radius and the arc rotation change per frame. Explicit frame inspection renders the same function, so scrubbing and playback match. Smooth timing inverts the CSS cubic Bezier x coordinate. Explicit pause, off-screen intersection, hidden documents and reduced motion stop the frame loop; resuming continues from the paused phase. An explicitly selected static frame remains inspectable with reduced motion. Observers, listeners and frames clean up on unmount; animation never rewrites live-region text.
 
 ### Animation room
 
-[Animation room](https://ui.wlkr.si/animation) renders the real `WlkrLoader` in loader and approved-wordmark layouts. It provides cycle duration, size, arc scale, opening distance, split radius, opening angle, open/close timing, resting split gap, tilt, direction, easing, Separate pieces comparison, center guides, light/dark/checkerboard backgrounds, Loop/Hover once, play/pause and exact angle scrubbing. Hover once completes after pointer exit; touch and keyboard users can use Play once. Pausing samples the visible arc angle; resuming starts from that angle. Reset restores the room defaults.
+[Animation room](https://ui.wlkr.si/animation) renders the real `WlkrLoader` in loader and approved-wordmark layouts. It provides cycle duration, size, arc scale, opening, split radius, goo, squish, ripple, tilt, direction, easing, a Liquid comparison toggle, center guides, light/dark/checkerboard backgrounds, Loop/Hover once, play/pause and exact angle scrubbing. Hover once completes after pointer exit; touch and keyboard users can use Play once. Pausing samples the visible arc angle; resuming starts from that angle. Reset restores the room defaults.
 
-Copy settings link serializes the whitelisted, versioned visual settings and current angle to the URL fragment. Version 2 includes physical interaction settings. Valid version-1 links migrate their common fields into the new separation defaults; their old painted-cut clearance resets to zero resting split gap. Opening a settings link restores a paused exact frame for review. The room does not write browser storage or send settings to a backend, and does not apply them to the homepage. Clipboard denial reveals a selectable link. Unknown keys, unsupported versions, invalid types, out-of-range values, malformed encoding and oversized fragments are rejected. Ordinary page anchors are not treated as settings links.
+Copy settings link serializes the whitelisted, versioned visual settings and current angle to the URL fragment. Version 3 holds the liquid settings. Valid version-1 and version-2 links keep their shared look and playback settings and take the liquid defaults, since their rigid separation values no longer apply. Opening a settings link restores a paused exact frame for review. The room does not write browser storage or send settings to a backend, and does not apply them to the homepage. Clipboard denial reveals a selectable link. Unknown keys, unsupported versions, invalid types, out-of-range values, malformed encoding and oversized fragments are rejected. Ordinary page anchors are not treated as settings links.
 
 ## Provenance
 
