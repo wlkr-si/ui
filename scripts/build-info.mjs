@@ -9,6 +9,14 @@ const info = {
   sourceCommit: execFileSync("git", ["rev-parse", "HEAD"], { encoding: "utf8" }).trim(),
   builtAt: new Date().toISOString(),
   registrySha256,
-  pageSha256: { "/pixels": createHash("sha256").update(await readFile("out/pixels.html")).digest("hex"), "/contrast": createHash("sha256").update(await readFile("out/contrast.html")).digest("hex") },
+  pageSha256: {
+    "/": createHash("sha256").update(await readFile("out/index.html")).digest("hex"),
+    "/pixels": createHash("sha256").update(await readFile("out/pixels.html")).digest("hex"),
+    "/contrast": createHash("sha256").update(await readFile("out/contrast.html")).digest("hex"),
+  },
+  imageSha256: Object.fromEntries(await Promise.all([
+    "/opengraph-image", "/pixels/opengraph-image", "/contrast/opengraph-image",
+  ].map(async path => [path, createHash("sha256").update(await readFile(`out${path}`)).digest("hex")]))),
+
 }
 await writeFile("out/build-info.json", JSON.stringify(info, null, 2) + "\n")

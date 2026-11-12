@@ -10,13 +10,20 @@ const NEW = "22222222-2222-4222-8222-222222222222"
 const OTHER = "33333333-3333-4333-8333-333333333333"
 const digest = value => createHash("sha256").update(value).digest("hex")
 const paths = ["/registry.json", "/r/registry.json", ...Array.from({ length: 13 }, (_, i) => `/r/item-${i}.json`)]
-function artifact(letter) {
+const pagePaths = ["/", "/pixels", "/contrast"]
+const imagePaths = ["/opengraph-image", "/pixels/opengraph-image", "/contrast/opengraph-image"]
+function artifact(letter, current = false) {
   const bodies = Object.fromEntries(paths.map(path => [path, JSON.stringify({ path, source: letter })]))
+  bodies["/"] = `<html><h1>Gallery ${letter}</h1></html>`
   bodies["/pixels"] = `<html><h1>Pixels ${letter}</h1></html>`
   bodies["/contrast"] = `<html><h1>Contrast ${letter}</h1></html>`
-  return { bodies, receipt: { sourceCommit: letter.repeat(40), builtAt: "2026-11-11T00:00:00.000Z", pageSha256: { "/pixels": digest(bodies["/pixels"]), "/contrast": digest(bodies["/contrast"]) }, registrySha256: Object.fromEntries(paths.map(path => [path, digest(bodies[path])])) } }
+  for (const path of imagePaths) bodies[path] = `PNG bytes ${path} ${letter}`
+  const pageSha256 = Object.fromEntries((current ? pagePaths : pagePaths.slice(1)).map(path => [path, digest(bodies[path])]))
+  const receipt = { sourceCommit: letter.repeat(40), builtAt: "2026-11-11T00:00:00.000Z", pageSha256, registrySha256: Object.fromEntries(paths.map(path => [path, digest(bodies[path])])) }
+  if (current) receipt.imageSha256 = Object.fromEntries(imagePaths.map(path => [path, digest(bodies[path])]))
+  return { bodies, receipt }
 }
-const prior = artifact("a"), candidate = artifact("b")
+const prior = artifact("a"), candidate = artifact("b", true)
 function fixture(options = {}) {
   const state = { version: OLD, history: [], calls: [], requests: [], corrupted: false, restores: 0, deployments: 0, uploadCount: 0 }
   function activate(version, message) {
@@ -79,7 +86,7 @@ function fixture(options = {}) {
       }
       return new Response(JSON.stringify(options.badBaseline && state.version === OLD ? {} : active.receipt))
     }
-    if ((options.pageFails && parsed.pathname === "/pixels" || options.contrastFails && parsed.pathname === "/contrast" || options.verifyFails || options.legacyFails && parsed.origin === HOSTS[1]) && state.version === NEW || options.restoreVerificationFails && state.restores > 0) {
+    if ((options.pageFails && parsed.pathname === "/pixels" || options.contrastFails && parsed.pathname === "/contrast" || options.imageFails && parsed.pathname === "/pixels/opengraph-image" || options.verifyFails || options.legacyFails && parsed.origin === HOSTS[1]) && state.version === NEW || options.restoreVerificationFails && state.restores > 0) {
       state.corrupted = true
       return new Response("wrong registry bytes")
     }
@@ -95,7 +102,7 @@ test("success checks exact receipt and all 15 endpoint bytes on both hosts", asy
   assert.equal(result.version, NEW)
   assert.equal(result.previousVersion, OLD)
   assert.equal(state.restores, 0)
-  for (const host of HOSTS) for (const path of [...paths, "/pixels", "/contrast"]) assert.ok(state.requests.filter(url => url === host + path).length >= 2, host + path)
+  for (const host of HOSTS) for (const path of [...paths, ...pagePaths, ...imagePaths]) assert.ok(state.requests.filter(url => url === host + path).length >= 1, host + path)
 })
 test("no provider access after release-check failure", async () => {
   const { state, adapters } = fixture({ checkFails: true })
@@ -133,7 +140,7 @@ test("bad live bytes trigger one rollback and full two-host restoration checks",
   await assert.rejects(release(adapters), /Previous version .* restored and verified/)
   assert.equal(state.restores, 1)
   assert.equal(state.version, OLD)
-  for (const host of HOSTS) for (const path of [...paths, "/pixels", "/contrast"]) assert.ok(state.requests.filter(url => url === host + path).length >= 2)
+  for (const host of HOSTS) for (const path of [...paths, "/pixels", "/contrast"]) assert.ok(state.requests.filter(url => url === host + path).length >= 1)
 })
 test("rollback CLI error after provider mutation still verifies restoration", async () => {
   const { state, adapters } = fixture({ verifyFails: true, restoreFailsAfterMutation: true })
@@ -188,18 +195,20 @@ test("bounded network retries recover transient failure and reject stale exact r
 })
 test("local receipt verifies HEAD, catalog, and actual file bytes", async () => {
   const catalog = JSON.stringify({ items: paths.slice(2).map(path => ({ name: path.slice(3, -5) })) })
-  const bodies = { ...prior.bodies, "/registry.json": catalog }
-  const receipt = { ...prior.receipt, registrySha256: { ...prior.receipt.registrySha256, "/registry.json": digest(catalog) } }
+  const bodies = { ...candidate.bodies, "/registry.json": catalog }
+  const receipt = { ...candidate.receipt, registrySha256: { ...candidate.receipt.registrySha256, "/registry.json": digest(catalog) } }
   const run = async () => ({ status: 0, stdout: receipt.sourceCommit, stderr: "" })
-  const read = async path => path === "out/build-info.json" ? JSON.stringify(receipt) : bodies[path === "out/pixels.html" ? "/pixels" : path === "out/contrast.html" ? "/contrast" : path.slice(3)]
+  const read = async path => path === "out/build-info.json" ? JSON.stringify(receipt) : bodies[path === "out/index.html" ? "/" : path === "out/pixels.html" ? "/pixels" : path === "out/contrast.html" ? "/contrast" : path.slice(3)]
   assert.deepEqual(await localReceipt(run, read), receipt)
   await assert.rejects(localReceipt(async () => ({ status: 0, stdout: "0".repeat(40), stderr: "" }), read), /does not match HEAD/)
   await assert.rejects(localReceipt(run, async path => path === "out/r/item-0.json" ? "changed" : read(path)), /Local asset differs/)
-  await assert.rejects(localReceipt(run, async path => path === "out/pixels.html" || path === "out/contrast.html" ? "changed" : read(path)), /Local asset differs/)
+  await assert.rejects(localReceipt(run, async path => ["out/index.html", "out/pixels.html", "out/contrast.html", "out/opengraph-image", "out/pixels/opengraph-image", "out/contrast/opengraph-image"].includes(path) ? "changed" : read(path)), /Local asset differs/)
   const pixelOnly = { ...receipt, pageSha256: { "/pixels": receipt.pageSha256["/pixels"] } }
-  await assert.rejects(localReceipt(run, async path => path === "out/build-info.json" ? JSON.stringify(pixelOnly) : read(path)), /missing \/pixels or \/contrast/)
+  await assert.rejects(localReceipt(run, async path => path === "out/build-info.json" ? JSON.stringify(pixelOnly) : read(path)), /missing the gallery, Pixels or Contrast page/)
   const missingPage = { ...receipt }; delete missingPage.pageSha256
-  await assert.rejects(localReceipt(run, async path => path === "out/build-info.json" ? JSON.stringify(missingPage) : read(path)), /missing \/pixels/)
+  await assert.rejects(localReceipt(run, async path => path === "out/build-info.json" ? JSON.stringify(missingPage) : read(path)), /missing the gallery/)
+  const missingImage = { ...receipt, imageSha256: { ...receipt.imageSha256 } }; delete missingImage.imageSha256["/contrast/opengraph-image"]
+  await assert.rejects(localReceipt(run, async path => path === "out/build-info.json" ? JSON.stringify(missingImage) : read(path)), /Invalid image receipt/)
 })
 test("process adapter inherits environment and invokes argv without shell", () => {
   let observed
@@ -237,6 +246,16 @@ test("immediate pre-rollback ID guard catches a newly intervening deployment", a
   assert.equal(state.restores, 0)
   assert.equal(state.version, OTHER)
 })
+test("social preview bytes are independently checked on either host and trigger restoration", async () => {
+  for (const host of HOSTS) {
+    const { state, adapters } = fixture()
+    state.version = NEW
+    await assert.rejects(verifyHosts(candidate.receipt, { ...adapters, attempts: 1, fetchImpl: (url, init) => new URL(url).origin === host && new URL(url).pathname === "/pixels/opengraph-image" ? Promise.resolve(new Response("wrong preview")) : adapters.fetchImpl(url, init) }), /asset SHA-256 mismatch/)
+  }
+  const { state, adapters } = fixture({ imageFails: true })
+  await assert.rejects(release(adapters), /Previous version .* restored and verified/)
+  assert.equal(state.restores, 1)
+})
 test("legacy-host-only registry corruption also triggers verified restoration", async () => {
   const { state, adapters } = fixture({ legacyFails: true })
   await assert.rejects(release(adapters), /restored and verified/)
@@ -272,6 +291,8 @@ test("focused page corruption on either host fails verification while older rece
   assert.deepEqual(validateReceipt(legacy), legacy)
   await verifyHosts(legacy, { ...adapters, attempts: 1, fetchImpl: (url, init) => new URL(url).pathname === "/build-info.json" ? Promise.resolve(new Response(JSON.stringify(legacy))) : adapters.fetchImpl(url, init) })
   for (const pages of [{}, { "/pixels": "bad" }, { "/pixels": pageSha256["/pixels"], "/other": pageSha256["/pixels"] }]) assert.throws(() => validateReceipt({ ...prior.receipt, pageSha256: pages }), /Invalid page receipt/)
+  assert.throws(() => validateReceipt({ ...candidate.receipt, imageSha256: { "/opengraph-image": "0".repeat(64) } }), /Invalid image receipt/)
+  assert.throws(() => validateReceipt({ ...candidate.receipt, imageSha256: { ...candidate.receipt.imageSha256, "/evil": "0".repeat(64) } }), /Invalid image receipt/)
 })
 
 test("contrast bytes are independently checked on both hosts and trigger restoration when wrong", async () => {

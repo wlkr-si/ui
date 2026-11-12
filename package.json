@@ -1,6 +1,6 @@
 {
   "name": "wlkr-ui",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
@@ -15,7 +15,8 @@
     "test:release": "node --test scripts/deploy.test.mjs",
     "test:mask": "node --test scripts/pixel-mask.test.mjs",
     "test:contrast": "node --test scripts/contrast.test.mjs",
-    "test:contrast-options": "node --test scripts/contrast-options.test.mjs"
+    "test:contrast-options": "node --test scripts/contrast-options.test.mjs",
+    "test:social-previews": "node --test scripts/social-preview.test.mjs"
   },
   "dependencies": {
     "class-variance-authority": "^0.7.1",
@@ -43,5 +44,6 @@
     "typescript": "^5.9.2",
     "wrangler": "4.145.0"
   },
-  "packageManager": "pnpm@11.15.0"
+  "packageManager": "pnpm@11.15.0",
+  "type": "module"
 }
