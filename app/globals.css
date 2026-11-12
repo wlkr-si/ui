@@ -62,7 +62,7 @@
 .hero { padding:79px 0 98px; display:grid; grid-template-columns:1fr 280px; align-items:end; gap:40px; }
 .hero h1 { font-size:clamp(64px,8.3vw,124px); line-height:.96; font-weight:620; letter-spacing:-.078em; }
 .hero-note { padding-bottom:6px; font-size:16px; line-height:1.6; color:var(--muted-foreground); max-width:260px; }
-.hero-note a { display:flex; gap:9px; align-items:center; color:var(--foreground); margin-top:24px; font-size:13px; }
+.hero-note a { display:flex; gap:9px; align-items:center; color:var(--foreground); min-height:44px; font-size:13px; }
 .hero-note svg { width:16px; }
 .workbench { display:grid; grid-template-columns:220px minmax(0,1fr); gap:55px; padding-bottom:100px; }
 .index { position:sticky; top:36px; height:fit-content; }
@@ -124,7 +124,7 @@
 .text-link { text-decoration:underline; text-underline-offset:4px; }
 @media (max-width:900px) {
  .shell { padding:0 6%; } .hero { grid-template-columns:1fr; padding:60px 0 65px; gap:30px; }
- .hero-note { max-width:400px; font-size:15px; } .hero-note a { margin-top:16px; }
+ .hero-note { max-width:400px; font-size:15px; }
  .workbench { grid-template-columns:170px minmax(0,1fr); gap:30px; } .component-heading h2 { font-size:28px; }
 }
 @media (max-width:620px) {
