@@ -8,6 +8,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { CodePanel } from "@/components/code-panel"
 import { Disclosure } from "@/components/disclosure"
 import { PixelObject, type PixelObjectProps } from "@/registry/wlkr/pixel-object"
+import { capturePixelSvg, pixelPng, downloadPixelSnapshot } from "@/lib/pixel-snapshot"
 import { ChoiceControl, RangeControl } from "@/components/playground-controls"
 
 type Settings=Required<Pick<PixelObjectProps,"dotShape"|"rotationSpeed"|"flickerAmount"|"flickerSpeed"|"pattern"|"delay"|"stagger"|"seed"|"randomness"|"opacity"|"rotating">>&Pick<PixelObjectProps,"dotSize"|"gap">
@@ -24,10 +25,32 @@ export function PixelPlayground() {
   const [preset,setPreset]=React.useState("sphere")
   const [restart,setRestart]=React.useState(0)
   const [morph,setMorph]=React.useState(false)
+  const previewRef = React.useRef<HTMLDivElement>(null)
+  const exportingRef = React.useRef(false)
+  const [exporting, setExporting] = React.useState<"svg" | "png" | null>(null)
+  const [exportStatus, setExportStatus] = React.useState({ message: "", error: false })
+  async function exportSnapshot(format: "svg" | "png") {
+    if (exportingRef.current) return
+    exportingRef.current = true
+    setExporting(format)
+    setExportStatus({ message: `Preparing ${format.toUpperCase()}…`, error: false })
+    try {
+      const svg = previewRef.current?.querySelector<SVGSVGElement>(".wlkr-pixel-object svg")
+      if (!svg) throw new Error("The pixel preview is not ready. Try again.")
+      const snapshot = capturePixelSvg(svg)
+      // Commit the pending state and block same-turn repeats for either format.
+      await new Promise<void>(resolve => setTimeout(resolve, 0))
+      const blob = format === "png" ? await pixelPng(snapshot) : snapshot.blob
+      downloadPixelSnapshot(blob, format)
+      setExportStatus({ message: `${format.toUpperCase()} download started.`, error: false })
+    } catch (error) {
+      setExportStatus({ message: error instanceof Error ? error.message : "Download failed. Try again.", error: true })
+    } finally { exportingRef.current = false; setExporting(null) }
+  }
   function update<K extends keyof Settings>(key:K,value:Settings[K]) {setSettings(current=>({...current,[key]:value}));setPreset("custom");if(key==="delay")setRestart(value=>value+1)}
   function apply(name:string){setSettings({...presets[name]??defaults});setPreset(name);setMorph(false);setRestart(value=>value+1)}
   const code=`import { PixelObject } from "@/components/wlkr/pixel-object"\n\n<PixelObject\n  label="Pixel sphere"\n${morph?'  morph={{ shapes: ["sphere", "cube", "torus"], duration: 8 }}\n':""}${Object.entries(settings).filter(([key,value])=>value!==undefined&&value!==defaults[key as keyof Settings]).map(([key,value])=>`  ${key}=${typeof value==="string"?JSON.stringify(value):`{${value}}`}\n`).join("")}/>`
-  return <Tabs defaultValue="preview" className="docs-tabs mt-6"><TabsList aria-label="Pixel object view"><TabsTrigger value="preview">Preview</TabsTrigger><TabsTrigger value="usage">Usage</TabsTrigger></TabsList><TabsContent value="preview"><div className="preview"><div className="preview-content pixel-stage"><PixelObject {...settings} restartKey={restart} morph={morph?{shapes:["sphere","cube","torus"],duration:8}:undefined}/></div></div><Disclosure title="Customize" description="Shape, movement, and light" className="customize"><div className="customize-heading"><ChoiceControl label="Preset" value={preset} onChange={apply} options={preset==="custom"?[{value:"custom",label:"Custom"},...presetOptions]:presetOptions}/><Button type="button" variant="ghost" onClick={()=>apply("sphere")}>Reset</Button></div><label className="demo-option mb-6"><Switch checked={morph} onCheckedChange={value=>{setMorph(value);setPreset("custom")}}/>Morph sphere, cube, and torus</label><FieldGroup className="customize-grid">
+  return <Tabs defaultValue="preview" className="docs-tabs mt-6"><TabsList aria-label="Pixel object view"><TabsTrigger value="preview">Preview</TabsTrigger><TabsTrigger value="usage">Usage</TabsTrigger></TabsList><TabsContent value="preview"><div className="preview"><div ref={previewRef} className="preview-content pixel-stage"><PixelObject {...settings} restartKey={restart} morph={morph?{shapes:["sphere","cube","torus"],duration:8}:undefined}/></div></div><div className="pixel-exports" role="group" aria-label="Download pixel object"><Button type="button" variant="ghost" className="min-h-11 min-w-14" aria-label="Download SVG snapshot" disabled={exporting !== null} onClick={() => exportSnapshot("svg")}>{exporting === "svg" ? "SVG…" : "SVG"}</Button><Button type="button" variant="ghost" className="min-h-11 min-w-14" aria-label="Download PNG snapshot" disabled={exporting !== null} onClick={() => exportSnapshot("png")}>{exporting === "png" ? "PNG…" : "PNG"}</Button><p role="status" aria-live="polite" className={exportStatus.error ? "pixel-export-error" : "sr-only"}>{exportStatus.message}</p></div><Disclosure title="Customize" description="Shape, movement, and light" className="customize"><div className="customize-heading"><ChoiceControl label="Preset" value={preset} onChange={apply} options={preset==="custom"?[{value:"custom",label:"Custom"},...presetOptions]:presetOptions}/><Button type="button" variant="ghost" onClick={()=>apply("sphere")}>Reset</Button></div><label className="demo-option mb-6"><Switch checked={morph} onCheckedChange={value=>{setMorph(value);setPreset("custom")}}/>Morph sphere, cube, and torus</label><FieldGroup className="customize-grid">
     <ChoiceControl label="Dot shape" value={settings.dotShape} onChange={value=>update("dotShape",value as Settings["dotShape"])} options={[{value:"square",label:"Square"},{value:"rounded",label:"Rounded"},{value:"circle",label:"Circle"}]}/>
     <ChoiceControl label="Pattern" value={settings.pattern} onChange={value=>update("pattern",value as Settings["pattern"])} options={[{value:"steady",label:"Steady"},{value:"scatter",label:"Scatter"},{value:"wave",label:"Wave"},{value:"scan",label:"Scan"}]}/>
     <RangeControl label="Dot size" value={settings.dotSize??5.2} min={1} max={12} step={.2} unit="px" onChange={value=>update("dotSize",value)}/>
