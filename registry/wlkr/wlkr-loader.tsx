@@ -97,17 +97,20 @@ export function WlkrLoader({ variant = "orbit", size = 48, duration = 1800, stag
     preference.addEventListener("change", sync); document.addEventListener("visibilitychange", sync); sync()
     return () => { observer.disconnect(); preference.removeEventListener("change", sync); document.removeEventListener("visibilitychange", sync) }
   }, [paused, fixed])
-  React.useEffect(() => { progress.current = 0 }, [restartKey, start, cutThrough])
+  // Leaving a held frame starts a fresh turn, so a hover can replay just by clearing `frame`.
+  React.useEffect(() => { progress.current = 0 }, [restartKey, start, cutThrough, fixed])
+  // Frame loops write the DOM directly, so a held frame must be redrawn rather than left to React.
+  const draw = React.useCallback((turn: number, squash = 0) => {
+    jellyRef.current?.setAttribute("transform", curve ? lensSquashMatrix(curve, squash) : "")
+    const next = liquidLensFrame(turn, options, rays)
+    innerRef.current?.setAttribute("d", next.inner)
+    outerRef.current?.setAttribute("d", next.outer)
+    blurRef.current?.setAttribute("stdDeviation", next.goo.toFixed(2))
+    if (arcRef.current) arcRef.current.style.transform = `rotate(${turn}deg)`
+  }, [curve, options, rays])
+  React.useEffect(() => { if (cutThrough && fixed !== undefined) draw(fixed) }, [cutThrough, fixed, draw])
   React.useEffect(() => {
     if (!cutThrough || fixed !== undefined || !motion) return
-    const draw = (turn: number, squash = 0) => {
-      if (curve) jellyRef.current?.setAttribute("transform", lensSquashMatrix(curve, squash))
-      const next = liquidLensFrame(turn, options, rays)
-      innerRef.current?.setAttribute("d", next.inner)
-      outerRef.current?.setAttribute("d", next.outer)
-      blurRef.current?.setAttribute("stdDeviation", next.goo.toFixed(2))
-      if (arcRef.current) arcRef.current.style.transform = `rotate(${turn}deg)`
-    }
     let request = 0, origin: number | undefined
     const step = (now: number) => {
       origin ??= now - progress.current * beat
@@ -120,7 +123,7 @@ export function WlkrLoader({ variant = "orbit", size = 48, duration = 1800, stag
     }
     request = requestAnimationFrame(step)
     return () => cancelAnimationFrame(request)
-  }, [cutThrough, fixed, motion, beat, loop, start, reverse, easing, options, rays, restartKey, curve])
+  }, [cutThrough, fixed, motion, beat, loop, start, reverse, easing, restartKey, curve, draw])
   const arc = () => <g ref={arcRef} className="wlkr-loader-arc" style={motionStyle} data-visible-arc="true" onAnimationEnd={event => { if (event.target === event.currentTarget && !loop && !cutThrough) onCycleComplete?.() }}>
     <g transform={`${transform} scale(${scale})`}><path transform="translate(0 -7)" d={arcPath} fill="currentColor" /></g>
   </g>

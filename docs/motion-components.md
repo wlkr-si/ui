@@ -62,7 +62,7 @@ With `cutThrough`, the body behaves like liquid. A split line follows the arc's 
 | `tilt` | -24 | Symbol resting tilt, clamped -60–60 degrees. |
 | `reverse` | false | Reverse the cycle direction. |
 | `easing` | `linear` | `linear` or `smooth`. |
-| `frame` | unset | Exact static turn from 0–1; supplying it suspends animation. Frame is an angle, independent of easing/direction. |
+| `frame` | unset | Exact static turn from 0–1; supplying it suspends animation and redraws that pose. Clearing it starts a fresh turn, so a hover can replay by toggling `frame`. Frame is an angle, independent of easing/direction. |
 | `startAngle` | 0 | Starting orientation in degrees for live playback. |
 | `loop` | true | False performs one turn and keeps its final pose. |
 | `bounce` | false | Liquid mode with `loop` off: a quick hover where the arc kicks forward, strikes the bowl at first contact, squashes a few degrees in while the bowl jiggles, rebounds and settles home. `duration` is the whole bounce (about 350 ms suits a hover). Starts from rest. |
