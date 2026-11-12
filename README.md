@@ -22,6 +22,8 @@ import { PixelObject } from "@/components/wlkr/pixel-object"
 
 Use your project's configured import alias. Components are copied into your source; there is no WLKR runtime service or account. The collection contains eleven original components, optional typography and a light/dark theme. Original component code is MIT; brand assets and fonts have separate terms.
 
+The gallery and focused tools use primary-domain canonical and social metadata with static, page-specific 1200×630 previews. Next.js renders these previews during the static build from the approved local mark and Geist font; no image service is called. The existing **ui.wlkrlabs.com** host remains available.
+
 The gallery is available at **ui.wlkr.si**. The focused [contrast checker](https://ui.wlkr.si/contrast) previews opaque colour pairs, checks WCAG text thresholds, and shares pairs by URL. Optional AA text mixes never change the selected colour until applied. The existing **ui.wlkrlabs.com** host and installation namespace remain available. The current source is [wlkr-si/ui](https://github.com/wlkr-si/ui). Dated release and consumer-installation evidence is kept in [verification](docs/verification.md); a source or documentation commit does not itself deploy the gallery.
 
 The private package is version 0.6.0. See [the changelog](CHANGELOG.md) for the gallery milestone; distribution remains GitHub source and the public registry, not an npm package.

@@ -16,3 +16,10 @@
   Cache-Control: public, max-age=0, must-revalidate, no-transform
 /contrast.html
   Cache-Control: public, max-age=0, must-revalidate, no-transform
+
+/opengraph-image
+  Content-Type: image/png
+/pixels/opengraph-image
+  Content-Type: image/png
+/contrast/opengraph-image
+  Content-Type: image/png

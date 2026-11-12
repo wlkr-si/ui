@@ -3,9 +3,23 @@ import { ContrastTool } from "@/components/contrast-tool"
 import { SiteHeader, SiteFooter } from "@/components/site-chrome"
 
 export const metadata: Metadata = {
-  title: "Contrast — wlkr/ui",
+  title: "Contrast",
   description: "Check text and background colour contrast against WCAG 2.2 thresholds.",
   alternates: { canonical: "https://ui.wlkr.si/contrast" },
+  openGraph: {
+    type: "website",
+    url: "https://ui.wlkr.si/contrast",
+    siteName: "wlkr/ui",
+    title: "Contrast",
+    description: "Check text and background colour contrast against WCAG 2.2 thresholds.",
+    images: [{ url: "/contrast/opengraph-image", width: 1200, height: 630, type: "image/png", alt: "Contrast tool preview" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Contrast",
+    description: "Check text and background colour contrast against WCAG 2.2 thresholds.",
+    images: [{ url: "/contrast/opengraph-image", alt: "Contrast tool preview" }],
+  },
 }
 
 export default function ContrastPage() {
