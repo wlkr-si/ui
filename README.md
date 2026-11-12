@@ -26,7 +26,28 @@ The gallery and focused tools use primary-domain canonical and social metadata w
 
 The gallery is available at **ui.wlkr.si**. The focused [contrast checker](https://ui.wlkr.si/contrast) previews opaque colour pairs, checks WCAG text thresholds, and shares pairs by URL. Optional AA text mixes never change the selected colour until applied. The existing **ui.wlkrlabs.com** host and installation namespace remain available. The current source is [wlkr-si/ui](https://github.com/wlkr-si/ui). Dated release and consumer-installation evidence is kept in [verification](docs/verification.md); a source or documentation commit does not itself deploy the gallery.
 
-The private package is version 0.6.0. See [the changelog](CHANGELOG.md) for the gallery milestone; distribution remains GitHub source and the public registry, not an npm package.
+The private package is version 0.8.0. See [the changelog](CHANGELOG.md) for the gallery milestone; distribution remains GitHub source and the public registry, not an npm package.
+
+## Pixels CLI
+
+Use Node 24 or newer from this source checkout; no dependency installation is needed:
+
+```sh
+node scripts/pixels.mjs --grid ./mask.txt
+node scripts/pixels.mjs --grid ./mask.txt --ink '#33f282' --format svg
+node scripts/pixels.mjs --mask v1.0000000000000000 --format json
+node scripts/pixels.mjs --help
+```
+
+Choose exactly one `--grid <file>` or `--mask <canonical-v1/v2-token>`. A grid has exactly 8, 16 or 32 square rows of `.`/`#`, with LF/CRLF, an optional UTF-8 BOM and one optional final newline. Spaces, comments and blank rows are rejected. `--ink` accepts six hex digits with optional `#`, normalizes case and overrides token ink.
+
+`--format url` is the default and uses the same canonical Pixels URL as the browser. JSON contains `size`, exact `mask` rows, `ink`, `token` and `url`; URL/JSON preserve theme-relative `null` ink without an override. SVG requires explicit ink from the token or `--ink`. It is a **flat regular grid** of unit rectangles, with 16 display pixels per cell and a transparent background, separate from the gallery's projected/animated snapshot exports. CLI formats are URL, JSON and SVG; PNG remains a browser snapshot action.
+
+The CLI makes no network requests, reads no credentials and writes no files; it prints to stdout for callers to use or redirect. Errors go to stderr without input paths or contents. Exit 0 means success; exit 1 means invalid arguments/input or a read failure. Grid files are bounded to 4 KiB before decoding and during reading. Directories, FIFOs, devices and final-component symlinks are refused; symlinked parent directories resolve normally. The file guard needs native nonblocking/no-follow flags and fails closed when unavailable. A stalled network filesystem has no promised deadline; keep inputs unchanged while converting. Dash-leading filenames can be prefixed with `./`.
+
+With project dependencies already installed, `pnpm pixels --grid ./mask.txt` is a shortcut. `pnpm test:pixels-cli` runs temporary-file, native-process, malformed-input, no-network/no-write and SVG geometry/colour/codec checks. The same tests run in `pnpm release:check`. The registry/component API is unchanged.
+
+The 13 CLI checks passed on Linux Node 24.22.3 and Node 26.8.2, and on macOS Node 26.5.0. A minimal fixture without installed dependencies also passed URL, JSON and SVG output checks with networking denied.
 
 ## AA text options
 

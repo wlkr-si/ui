@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.8.0 — 2026-11-11
+
+- Added a dependency-free Node 24+ Pixels CLI using the existing canonical mask codec, with bounded grid-file or token inputs and URL, JSON and flat-grid SVG output. Theme-relative URL/JSON ink remains null; SVG requires explicit ink.
+- Added CLI source discovery on Pixels and in agent documentation, with file/process safety and geometry/colour tests included in the release gate.
+
+The package remains private; the GitHub source tag follows live acceptance. Browser snapshot exports and registry items are unchanged.
+
 ## 0.7.0 — 2026-11-11
 
 - Added primary-domain canonical, Open Graph and Twitter metadata for the gallery, Pixels and Contrast, with distinct static Geist previews.
