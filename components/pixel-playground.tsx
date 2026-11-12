@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import { flatPixelSvg, renderedPixelInk } from "@/lib/pixel-flat-svg"
 import { Switch } from "@/components/ui/switch"
 import { Button } from "@/components/ui/button"
 import { FieldGroup } from "@/components/ui/field"
@@ -48,9 +49,9 @@ function PixelPlaygroundContent({ shared, focused }: { shared: MaskLink; focused
   }, [])
   const previewRef = React.useRef<HTMLDivElement>(null)
   const exportingRef = React.useRef(false)
-  const [exporting, setExporting] = React.useState<"svg" | "png" | "grid" | null>(null)
+  const [exporting, setExporting] = React.useState<"svg" | "png" | "grid" | "flat-svg" | null>(null)
   const [exportStatus, setExportStatus] = React.useState({ message: "", error: false })
-  async function exportSnapshot(format: "svg" | "png" | "grid") {
+  async function exportSnapshot(format: "svg" | "png" | "grid" | "flat-svg") {
     if (exportingRef.current) return
     exportingRef.current = true
     setExporting(format)
@@ -62,6 +63,21 @@ function PixelPlaygroundContent({ shared, focused }: { shared: MaskLink; focused
         await new Promise<void>(resolve => setTimeout(resolve, 0))
         downloadPixelFile(blob, filename)
         setExportStatus({ message: "Grid download started.", error: false })
+        return
+      }
+      if (format === "flat-svg") {
+        const mask = [...maskState.mask]
+        let ink = maskState.ink
+        if (ink === null) {
+          const svg = previewRef.current?.querySelector<SVGSVGElement>(".wlkr-pixel-object svg")
+          if (!svg) throw new Error("The pixel preview is not ready. Try again.")
+          ink = renderedPixelInk(svg)
+        }
+        const blob = new Blob([flatPixelSvg(mask, ink)], { type: "image/svg+xml;charset=utf-8" })
+        const filename = "pixels-" + mask.length + "x" + mask.length + "-flat.svg"
+        await new Promise<void>(resolve => setTimeout(resolve, 0))
+        downloadPixelFile(blob, filename)
+        setExportStatus({ message: "Flat SVG download started.", error: false })
         return
       }
       const svg = previewRef.current?.querySelector<SVGSVGElement>(".wlkr-pixel-object svg")
@@ -79,7 +95,7 @@ function PixelPlaygroundContent({ shared, focused }: { shared: MaskLink; focused
   function update<K extends keyof Settings>(key:K,value:Settings[K]) {setSettings(current=>({...current,[key]:value}));setPreset("custom");if(key==="delay")setRestart(value=>value+1)}
   function apply(name:string){setSettings({...presets[name]??defaults});setPreset(name);setMorph(false);setRestart(value=>value+1)}
   const code=maskMode ? maskExample(maskState.mask, maskState.ink) : `import { PixelObject } from "@/components/wlkr/pixel-object"\n\n<PixelObject\n  label="Pixel sphere"\n${morph?'  morph={{ shapes: ["sphere", "cube", "torus"], duration: 8 }}\n':""}${Object.entries(settings).filter(([key,value])=>value!==undefined&&value!==defaults[key as keyof Settings]).map(([key,value])=>`  ${key}=${typeof value==="string"?JSON.stringify(value):`{${value}}`}\n`).join("")}/>`
-  const preview = <>{!focused && <div className="pixel-source" role="group" aria-label="Pixel source"><Button type="button" variant="ghost" className="min-h-11" aria-pressed={!maskMode} onClick={() => setMaskMode(false)}>Object</Button><Button type="button" variant="ghost" className="min-h-11" aria-pressed={maskMode} onClick={() => setMaskMode(true)}>Mask</Button></div>}{maskMode && linkError && <p className="mask-link-error" role="alert">Invalid mask link. Draw a new mask or use a valid share link.</p>}<div className={maskMode ? "preview mask-preview" : "preview"}><div ref={previewRef} className={maskMode ? "preview-content pixel-stage mask-stage" : "preview-content pixel-stage"}>{maskMode && <PixelMaskEditor state={maskState} dispatch={editMask} />}{maskMode ? <div className="mask-artwork" style={{ color: maskState.ink || undefined, backgroundColor: inkBackdrop(maskState.ink) }}><PixelObject key="mask" label="Custom pixel mask" mask={maskState.mask} resolution={maskResolution(maskState.mask.length)} dotShape="square" rotating={false} /></div> : <PixelObject key="object" {...settings} restartKey={restart} morph={morph?{shapes:["sphere","cube","torus"],duration:8}:undefined}/>}</div></div><div className="pixel-exports" role="group" aria-label="Download pixel object"><Button type="button" variant="ghost" className="min-h-11 min-w-14" aria-label="Download SVG snapshot" disabled={exporting !== null} onClick={() => exportSnapshot("svg")}>{exporting === "svg" ? "SVG…" : "SVG"}</Button><Button type="button" variant="ghost" className="min-h-11 min-w-14" aria-label="Download PNG snapshot" disabled={exporting !== null} onClick={() => exportSnapshot("png")}>{exporting === "png" ? "PNG…" : "PNG"}</Button>{maskMode && <Button type="button" variant="ghost" className="min-h-11 min-w-14" aria-label="Download grid" disabled={exporting !== null} onClick={() => exportSnapshot("grid")}>{exporting === "grid" ? "Grid…" : "Download grid"}</Button>}<p role="status" aria-live="polite" className={exportStatus.error ? "pixel-export-error" : "sr-only"}>{exportStatus.message}</p></div>{!maskMode && <Disclosure title="Customize" description="Shape, movement, and light" className="customize"><div className="customize-heading"><ChoiceControl label="Preset" value={preset} onChange={apply} options={preset==="custom"?[{value:"custom",label:"Custom"},...presetOptions]:presetOptions}/><Button type="button" variant="ghost" onClick={()=>apply("sphere")}>Reset</Button></div><label className="demo-option mb-6"><Switch checked={morph} onCheckedChange={value=>{setMorph(value);setPreset("custom")}}/>Morph sphere, cube, and torus</label><FieldGroup className="customize-grid">
+  const preview = <>{!focused && <div className="pixel-source" role="group" aria-label="Pixel source"><Button type="button" variant="ghost" className="min-h-11" aria-pressed={!maskMode} onClick={() => setMaskMode(false)}>Object</Button><Button type="button" variant="ghost" className="min-h-11" aria-pressed={maskMode} onClick={() => setMaskMode(true)}>Mask</Button></div>}{maskMode && linkError && <p className="mask-link-error" role="alert">Invalid mask link. Draw a new mask or use a valid share link.</p>}<div className={maskMode ? "preview mask-preview" : "preview"}><div ref={previewRef} className={maskMode ? "preview-content pixel-stage mask-stage" : "preview-content pixel-stage"}>{maskMode && <PixelMaskEditor state={maskState} dispatch={editMask} />}{maskMode ? <div className="mask-artwork" style={{ color: maskState.ink || undefined, backgroundColor: inkBackdrop(maskState.ink) }}><PixelObject key="mask" label="Custom pixel mask" mask={maskState.mask} resolution={maskResolution(maskState.mask.length)} dotShape="square" rotating={false} /></div> : <PixelObject key="object" {...settings} restartKey={restart} morph={morph?{shapes:["sphere","cube","torus"],duration:8}:undefined}/>}</div></div><div className="pixel-exports" role="group" aria-label="Download pixel object"><Button type="button" variant="ghost" className="min-h-11 min-w-14" aria-label="Download SVG snapshot" disabled={exporting !== null} onClick={() => exportSnapshot("svg")}>{exporting === "svg" ? "SVG…" : "SVG"}</Button><Button type="button" variant="ghost" className="min-h-11 min-w-14" aria-label="Download PNG snapshot" disabled={exporting !== null} onClick={() => exportSnapshot("png")}>{exporting === "png" ? "PNG…" : "PNG"}</Button>{maskMode && <Button type="button" variant="ghost" className="min-h-11 min-w-14" aria-label="Download flat SVG" disabled={exporting !== null} onClick={() => exportSnapshot("flat-svg")}>{exporting === "flat-svg" ? "Flat SVG…" : "Flat SVG"}</Button>}{maskMode && <Button type="button" variant="ghost" className="min-h-11 min-w-14" aria-label="Download grid" disabled={exporting !== null} onClick={() => exportSnapshot("grid")}>{exporting === "grid" ? "Grid…" : "Download grid"}</Button>}<p role="status" aria-live="polite" className={exportStatus.error ? "pixel-export-error" : "sr-only"}>{exportStatus.message}</p></div>{!maskMode && <Disclosure title="Customize" description="Shape, movement, and light" className="customize"><div className="customize-heading"><ChoiceControl label="Preset" value={preset} onChange={apply} options={preset==="custom"?[{value:"custom",label:"Custom"},...presetOptions]:presetOptions}/><Button type="button" variant="ghost" onClick={()=>apply("sphere")}>Reset</Button></div><label className="demo-option mb-6"><Switch checked={morph} onCheckedChange={value=>{setMorph(value);setPreset("custom")}}/>Morph sphere, cube, and torus</label><FieldGroup className="customize-grid">
     <ChoiceControl label="Dot shape" value={settings.dotShape} onChange={value=>update("dotShape",value as Settings["dotShape"])} options={[{value:"square",label:"Square"},{value:"rounded",label:"Rounded"},{value:"circle",label:"Circle"}]}/>
     <ChoiceControl label="Pattern" value={settings.pattern} onChange={value=>update("pattern",value as Settings["pattern"])} options={[{value:"steady",label:"Steady"},{value:"scatter",label:"Scatter"},{value:"wave",label:"Wave"},{value:"scan",label:"Scan"}]}/>
     <RangeControl label="Dot size" value={settings.dotSize??5.2} min={1} max={12} step={.2} unit="px" onChange={value=>update("dotSize",value)}/>

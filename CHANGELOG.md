@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.15.0 — 2026-11-12
+
+- Added Flat SVG for exact transparent 8/16/32 bitmap downloads, with unit rectangles and 16-pixel cells matching the released CLI.
+- Theme resolves the current rendered opaque foreground into the file; explicit ink is retained. Export captures click-time artwork without changing ink, history or sharing.
+
+Source release; live deployment is qualified separately. Projected SVG/PNG snapshots, grid downloads, registry, dependencies and released CLI contracts are unchanged.
+
 ## 0.14.0 — 2026-11-12
 
 - Added an optional CSS disclosure using the existing CopyCommand control. It exports the selected opaque pair as normalized --foreground/--background variables without applying or adjusting colours.
