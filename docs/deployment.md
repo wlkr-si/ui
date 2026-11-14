@@ -76,7 +76,7 @@ The tests simulate process and network success, partial provider writes, failed 
 
 1. Open `https://ui.wlkrlabs.com` over HTTPS and confirm the gallery and interactive previews render.
 2. Confirm `/registry.json`, `/r/registry.json`, and every `/r/{name}.json` endpoint listed in that catalog return valid JSON. Compare their bytes with the generated files in this committed checkout and the SHA-256 values at `/build-info.json`. Registry and build-info responses use revalidation headers.
-3. In a fresh React/Tailwind/shadcn consumer, configure `"@wlkr": "https://ui.wlkrlabs.com/r/{name}.json"`. Install all eleven originals and both style items using `pnpm dlx shadcn@latest add @wlkr/copy-command @wlkr/async-action @wlkr/filter-list @wlkr/pixel-object @wlkr/wlkr-loader @wlkr/page-intro @wlkr/index-row @wlkr/text-link @wlkr/theme-toggle @wlkr/footer-controls @wlkr/github-star @wlkr/typography @wlkr/theme`.
+3. In a fresh React/Tailwind/shadcn consumer, configure `"@wlkr": "https://ui.wlkr.si/r/{name}.json"`. Install all eleven originals and both style items using `pnpm dlx shadcn@latest add @wlkr/copy-command @wlkr/async-action @wlkr/filter-list @wlkr/pixel-object @wlkr/wlkr-loader @wlkr/page-intro @wlkr/index-row @wlkr/text-link @wlkr/theme-toggle @wlkr/footer-controls @wlkr/github-star @wlkr/typography @wlkr/theme`.
 4. Mount the installed components, build the consumer, and inspect browser rendering. Check both the registry and the existing apex website; no website migration is part of this release.
 5. Only after successful public verification, update README release status and append exact release evidence to `docs/verification.md`.
 

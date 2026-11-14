@@ -20,7 +20,7 @@ Source: https://github.com/wlkr-si/ui. Build identity: /build-info.json.
 
 ## Installation
 
-Start with a React/Tailwind project configured by the standard shadcn CLI. Configure the @wlkr namespace as https://ui.wlkrlabs.com/r/{name}.json.
+Start with a React/Tailwind project configured by the standard shadcn CLI. Configure the @wlkr namespace as https://ui.wlkr.si/r/{name}.json.
 
 pnpm dlx shadcn@latest add @wlkr/footer-controls
 
