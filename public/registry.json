@@ -1,7 +1,7 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry.json",
   "name": "@wlkr",
-  "homepage": "https://ui.wlkrlabs.com",
+  "homepage": "https://ui.wlkr.si",
   "items": [
     {
       "name": "copy-command",

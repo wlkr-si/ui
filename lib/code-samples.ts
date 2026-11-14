@@ -63,6 +63,6 @@ The theme leaves your app’s typography unchanged.`
 
 export const registryConfig = `{
   "registries": {
-    "@wlkr": "https://ui.wlkrlabs.com/r/{name}.json"
+    "@wlkr": "https://ui.wlkr.si/r/{name}.json"
   }
 }`

@@ -19,6 +19,6 @@
   },
   "iconLibrary": "lucide",
   "registries": {
-    "@wlkr": "https://ui.wlkrlabs.com/r/{name}.json"
+    "@wlkr": "https://ui.wlkr.si/r/{name}.json"
   }
 }

@@ -4,7 +4,7 @@ Public source release `2935308d0e1a68df26bbba95a6cadcf38bf8719f` includes eleven
 
 ## Install with the standard CLI
 
-Configure `@wlkr` as `https://ui.wlkrlabs.com/r/{name}.json`, then run:
+Configure `@wlkr` as `https://ui.wlkr.si/r/{name}.json`, then run:
 
 ```sh
 pnpm dlx shadcn@latest add @wlkr/typography @wlkr/page-intro @wlkr/index-row @wlkr/text-link @wlkr/theme-toggle @wlkr/footer-controls @wlkr/pixel-object

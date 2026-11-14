@@ -13,7 +13,7 @@ React components for interfaces with a little more character: pixel objects, ani
 In a React/TypeScript project configured for Tailwind and shadcn:
 
 ```sh
-pnpm dlx shadcn@latest add https://ui.wlkrlabs.com/r/pixel-object.json
+pnpm dlx shadcn@latest add https://ui.wlkr.si/r/pixel-object.json
 ```
 
 ```tsx
@@ -110,7 +110,7 @@ Use a React/TypeScript app configured for Tailwind and shadcn. For a new consume
 ```json
 {
   "registries": {
-    "@wlkr": "https://ui.wlkrlabs.com/r/{name}.json"
+    "@wlkr": "https://ui.wlkr.si/r/{name}.json"
   }
 }
 ```
@@ -206,10 +206,10 @@ Paper white `#ffffff`, ink `#010101`, neutral secondary text, and WLKR green `#3
 - Accessible primitives: [Radix UI](https://www.radix-ui.com), MIT.
 - Icons: [Lucide](https://lucide.dev), ISC.
 - Typeface: [Geist](https://vercel.com/font), SIL Open Font License, bundled with `public/fonts/OFL.txt`.
-- WLKR’s existing mark, favicon, and licensed Geist font are reused from the WLKR Labs brand masters. Branding remains WLKR Labs property; no rights to its marks are granted by the source license.
+- The Open Lens mark, favicon, and licensed Geist font come from the [WLKR.SI brand suite](https://wlkr.si/brand). Branding remains WLKR.SI property; no rights to its marks are granted by the source license.
 - Original component code: MIT, see `LICENSE`.
 
-The public site runs on its own Cloudflare static Worker, `wlkr-ui`, at `ui.wlkrlabs.com`. The main website and its Worker remain unchanged. See [release verification](docs/verification.md) for the exact published source revision and acceptance evidence. Source is published in the public [wlkr-si/ui repository](https://github.com/wlkr-si/ui).
+The public site runs on its own Cloudflare static Worker, `wlkr-ui`, at `ui.wlkr.si` (the earlier `ui.wlkrlabs.com` address still serves the same build). The main website and its Worker remain unchanged. See [release verification](docs/verification.md) for the exact published source revision and acceptance evidence. Source is published in the public [wlkr-si/ui repository](https://github.com/wlkr-si/ui).
 
 ## Static Cloudflare release
 
