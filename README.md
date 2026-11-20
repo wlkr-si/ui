@@ -59,9 +59,7 @@ Choose exactly one `--grid <file>` or `--mask <canonical-v1/v2-token>`. A grid h
 
 The CLI makes no network requests, reads no credentials and writes no files; it prints to stdout for callers to use or redirect. Errors go to stderr without input paths or contents. Exit 0 means success; exit 1 means invalid arguments/input or a read failure. Grid files are bounded to 4 KiB before decoding and during reading. Directories, FIFOs, devices and final-component symlinks are refused; symlinked parent directories resolve normally. The file guard needs native nonblocking/no-follow flags and fails closed when unavailable. A stalled network filesystem has no promised deadline; keep inputs unchanged while converting. Dash-leading filenames can be prefixed with `./`.
 
-With project dependencies already installed, `pnpm pixels --grid ./mask.txt` is a shortcut. `pnpm test:pixels-cli` runs temporary-file, native-process, malformed-input, no-network/no-write and SVG geometry/colour/codec checks. The same tests run in `pnpm release:check`. The registry/component API is unchanged.
-
-The 13 CLI checks passed on Linux Node 24.22.3 and Node 26.8.2, and on macOS Node 26.5.0. A minimal fixture without installed dependencies also passed URL, JSON and SVG output checks with networking denied.
+With project dependencies already installed, `pnpm pixels --grid ./mask.txt` is a shortcut.
 
 ## Contrast CLI
 
@@ -80,9 +78,7 @@ Supply exactly two opaque six-digit sRGB hex colours. The CLI uses the unchanged
 
 `--suggest` adds `aaTextOptions`, keeping the background fixed and returning the same deterministic options as the browser: 5% RGB mixes toward black or white, up to two passing choices per direction, plus current text once when it already passes. Options retain exact ratios and direction labels; duplicates are removed by the shared helper and every option meets unrounded 4.5:1 normal-text AA. Suggestions never change the selected input pair.
 
-There are no network requests, credentials, file inputs or output files; output goes to stdout. Invalid, duplicate or unknown arguments produce a generic error without echoing input. Exit 0 means a valid result, including failing pairs; exit 1 means invalid arguments. With existing project dependencies installed, `pnpm contrast 000000 ffffff` is a shortcut. `pnpm test:contrast-cli` runs native no-network commands and exact shared-helper/threshold/suggestion checks, also included in `pnpm release:check`.
-
-The seven CLI checks passed on Linux Node 24.22.3 and 26.8.2, and macOS Node 26.5.0, including real native commands with networking forbidden and no installed dependencies.
+There are no network requests, credentials, file inputs or output files; output goes to stdout. Invalid, duplicate or unknown arguments produce a generic error without echoing input. Exit 0 means a valid result, including failing pairs; exit 1 means invalid arguments. With existing project dependencies installed, `pnpm contrast 000000 ffffff` is a shortcut.
 
 ## AA text options
 
@@ -226,7 +222,7 @@ The public site runs on its own Cloudflare static Worker, `wlkr-ui`, at `ui.wlkr
 
 ## Static Cloudflare release
 
-See [the deployment runbook](docs/deployment.md). `pnpm deploy:check` builds and validates the upload without publishing. `pnpm run deploy` requires a clean committed checkout, rebuilds and checks it, then activates the separate `wlkr-ui` static Worker and verifies the exact receipt plus all registry hashes on both gallery hosts. Failed releases restore and verify the previous version when deployment ownership is certain; observed conflicts stop further writes. See the runbook for the local lock and non-atomic provider concurrency limitation. `pnpm test:release` tests the release flow without network or authentication. The main `wlkrlabs-com` Worker and apex/`www` routes are outside this configuration.
+See [the deployment runbook](docs/deployment.md). `pnpm deploy:check` builds and validates the upload without publishing. `pnpm run deploy` requires a clean committed checkout, rebuilds and checks it, then activates the separate `wlkr-ui` static Worker and verifies the exact receipt plus all registry hashes on both gallery hosts. Failed releases restore and verify the previous version when deployment ownership is certain; observed conflicts stop further writes. See the runbook for the local lock and non-atomic provider concurrency limitation. The main `wlkrlabs-com` Worker and apex/`www` routes are outside this configuration.
 
 ## GitHub star
 

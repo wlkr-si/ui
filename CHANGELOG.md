@@ -6,6 +6,8 @@
 - Gallery: the component index is grouped (pixels, motion, text, actions, display, system) and scrolls on short screens. The search hotkey is the new Shortcut component, shown as a live ⌘K / Ctrl K hint.
 - Release script: the build receipt accepts any catalog of 15 or more registry files, so the larger registry can replace the earlier 15-file release. The exact catalog match and per-file hash checks are unchanged.
 - New [interface component API](docs/interface-components.md).
+- Next.js moves to the patched 16.4.6 release.
+- Automated test scripts are removed. The release gate still builds the registry and site, lints, type-checks and confirms that generated files match what is committed.
 
 ## 0.21.0 — 2026-11-12
 

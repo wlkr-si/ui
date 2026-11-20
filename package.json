@@ -12,17 +12,8 @@
     "release:check": "node scripts/release-check.mjs",
     "deploy:check": "pnpm build && wrangler deploy --dry-run",
     "deploy": "node scripts/deploy.mjs",
-    "test:gallery": "node --test scripts/gallery-section.test.mjs",
-    "test:release": "node --test scripts/deploy.test.mjs",
-    "test:mask": "node --test scripts/pixel-mask.test.mjs",
-    "test:contrast": "node --test scripts/contrast.test.mjs scripts/contrast-css.test.mjs",
-    "test:contrast-options": "node --test scripts/contrast-options.test.mjs",
-    "test:social-previews": "node --test scripts/social-preview.test.mjs",
     "pixels": "node scripts/pixels.mjs",
-    "test:pixels-cli": "node --test scripts/pixels-cli.test.mjs scripts/pixel-flat-svg.test.mjs",
-    "contrast": "node scripts/contrast.mjs",
-    "test:contrast-cli": "node --test scripts/contrast-cli.test.mjs",
-    "test:grid-import": "node --test scripts/pixel-grid-import.test.mjs"
+    "contrast": "node scripts/contrast.mjs"
   },
   "dependencies": {
     "class-variance-authority": "^0.7.1",
