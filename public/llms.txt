@@ -41,6 +41,16 @@ The CLI installs original source and pulls stock shadcn dependencies directly fr
 - [WLKR typography](/#typography): Opt-in exact gallery typography and layout, with semantic legacy token bridges. [Source JSON](/r/typography.json)
 - [Footer controls](/#footer-controls): Quiet system/light/dark controls with a real app-owned plain-text agent link. [Source JSON](/r/footer-controls.json)
 - [GitHub star](/#github-star): A native repository link with an app-supplied count, rolling digits, green star fill, and a bounded burst. [Source JSON](/r/github-star.json)
+- [Dot field](/#dot-field): A canvas dot grid that swells, tints and springs away from the pointer, with a slow ambient wave. [Source JSON](/r/dot-field.json)
+- [Pixel image](/#pixel-image): An image that resolves from coarse colour blocks to the real picture when it enters view. [Source JSON](/r/pixel-image.json)
+- [Dot matrix](/#dot-matrix): A dot-matrix display with a built-in 5×7 font and stepped scrolling for long messages. [Source JSON](/r/dot-matrix.json)
+- [Pixel progress](/#pixel-progress): An accessible pixel-grid progress bar with a dithered leading edge and an indeterminate state. [Source JSON](/r/pixel-progress.json)
+- [Liquid tabs](/#liquid-tabs): A keyboard-accessible segmented control with a liquid selection that stretches and snaps. [Source JSON](/r/liquid-tabs.json)
+- [Ticker](/#ticker): A constant-speed marquee that eases to a stop on hover and focus, drags with momentum, and steps out at the edges. [Source JSON](/r/ticker.json)
+- [Decode text](/#decode-text): Inline text that resolves out of glyph noise on view, hover or focus, with a stable width. [Source JSON](/r/decode-text.json)
+- [Rolling number](/#rolling-number): A formatted number whose digits roll to each new value like an odometer. [Source JSON](/r/rolling-number.json)
+- [Hold action](/#hold-action): A press-and-hold confirmation button with a pixel-stepped fill and a two-step fallback for assistive technology. [Source JSON](/r/hold-action.json)
+- [Shortcut](/#shortcut): Platform-aware keycaps that press with the real keys and run a handler when the combination lands. [Source JSON](/r/shortcut.json)
 
 ## Documentation
 

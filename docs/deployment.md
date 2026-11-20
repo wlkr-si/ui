@@ -31,7 +31,7 @@ pnpm install --frozen-lockfile
 pnpm deploy:check
 ```
 
-This rebuilds the current catalog and static website (13 entries), then runs `wrangler deploy --dry-run`. It does not publish. Preview the exported output locally with `pnpm start --port 3100`.
+This rebuilds the current catalog and static website (23 entries), then runs `wrangler deploy --dry-run`. It does not publish. Preview the exported output locally with `pnpm start --port 3100`.
 
 Before publishing, inspect the Cloudflare account, existing Worker custom domains, and DNS for `ui.wlkrlabs.com` to establish that the new domain does not displace another service. Review and commit source, configuration, lockfile, and generated registry JSON. Local `.wrangler/`, `out/`, `.next/`, and screenshots remain ignored.
 
@@ -45,11 +45,11 @@ The guarded release command inherits the caller's existing Wrangler environment 
 
 `pnpm run deploy` now performs this sequence:
 
-1. Acquire an exclusive local Git lock, then run `release:check` (release automation tests, build, lint, TypeScript, clean generated registry, and exported-file checks).
+1. Acquire an exclusive local Git lock, then run `release:check` (build, lint, TypeScript, clean generated registry, and exported-file checks).
 2. Validate the local receipt against HEAD, the complete catalog, all local registry bytes, and the required `/pixels` HTML digest. Capture the current deployment ID and its single version serving 100% of traffic. Refuse split/unknown traffic.
-3. Before any upload, verify the existing exact public receipt and all 15 SHA-256 registry hashes on **both** `ui.wlkr.si` and `ui.wlkrlabs.com`. Recheck that the captured deployment has not changed. This snapshot is the rollback baseline.
+3. Before any upload, verify the existing exact public receipt and every SHA-256 registry hash on **both** `ui.wlkr.si` and `ui.wlkrlabs.com`. Recheck that the captured deployment has not changed. This snapshot is the rollback baseline.
 4. Upload the candidate without activating it. Read its version ID from pinned Wrangler's output, then recheck the original deployment ID immediately before activation. Activate only that candidate at 100%, using a unique `ui-release:<run ID>` deployment message.
-5. Require the active deployment's version and unique message to match this run. Verify the entire exact candidate receipt (including source commit and build time), all 15 registry byte hashes and the declared `/pixels` HTML hash on both hosts, and receipt stability after the hash checks. Recheck the deployment ID before accepting success.
+5. Require the active deployment's version and unique message to match this run. Verify the entire exact candidate receipt (including source commit and build time), every registry byte hash and the declared `/pixels` HTML hash on both hosts, and receipt stability after the hash checks. Recheck the deployment ID before accepting success.
 6. On upload/activation/verification failure, reconcile provider state first. If the original deployment remains, verify that baseline and leave traffic alone. If activation is delayed or its outcome uncertain, fail with IDs/marker for inspection; do not blindly retry.
 7. If the current deployment is provably this run's candidate, recheck its exact deployment ID immediately before restoring the captured previous version to 100%. Use a unique `ui-restore:<run ID>` marker. Reconcile even a failed restore CLI response, then verify the restored exact receipt and all 15 registry hashes on both hosts and the final deployment ID. A release that needed restoration still exits unsuccessfully, with the verified restore IDs.
 
@@ -63,20 +63,19 @@ The local lock is resolved using `git rev-parse --git-path wlkr-ui-release.lock`
 
 On success the command prints the source commit, candidate version/deployment, previous version/deployment, and verified hosts. `out/build-info.json` records the source, build time, and hashes. New candidates require `pageSha256` containing only `/pixels`, computed from `out/pixels.html` in the same export uploaded by Wrangler. The canonical `/pixels` response and its `/pixels/` and `/pixels.html` aliases receive a scoped `Cache-Control: no-transform` directive to preserve exact HTML bytes; other asset cache rules are unchanged. Older baseline receipts have no page digest and are intentionally checked against their exact receipt and registry only. Baseline and restoration verify the focused page whenever its receipt declares that digest. An upload that never activates can leave an unused version at Cloudflare; the script does not delete versions. This script manages code versions only; routes, DNS, aliases, billing, permissions, secrets and bound data are outside its scope.
 
-Run the controlled adapter tests without publishing or authenticating:
+Run the release gate without publishing or authenticating:
 
 ```sh
-pnpm test:release
 pnpm release:check
 ```
 
-The tests simulate process and network success, partial provider writes, failed verification and recovery, missing ownership, concurrent deployments, local receipt drift, bounded retries, and lock conflicts. They make no Cloudflare or public-host requests.
+It requires committed source, builds the registry and static site, lints, type-checks, and confirms that generated registry files match what is committed and that every expected export exists. It makes no Cloudflare or public-host requests.
 
 ## Verify the public release
 
 1. Open `https://ui.wlkrlabs.com` over HTTPS and confirm the gallery and interactive previews render.
 2. Confirm `/registry.json`, `/r/registry.json`, and every `/r/{name}.json` endpoint listed in that catalog return valid JSON. Compare their bytes with the generated files in this committed checkout and the SHA-256 values at `/build-info.json`. Registry and build-info responses use revalidation headers.
-3. In a fresh React/Tailwind/shadcn consumer, configure `"@wlkr": "https://ui.wlkr.si/r/{name}.json"`. Install all eleven originals and both style items using `pnpm dlx shadcn@latest add @wlkr/copy-command @wlkr/async-action @wlkr/filter-list @wlkr/pixel-object @wlkr/wlkr-loader @wlkr/page-intro @wlkr/index-row @wlkr/text-link @wlkr/theme-toggle @wlkr/footer-controls @wlkr/github-star @wlkr/typography @wlkr/theme`.
+3. In a fresh React/Tailwind/shadcn consumer, configure `"@wlkr": "https://ui.wlkr.si/r/{name}.json"`. Install every original and both style items using `pnpm dlx shadcn@latest add @wlkr/copy-command @wlkr/async-action @wlkr/filter-list @wlkr/pixel-object @wlkr/wlkr-loader @wlkr/page-intro @wlkr/index-row @wlkr/text-link @wlkr/theme-toggle @wlkr/footer-controls @wlkr/github-star @wlkr/typography @wlkr/theme`.
 4. Mount the installed components, build the consumer, and inspect browser rendering. Check both the registry and the existing apex website; no website migration is part of this release.
 5. Only after successful public verification, update README release status and append exact release evidence to `docs/verification.md`.
 

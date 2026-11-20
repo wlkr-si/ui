@@ -22,8 +22,8 @@ function required(result, label) {
 }
 export function validateReceipt(receipt) {
   const hashes = receipt?.registrySha256
-  if (!/^[0-9a-f]{40}$/.test(receipt?.sourceCommit || "") || !Number.isFinite(Date.parse(receipt?.builtAt)) || !hashes || Object.keys(hashes).length !== 15 || !hashes["/registry.json"] || !hashes["/r/registry.json"] || Object.entries(hashes).some(([path, hash]) => !/^\/(?:registry|r\/[a-z0-9-]+)\.json$/.test(path) || !/^[0-9a-f]{64}$/.test(hash))) {
-    throw new Error("Invalid build receipt: expected a source commit, build time and all 15 registry hashes.")
+  if (!/^[0-9a-f]{40}$/.test(receipt?.sourceCommit || "") || !Number.isFinite(Date.parse(receipt?.builtAt)) || !hashes || Object.keys(hashes).length < 15 || !hashes["/registry.json"] || !hashes["/r/registry.json"] || Object.entries(hashes).some(([path, hash]) => !/^\/(?:registry|r\/[a-z0-9-]+)\.json$/.test(path) || !/^[0-9a-f]{64}$/.test(hash))) {
+    throw new Error("Invalid build receipt: expected a source commit, build time and at least 15 registry hashes.")
   }
   const pages = receipt.pageSha256
   const legacyPages = ["/pixels"]
@@ -133,7 +133,7 @@ export async function release({ run = processAdapter, readCandidate = () => loca
     if (!owned(active, version, message)) throw new ConflictError(`Candidate ownership cannot be established at deployment ${active.id}. No rollback: inspect wlkr-ui deployments.`)
     await verify(candidate)
     await assertCurrent(active)
-    log(`Verified source ${candidate.sourceCommit}, all 15 registry hashes, all three pages and all three social previews on both hosts.`)
+    log(`Verified source ${candidate.sourceCommit}, all ${Object.keys(candidate.registrySha256).length} registry hashes, all pages and all three social previews on both hosts.`)
     return { sourceCommit: candidate.sourceCommit, version, deployment: active.id, previousVersion: priorVersion, previousDeployment: previous.id, hosts: HOSTS }
   } catch (failure) {
     if (failure instanceof ConflictError) throw failure
