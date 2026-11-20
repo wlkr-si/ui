@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.22.0 — 2026-11-20
+
+- Ten new original components, each in the registry and the gallery: Dot field, Pixel image, Dot matrix, Pixel progress, Liquid tabs, Ticker, Decode text, Rolling number, Hold action and Shortcut. The collection is now 21 originals plus typography and the theme (23 items).
+- Gallery: the component index is grouped (pixels, motion, text, actions, display, system) and scrolls on short screens. The search hotkey is the new Shortcut component, shown as a live ⌘K / Ctrl K hint.
+- Release script: the build receipt accepts any catalog of 15 or more registry files, so the larger registry can replace the earlier 15-file release. The exact catalog match and per-file hash checks are unchanged.
+- New [interface component API](docs/interface-components.md).
+
 ## 0.21.0 — 2026-11-12
 
 - The header, browser icons and social previews use the WLKR.SI Open Lens mark instead of the old six-cell mark. The header mark plays the same quick liquid hover bounce as wlkr.si.

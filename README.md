@@ -2,7 +2,7 @@
 
 React components for interfaces with a little more character: pixel objects, animated text, accessible actions and a public shadcn-compatible registry.
 
-[Explore the components](https://ui.wlkr.si) · [Animation room](https://ui.wlkr.si/animation) · [Component API](docs/page-components.md) · [Motion API](docs/motion-components.md) · [Contribute](https://github.com/wlkr-si/.github/blob/main/CONTRIBUTING.md)
+[Explore the components](https://ui.wlkr.si) · [Animation room](https://ui.wlkr.si/animation) · [Component API](docs/page-components.md) · [Motion API](docs/motion-components.md) · [Interface API](docs/interface-components.md) · [Contribute](https://github.com/wlkr-si/.github/blob/main/CONTRIBUTING.md)
 
 <a href="https://ui.wlkr.si/#pixel-object"><picture><source media="(prefers-color-scheme: dark)" srcset="docs/images/gallery-dark.png"><img src="docs/images/gallery-light.png" alt="Actual Pixel object component in the wlkr/ui gallery, with preview, export and customization controls." width="1280"></picture></a>
 
@@ -22,13 +22,13 @@ import { PixelObject } from "@/components/wlkr/pixel-object"
 <PixelObject label="A rotating pixel sphere" />
 ```
 
-Use your project's configured import alias. Components are copied into your source; there is no WLKR runtime service or account. The collection contains eleven original components, optional typography and a light/dark theme. Original component code is MIT; brand assets and fonts have separate terms.
+Use your project's configured import alias. Components are copied into your source; there is no WLKR runtime service or account. The collection contains 21 original components, optional typography and a light/dark theme. Original component code is MIT; brand assets and fonts have separate terms.
 
 The gallery and focused tools use primary-domain canonical and social metadata with static, page-specific 1200×630 previews. Next.js renders these previews during the static build from the approved local mark and Geist font; no image service is called. The existing **ui.wlkrlabs.com** host remains available.
 
 The gallery is available at **ui.wlkr.si**. The focused [contrast checker](https://ui.wlkr.si/contrast) previews opaque colour pairs, checks WCAG text thresholds, and shares pairs by URL. Optional AA text mixes never change the selected colour until applied. The existing **ui.wlkrlabs.com** host and installation namespace remain available. The current source is [wlkr-si/ui](https://github.com/wlkr-si/ui). Dated release and consumer-installation evidence is kept in [verification](docs/verification.md); a source or documentation commit does not itself deploy the gallery.
 
-The private package is version 0.21.0. See [the changelog](CHANGELOG.md) for the gallery milestone; distribution remains GitHub source and the public registry, not an npm package.
+The private package is version 0.22.0. See [the changelog](CHANGELOG.md) for the gallery milestone; distribution remains GitHub source and the public registry, not an npm package.
 
 ## Pixels CLI
 
@@ -125,6 +125,9 @@ pnpm dlx shadcn@latest add @wlkr/pixel-object
 pnpm dlx shadcn@latest add @wlkr/wlkr-loader
 pnpm dlx shadcn@latest add @wlkr/page-intro @wlkr/index-row @wlkr/text-link
 pnpm dlx shadcn@latest add @wlkr/theme-toggle @wlkr/footer-controls @wlkr/github-star
+pnpm dlx shadcn@latest add @wlkr/dot-field @wlkr/pixel-image @wlkr/dot-matrix @wlkr/pixel-progress
+pnpm dlx shadcn@latest add @wlkr/liquid-tabs @wlkr/ticker @wlkr/decode-text @wlkr/rolling-number
+pnpm dlx shadcn@latest add @wlkr/hold-action @wlkr/shortcut
 pnpm dlx shadcn@latest add @wlkr/typography
 # Optional; review and merge any existing theme tokens before applying.
 pnpm dlx shadcn@latest add @wlkr/theme
@@ -162,9 +165,19 @@ The [WLKR.SI website](https://wlkr.si) uses Astro and this registry. Other Astro
 | `filter-list` | Search labels, descriptions and keywords; case/accent insensitive multiword match, live count, clear and empty feedback | `items: { id, label, description?, keywords? }[]`, optional `label`, `placeholder` |
 | `pixel-object` | Project a rotating sphere, normalized 3D point cloud, or #/space mask into an SVG pixel grid | optional `points: PixelPoint[]`, `mask: string[]`, `resolution`, `size`, `label`, `rotating`, `className`; exported `spherePoints(count?)` |
 | `wlkr-loader` | Liquid Open Lens mark: loops while loading, bounces on hover, fixed SVG bounds and a single loading announcement | `size`, `duration`, `cutThrough` (liquid), `loop`, `bounce`, `goo`, `squish`, `ripple`, `openingDistance`, `splitRadius`, `frame`, `label`, `decorative`, `paused`, `className` |
+| `dot-field` | Canvas dot grid that swells, tints and springs away from the pointer | optional `children`, `gap`, `dotSize`, `radius`, `strength`, `shape`, `ambient`, `className` |
+| `pixel-image` | Image that resolves from coarse colour blocks to the real picture | `src`, `alt`, `width`, `height`, optional `steps`, `stepDuration`, `trigger`, `fit` |
+| `dot-matrix` | Dot-matrix display with a built-in 5×7 font and stepped scrolling | `text`, optional `columns`, `dotSize`, `gap`, `shape`, `scroll`, `speed`, `label` |
+| `pixel-progress` | Pixel-grid progress bar with a dithered edge and an indeterminate state | `value: number \| null`, `label`, optional `columns`, `rows`, `showValue` |
+| `liquid-tabs` | Radio-group segmented control with a liquid selection | `items`, `label`, optional `value`, `onValueChange`, `defaultValue`, `tone`, `size` |
+| `ticker` | Constant-speed marquee that eases to a stop, drags, and steps out at the edges | `children`, optional `speed`, `direction`, `gap`, `pauseOnHover`, `draggable`, `fade`, `label` |
+| `decode-text` | Inline text that resolves out of glyph noise with a stable width | `text`, optional `trigger`, `duration`, `glyphs`, `as` |
+| `rolling-number` | Formatted number whose digits roll to each new value | `value`, optional `format`, `locale`, `duration` |
+| `hold-action` | Press-and-hold confirmation with a two-step fallback for assistive technology | `onConfirm`, `children`, optional `confirmedLabel`, `duration`, `resetAfter`, `tone`, `disabled` |
+| `shortcut` | Platform-aware keycaps that press with the real keys and run a handler | `keys`, optional `onTrigger`, `preventDefault`, `allowInInputs`, `disabled`, `size` |
 | `theme` | Semantic light/dark tokens; app-controlled typography | Apply `.dark` to document root for dark mode |
 
-The public collection has eleven original components, typography styles, and the theme (13 items). See [page component contracts](docs/page-components.md) for page additions and the morph API. See [the motion component API](docs/motion-components.md) for controls, presets, timing, and input precedence. Their interaction styles travel with their source; no site-only stylesheet is required.
+The public collection has 21 original components, typography styles, and the theme (23 items). See [page component contracts](docs/page-components.md) for page additions and the morph API, and [the interface component API](docs/interface-components.md) for the ten components added in 0.22.0. See [the motion component API](docs/motion-components.md) for controls, presets, timing, and input precedence. Their interaction styles travel with their source; no site-only stylesheet is required.
 
 Clipboard requires a secure context (HTTPS or localhost). On failure the selectable command remains available. Async actions require rejected promises for failures: throw when a fetch response is not OK. The preview’s “Simulate a failed save” switch exercises retry. Filter item IDs must be unique; results preserve input ordering.
 

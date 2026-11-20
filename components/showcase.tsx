@@ -24,22 +24,43 @@ import { TextLink } from "@/registry/wlkr/text-link"
 import { ThemeToggle } from "@/registry/wlkr/theme-toggle"
 import { GithubStar } from "@/registry/wlkr/github-star"
 import { FooterControls } from "@/registry/wlkr/footer-controls"
+import { Shortcut } from "@/registry/wlkr/shortcut"
+import { DecodeTextDemo } from "@/components/demos/decode-text-demo"
+import { DotFieldDemo } from "@/components/demos/dot-field-demo"
+import { DotMatrixDemo } from "@/components/demos/dot-matrix-demo"
+import { HoldActionDemo } from "@/components/demos/hold-action-demo"
+import { LiquidTabsDemo } from "@/components/demos/liquid-tabs-demo"
+import { PixelImageDemo } from "@/components/demos/pixel-image-demo"
+import { PixelProgressDemo } from "@/components/demos/pixel-progress-demo"
+import { RollingNumberDemo } from "@/components/demos/rolling-number-demo"
+import { ShortcutDemo } from "@/components/demos/shortcut-demo"
+import { TickerDemo } from "@/components/demos/ticker-demo"
 
 const entries = [
-  { id: "github-star", name: "GitHub star", description: "A small invitation to the source. Rolling digits, a green star, and one well-timed burst.", keywords: "github repository stars count up rolling number burst sparkles" },
-  { id: "copy-command", name: "Copy command", description: "One command. One click. Clear feedback when it works, a useful fallback when it doesn’t.", keywords: "clipboard install terminal copy" },
-  { id: "async-action", name: "Async action", description: "An action that follows through. Pending, success, and a second chance when something goes wrong.", keywords: "button save loading promise error retry" },
-  { id: "filter-list", name: "Filter list", description: "Find the thing you came for. A small, accessible search for lists that don’t need a whole search engine.", keywords: "search input empty list filter" },
-  { id: "pixel-object", name: "Pixel object", description: "Give a shape a little life. Project a point cloud or a simple mask into a quiet field of pixels.", keywords: "sphere disco rotating motion flicker grid shape object mask pixels" },
-  { id: "wlkr-loader", name: "WLKR loader", description: "A liquid Open Lens mark that loops while loading and bounces on hover.", keywords: "loading logo loader symbol arc rotation motion liquid goo hover bounce" },
-  { id: "page-intro", name: "Page intro", description: "A clear beginning. Final text holds its place while a quiet binary field resolves into the title.", keywords: "heading title binary reveal typography header intro" },
-  { id: "index-row", name: "Index row", description: "An index with a little movement. Three digits roll on hover or focus, then settle where they belong.", keywords: "index list row number counting spin link navigation" },
-  { id: "text-link", name: "Text link", description: "A link that stays a link. Add an optional preview when a little context helps someone choose.", keywords: "link hover card preview focus navigation" },
-  { id: "theme-toggle", name: "Theme toggle", description: "Light or dark, with one quiet control. System preferences lead until you choose otherwise.", keywords: "theme toggle dark light system preference" },
-  { id: "footer-controls", name: "Footer controls", description: "A quiet place for display preferences. Follow the system, choose light or dark, or read the page as plain text.", keywords: "footer display controls theme system light dark agent markdown" },
-  { id: "typography", name: "Typography", description: "The same type, scale, and spacing you see here. Opt-in styles for a shared visual language.", keywords: "typography layout styles font geist display spacing" },
-  { id: "primitives", name: "Primitives", description: "Good foundations, straight from shadcn/ui. We use the originals, with WLKR’s shared design tokens.", keywords: "button input switch shadcn stock" },
-  { id: "foundations", name: "Foundations", description: "A common language for what comes next. Semantic color, considered type, and space to think.", keywords: "theme tokens color typography design dark light" },
+  { group: 0, id: "pixel-object", name: "Pixel object", description: "Give a shape a little life. Project a point cloud or a simple mask into a quiet field of pixels.", keywords: "sphere disco rotating motion flicker grid shape object mask pixels" },
+  { group: 0, id: "dot-field", name: "Dot field", description: "A surface that notices you. Dots swell, brighten, and step aside for the pointer, then settle back.", keywords: "background grid dots pointer hover canvas interactive hero surface spring" },
+  { group: 0, id: "pixel-image", name: "Pixel image", description: "A picture that arrives in pixels. A few big blocks, then finer ones, then the real thing.", keywords: "image photo reveal pixelate blocks load mosaic media" },
+  { group: 0, id: "dot-matrix", name: "Dot matrix", description: "A platform board for short messages. A 5×7 font, one column at a time.", keywords: "led display board marquee scroll text bitmap font sign" },
+  { group: 0, id: "pixel-progress", name: "Pixel progress", description: "Progress you can count. Cells fill from the left behind a dithered edge, with one green wave at the finish.", keywords: "progress bar loading upload dither indeterminate percent" },
+  { group: 1, id: "wlkr-loader", name: "WLKR loader", description: "A liquid Open Lens mark that loops while loading and bounces on hover.", keywords: "loading logo loader symbol arc rotation motion liquid goo hover bounce" },
+  { group: 1, id: "liquid-tabs", name: "Liquid tabs", description: "A choice that moves like a drop. The selection stretches toward the next option, then snaps across.", keywords: "tabs segmented control radio switch goo liquid indicator navigation" },
+  { group: 1, id: "ticker", name: "Ticker", description: "A line that keeps moving. Constant speed, a soft stop on hover, and a drag when you want a closer look.", keywords: "marquee scroll loop logos status strip drag carousel" },
+  { group: 2, id: "page-intro", name: "Page intro", description: "A clear beginning. Final text holds its place while a quiet binary field resolves into the title.", keywords: "heading title binary reveal typography header intro" },
+  { group: 2, id: "decode-text", name: "Decode text", description: "Words that resolve out of noise. Final text holds its width while glyphs settle, left to right.", keywords: "scramble text reveal glyph binary hover link label" },
+  { group: 2, id: "rolling-number", name: "Rolling number", description: "Numbers on wheels. Each digit rolls to its new value, and new columns arrive without a jump.", keywords: "counter odometer number digits stat price currency animate" },
+  { group: 2, id: "index-row", name: "Index row", description: "An index with a little movement. Three digits roll on hover or focus, then settle where they belong.", keywords: "index list row number counting spin link navigation" },
+  { group: 2, id: "text-link", name: "Text link", description: "A link that stays a link. Add an optional preview when a little context helps someone choose.", keywords: "link hover card preview focus navigation" },
+  { group: 2, id: "github-star", name: "GitHub star", description: "A small invitation to the source. Rolling digits, a green star, and one well-timed burst.", keywords: "github repository stars count up rolling number burst sparkles" },
+  { group: 3, id: "copy-command", name: "Copy command", description: "One command. One click. Clear feedback when it works, a useful fallback when it doesn’t.", keywords: "clipboard install terminal copy" },
+  { group: 3, id: "async-action", name: "Async action", description: "An action that follows through. Pending, success, and a second chance when something goes wrong.", keywords: "button save loading promise error retry" },
+  { group: 3, id: "hold-action", name: "Hold action", description: "For the things you can’t take back. Press and hold to confirm; let go to change your mind.", keywords: "button confirm hold press delete publish destructive danger" },
+  { group: 3, id: "shortcut", name: "Shortcut", description: "A hint and a hotkey in one. Keycaps press with the real keys and run your action when the combination lands.", keywords: "keyboard shortcut hotkey kbd keys command" },
+  { group: 3, id: "filter-list", name: "Filter list", description: "Find the thing you came for. A small, accessible search for lists that don’t need a whole search engine.", keywords: "search input empty list filter" },
+  { group: 4, id: "theme-toggle", name: "Theme toggle", description: "Light or dark, with one quiet control. System preferences lead until you choose otherwise.", keywords: "theme toggle dark light system preference" },
+  { group: 4, id: "footer-controls", name: "Footer controls", description: "A quiet place for display preferences. Follow the system, choose light or dark, or read the page as plain text.", keywords: "footer display controls theme system light dark agent markdown" },
+  { group: 5, id: "typography", name: "Typography", description: "The same type, scale, and spacing you see here. Opt-in styles for a shared visual language.", keywords: "typography layout styles font geist display spacing" },
+  { group: 5, id: "primitives", name: "Primitives", description: "Good foundations, straight from shadcn/ui. We use the originals, with WLKR’s shared design tokens.", keywords: "button input switch shadcn stock" },
+  { group: 5, id: "foundations", name: "Foundations", description: "A common language for what comes next. Semantic color, considered type, and space to think.", keywords: "theme tokens color typography design dark light" },
 ]
 const projects = [
   { id: "studio", label: "Brand Studio", description: "The source of truth for a considered identity.", keywords: ["design", "assets"] },
@@ -62,6 +83,16 @@ function Demo({ id }: { id: string }) {
   if (id === "theme-toggle") return <ThemeToggle showLabel />
   if (id === "footer-controls") return <FooterControls agentHref="/llms.txt" />
   if (id === "typography") return <div className="wlkr-typography wlkr-stack"><p className="wlkr-display">Aa.</p><p className="wlkr-intro-copy">Geist. One scale. Room to breathe.</p><p className="wlkr-caption">Opt-in styles, with the same exact gallery values.</p></div>
+  if (id === "decode-text") return <DecodeTextDemo />
+  if (id === "dot-field") return <DotFieldDemo />
+  if (id === "dot-matrix") return <DotMatrixDemo />
+  if (id === "hold-action") return <HoldActionDemo />
+  if (id === "liquid-tabs") return <LiquidTabsDemo />
+  if (id === "pixel-image") return <PixelImageDemo />
+  if (id === "pixel-progress") return <PixelProgressDemo />
+  if (id === "rolling-number") return <RollingNumberDemo />
+  if (id === "shortcut") return <ShortcutDemo />
+  if (id === "ticker") return <TickerDemo />
   if (id === "filter-list") return <FilterList items={projects} label="Search projects" placeholder="Search projects…" />
   return <div className="flex flex-col gap-7"><div className="demo-actions"><Button variant="ghost" onClick={() => setContinued(!continued)}>{continued ? <Check data-icon="inline-start" /> : <ArrowUpRight data-icon="inline-start" />}{continued ? "You’re all set" : "Continue"}</Button><label className="flex min-h-11 items-center gap-3 text-sm"><Switch checked={notifications} onCheckedChange={setNotifications} />Notifications {notifications ? "on" : "off"}</label></div><div className="terminal-field"><label htmlFor="demo-name" className="sr-only">Your name</label><Input id="demo-name" placeholder="Your name" autoComplete="name" /></div></div>
 }
@@ -70,11 +101,6 @@ export function Showcase({ sources, highlights = {} }: { sources: Record<string,
   const [query, setQuery] = React.useState("")
   const searchRef = React.useRef<HTMLInputElement>(null)
   const [currentSection, setCurrentSection] = React.useState<string | null>(null)
-  React.useEffect(() => {
-    const keydown = (event: KeyboardEvent) => { if ((event.metaKey || event.ctrlKey) && event.key === "k") { event.preventDefault(); searchRef.current?.focus(); searchRef.current?.scrollIntoView({ block: "center" }) } }
-    window.addEventListener("keydown", keydown)
-    return () => window.removeEventListener("keydown", keydown)
-  }, [])
   const filtered = React.useMemo(() => entries.filter(entry => `${entry.name} ${entry.description} ${entry.keywords}`.toLowerCase().includes(query.toLowerCase().trim())), [query])
   React.useEffect(() => {
     const sections = filtered.map(entry => document.getElementById(entry.id)).filter((section): section is HTMLElement => section !== null)
@@ -111,7 +137,7 @@ export function Showcase({ sources, highlights = {} }: { sources: Record<string,
     <main>
       <div className="hero"><h1>Interfaces,<br />reduced.</h1><div className="hero-note"><a href="#collection">Explore the collection <ArrowDown aria-hidden="true" /></a></div></div>
       <div className="workbench" id="collection">
-        <aside className="index" aria-label="Component index"><p className="index-label">The collection</p><div className="search-row"><Search aria-hidden="true" /><label className="sr-only" htmlFor="component-search">Search components</label><input ref={searchRef} id="component-search" type="search" placeholder="Search components…" value={query} onChange={event => setQuery(event.target.value)} />{query && <button className="icon-button" aria-label="Clear component search" onClick={() => { setQuery(""); searchRef.current?.focus() }}><X /></button>}</div><nav className="index-links" aria-label="Components">{filtered.map(entry => <a className={entry.id === currentSection ? "active" : ""} aria-current={entry.id === currentSection ? "location" : undefined} key={entry.id} href={`#${entry.id}`}>{entry.name}</a>)}</nav><p className="index-foot" role="status">{query ? `${filtered.length} matching sections` : ""}</p></aside>
+        <aside className="index" aria-label="Component index"><p className="index-label">The collection</p><div className="search-row"><Search aria-hidden="true" /><label className="sr-only" htmlFor="component-search">Search components</label><input ref={searchRef} id="component-search" type="search" placeholder="Search components…" value={query} onChange={event => setQuery(event.target.value)} /><Shortcut className="search-hint" keys="mod+k" size="sm" hidden={query !== ""} onTrigger={() => { searchRef.current?.focus(); searchRef.current?.scrollIntoView({ block: "center" }) }} />{query && <button className="icon-button" aria-label="Clear component search" onClick={() => { setQuery(""); searchRef.current?.focus() }}><X /></button>}</div><nav className="index-links" aria-label="Components">{filtered.map((entry, index) => <a className={entry.id === currentSection ? "active" : ""} data-group-start={index > 0 && filtered[index - 1].group !== entry.group ? "" : undefined} aria-current={entry.id === currentSection ? "location" : undefined} key={entry.id} href={`#${entry.id}`}>{entry.name}</a>)}</nav><p className="index-foot" role="status">{query ? `${filtered.length} matching sections` : ""}</p></aside>
         <div className="min-w-0">{filtered.length === 0 && <div className="component-section"><h2 className="text-2xl tracking-tight">Nothing here by that name.</h2><p className="mt-3 text-sm text-muted-foreground">Try “copy”, “search”, or “theme”.</p><Button variant="ghost" onClick={() => setQuery("")}>Clear search</Button></div>}
         {filtered.map(entry => <section className="component-section" id={entry.id} key={entry.id} aria-labelledby={`${entry.id}-title`}><div className="component-heading"><div><h2 id={`${entry.id}-title`}>{entry.name}</h2><p>{entry.description}</p></div><span className="component-origin">{entry.id === "primitives" ? "shadcn/ui" : entry.id === "foundations" ? "WLKR system" : "WLKR original"}</span></div>
         {entry.id === "foundations" ? <div className="foundation"><div className="swatches">{[["Canvas", "var(--background)"], ["Ink", "var(--foreground)"], ["Quiet", "var(--muted-foreground)"], ["WLKR green", "var(--brand)"]].map(([name, color]) => <div className="swatch" key={name}><i style={{background:color}} /><span>{name}</span></div>)}</div><h3>Meaning before appearance.</h3><p>Canvas, foreground, muted, and accent describe a purpose. Their values change with the light. Green marks a useful moment; it never has to carry the message alone.</p><h3 className="mt-8">One typeface. Room to breathe.</h3><p>Geist. A compact scale. Tight display typography and comfortable reading lengths. Focus stays visible. Motion follows interaction and respects reduced-motion preferences.</p><div className="install-line mt-5"><CopyCommand command="pnpm dlx shadcn@latest add @wlkr/theme" /></div><Disclosure title="Token reference" icon={Code2}><CodePanel code={tokenReference} filename="tokens.txt" language="text" /></Disclosure></div> : <>
