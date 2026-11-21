@@ -1,14 +1,45 @@
-import { readFile } from "node:fs/promises"
-import { Showcase } from "@/components/showcase"
-import { highlightCode } from "@/lib/highlight-code"
-import { showcaseExamples, registryConfig } from "@/lib/code-samples"
+import Link from "next/link"
+import { ArrowRight } from "lucide-react"
+import { getCatalog, getGroups, latestVersion, SITE } from "@/lib/catalog"
+import { demos } from "@/lib/catalog-demos"
+import { CatalogGrid } from "@/components/docs/catalog-grid"
+import { LegacyLinks } from "@/components/docs/legacy-links"
+import { SiteHeader, SiteFooter } from "@/components/site-chrome"
+import { CopyCommand } from "@/registry/wlkr/copy-command"
+import { DotField } from "@/registry/wlkr/dot-field"
+
+const featured = ["rolling-number", "liquid-tabs", "pixel-slider", "pixel-avatar", "heat-grid", "marker"]
+
 export default async function Home() {
-  const names = ["copy-command", "async-action", "filter-list", "pixel-object", "wlkr-loader", "page-intro", "index-row", "text-link", "theme-toggle", "typography", "footer-controls", "github-star", "decode-text", "dot-field", "dot-matrix", "hold-action", "liquid-tabs", "pixel-image", "pixel-progress", "rolling-number", "shortcut", "ticker"]
-  const sources: Record<string, string> = Object.fromEntries(await Promise.all(names.map(async name => [name, await readFile(`${process.cwd()}/registry/wlkr/${name}.${name === "typography" ? "css" : "tsx"}`, "utf8")])))
-  const highlights = Object.fromEntries(await Promise.all([
-    Promise.resolve(["registryConfig", await highlightCode(registryConfig, "json")]),
-    ...Object.entries(sources).map(async ([name, code]) => [`source:${name}`, await highlightCode(code, name === "typography" ? "css" : "tsx")]),
-    ...Object.entries(showcaseExamples).map(async ([name, code]) => [`example:${name}`, await highlightCode(code, "tsx")]),
-  ]))
-  return <Showcase sources={sources} highlights={highlights} />
+  const [catalog, groups, fresh] = await Promise.all([getCatalog(), getGroups(), latestVersion()])
+  const tiles = featured.map(slug => {
+    const entry = catalog.find(item => item.slug === slug)
+    return entry ? { entry, Demo: demos[slug] } : null
+  })
+  return <div className="site shell">
+    <a href="#collection" className="sr-only focus:not-sr-only">Skip to components</a>
+    <LegacyLinks slugs={catalog.map(entry => entry.slug)} />
+    <SiteHeader />
+    <main>
+      <DotField className="home-hero" radius={150}>
+        <div className="home-hero-inner">
+          <h1>Interfaces,<br />reduced.</h1>
+          <div className="home-start">
+            <CopyCommand command={`pnpm dlx shadcn@latest add ${SITE}/r/dot-field.json`} />
+            <Link className="home-browse" href="/components" prefetch={false}>Browse {catalog.length} components <ArrowRight aria-hidden="true" /></Link>
+          </div>
+        </div>
+      </DotField>
+      <ul className="home-featured" aria-label="Featured components">
+        {tiles.map(tile => tile && <li key={tile.entry.slug}>
+          <div className="home-tile"><tile.Demo /></div>
+          <Link href={`/components/${tile.entry.slug}`} prefetch={false}>{tile.entry.name} <ArrowRight aria-hidden="true" /></Link>
+        </li>)}
+      </ul>
+      <div id="collection" className="home-collection">
+        <CatalogGrid groups={groups} fresh={fresh} />
+      </div>
+    </main>
+    <SiteFooter />
+  </div>
 }

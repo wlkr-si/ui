@@ -3,7 +3,7 @@
   "name": "theme-toggle",
   "title": "Theme toggle",
   "author": "WLKR Labs",
-  "description": "Basic shadcn Toggle with light, dark and system-aware persistence.",
+  "description": "A basic shadcn Toggle that switches light and dark themes, follows the system until chosen and remembers the choice.",
   "dependencies": [
     "lucide-react"
   ],

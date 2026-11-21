@@ -1,13 +1,13 @@
 {
   "name": "wlkr-ui",
-  "version": "0.22.0",
+  "version": "0.23.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --turbopack",
+    "dev": "node scripts/registry-sync.mjs && next dev --turbopack",
     "build": "pnpm registry:build && next build && node scripts/build-info.mjs",
     "start": "wrangler dev --local --ip 127.0.0.1",
     "lint": "eslint .",
-    "registry:build": "shadcn build && node scripts/registry-catalog.mjs",
+    "registry:build": "node scripts/registry-sync.mjs && shadcn build && node scripts/registry-catalog.mjs",
     "typecheck": "tsc --noEmit",
     "release:check": "node scripts/release-check.mjs",
     "deploy:check": "pnpm build && wrangler deploy --dry-run",

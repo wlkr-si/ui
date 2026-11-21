@@ -3,7 +3,7 @@
   "name": "footer-controls",
   "title": "Footer controls",
   "author": "WLKR Labs",
-  "description": "Quiet system/light/dark controls with a real app-owned plain-text agent link.",
+  "description": "Compact system, light and dark theme controls with a link to a real app-owned plain-text page for agents.",
   "registryDependencies": [
     "toggle-group",
     "tooltip"

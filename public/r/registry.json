@@ -44,6 +44,54 @@
       ]
     },
     {
+      "name": "hold-action",
+      "type": "registry:component",
+      "title": "Hold action",
+      "description": "A press-and-hold confirmation button with a pixel-stepped fill and a two-step fallback for assistive technology.",
+      "author": "WLKR Labs",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "files": [
+        {
+          "path": "registry/wlkr/hold-action.tsx",
+          "type": "registry:component",
+          "target": "components/wlkr/hold-action.tsx"
+        }
+      ]
+    },
+    {
+      "name": "shortcut",
+      "type": "registry:component",
+      "title": "Shortcut",
+      "description": "Platform-aware keycaps that press with the real keys and run a handler when the combination lands.",
+      "author": "WLKR Labs",
+      "files": [
+        {
+          "path": "registry/wlkr/shortcut.tsx",
+          "type": "registry:component",
+          "target": "components/wlkr/shortcut.tsx"
+        }
+      ]
+    },
+    {
+      "name": "github-star",
+      "type": "registry:component",
+      "title": "GitHub star",
+      "description": "A native repository link with an app-supplied count, rolling digits, green star fill, and a bounded burst.",
+      "author": "WLKR Labs",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "files": [
+        {
+          "path": "registry/wlkr/github-star.tsx",
+          "type": "registry:component",
+          "target": "components/wlkr/github-star.tsx"
+        }
+      ]
+    },
+    {
       "name": "filter-list",
       "type": "registry:component",
       "title": "Filter list",
@@ -65,16 +113,201 @@
       ]
     },
     {
-      "name": "pixel-object",
+      "name": "scrub-input",
       "type": "registry:component",
-      "title": "Pixel object",
-      "description": "A projected pixel sphere, custom point cloud, or mask with considerate motion controls.",
+      "title": "Scrub input",
+      "description": "A numeric text field whose label scrubs the value by dragging, with a tick ruler that glides with the number.",
       "author": "WLKR Labs",
       "files": [
         {
-          "path": "registry/wlkr/pixel-object.tsx",
+          "path": "registry/wlkr/scrub-input.tsx",
           "type": "registry:component",
-          "target": "components/wlkr/pixel-object.tsx"
+          "target": "components/wlkr/scrub-input.tsx"
+        }
+      ]
+    },
+    {
+      "name": "code-input",
+      "type": "registry:component",
+      "title": "Code input",
+      "description": "A one-time-code field that draws a row of cells and a block caret over a single native input.",
+      "author": "WLKR Labs",
+      "files": [
+        {
+          "path": "registry/wlkr/code-input.tsx",
+          "type": "registry:component",
+          "target": "components/wlkr/code-input.tsx"
+        }
+      ]
+    },
+    {
+      "name": "pixel-slider",
+      "type": "registry:component",
+      "title": "Pixel slider",
+      "description": "A range slider drawn as a pixel grid with a dithered fill and a green thumb column, over a native range input.",
+      "author": "WLKR Labs",
+      "files": [
+        {
+          "path": "registry/wlkr/pixel-slider.tsx",
+          "type": "registry:component",
+          "target": "components/wlkr/pixel-slider.tsx"
+        }
+      ]
+    },
+    {
+      "name": "liquid-switch",
+      "type": "registry:component",
+      "title": "Liquid switch",
+      "description": "A toggle switch whose thumb stretches, necks and snaps across the track like a drop of liquid.",
+      "author": "WLKR Labs",
+      "files": [
+        {
+          "path": "registry/wlkr/liquid-switch.tsx",
+          "type": "registry:component",
+          "target": "components/wlkr/liquid-switch.tsx"
+        }
+      ]
+    },
+    {
+      "name": "liquid-tabs",
+      "type": "registry:component",
+      "title": "Liquid tabs",
+      "description": "A keyboard-accessible segmented control with a liquid selection that stretches and snaps.",
+      "author": "WLKR Labs",
+      "files": [
+        {
+          "path": "registry/wlkr/liquid-tabs.tsx",
+          "type": "registry:component",
+          "target": "components/wlkr/liquid-tabs.tsx"
+        }
+      ]
+    },
+    {
+      "name": "index-row",
+      "type": "registry:component",
+      "title": "Index row",
+      "description": "Borderless index link with three fixed digits that roll on hover and focus.",
+      "author": "WLKR Labs",
+      "files": [
+        {
+          "path": "registry/wlkr/index-row.tsx",
+          "type": "registry:component",
+          "target": "components/wlkr/index-row.tsx"
+        }
+      ]
+    },
+    {
+      "name": "text-link",
+      "type": "registry:component",
+      "title": "Text link",
+      "description": "A normal text link with an optional keyboard-accessible Radix HoverCard preview.",
+      "author": "WLKR Labs",
+      "registryDependencies": [
+        "hover-card"
+      ],
+      "files": [
+        {
+          "path": "registry/wlkr/text-link.tsx",
+          "type": "registry:component",
+          "target": "components/wlkr/text-link.tsx"
+        }
+      ]
+    },
+    {
+      "name": "dock",
+      "type": "registry:component",
+      "title": "Dock",
+      "description": "A navigation row of square icon tiles that magnify around the pointer or keyboard focus from a fixed baseline.",
+      "author": "WLKR Labs",
+      "files": [
+        {
+          "path": "registry/wlkr/dock.tsx",
+          "type": "registry:component",
+          "target": "components/wlkr/dock.tsx"
+        }
+      ]
+    },
+    {
+      "name": "scroll-spy",
+      "type": "registry:component",
+      "title": "Scroll spy",
+      "description": "An on-this-page list of section links with a liquid marker that tracks the section at the reading line.",
+      "author": "WLKR Labs",
+      "files": [
+        {
+          "path": "registry/wlkr/scroll-spy.tsx",
+          "type": "registry:component",
+          "target": "components/wlkr/scroll-spy.tsx"
+        }
+      ]
+    },
+    {
+      "name": "steps",
+      "type": "registry:component",
+      "title": "Steps",
+      "description": "A numbered step indicator whose connecting line fills in pixel increments, with numbers that roll over to a pixel check and optional jump-back navigation.",
+      "author": "WLKR Labs",
+      "files": [
+        {
+          "path": "registry/wlkr/steps.tsx",
+          "type": "registry:component",
+          "target": "components/wlkr/steps.tsx"
+        }
+      ]
+    },
+    {
+      "name": "pager",
+      "type": "registry:component",
+      "title": "Pager",
+      "description": "Pagination with previous and next arrows, a zero-padded page counter whose digits roll in the direction of travel, and a strip of page numbers.",
+      "author": "WLKR Labs",
+      "files": [
+        {
+          "path": "registry/wlkr/pager.tsx",
+          "type": "registry:component",
+          "target": "components/wlkr/pager.tsx"
+        }
+      ]
+    },
+    {
+      "name": "file-tree",
+      "type": "registry:component",
+      "title": "File tree",
+      "description": "An accessible file tree with stepped pixel chevrons, animated folders, guide lines and full tree keyboard support.",
+      "author": "WLKR Labs",
+      "files": [
+        {
+          "path": "registry/wlkr/file-tree.tsx",
+          "type": "registry:component",
+          "target": "components/wlkr/file-tree.tsx"
+        }
+      ]
+    },
+    {
+      "name": "scroll-progress",
+      "type": "registry:component",
+      "title": "Scroll progress",
+      "description": "A one-cell-tall strip of pixels pinned to the viewport edge, or inline, that fills as the page or a scroll container scrolls.",
+      "author": "WLKR Labs",
+      "files": [
+        {
+          "path": "registry/wlkr/scroll-progress.tsx",
+          "type": "registry:component",
+          "target": "components/wlkr/scroll-progress.tsx"
+        }
+      ]
+    },
+    {
+      "name": "pixel-progress",
+      "type": "registry:component",
+      "title": "Pixel progress",
+      "description": "An accessible pixel-grid progress bar with a dithered leading edge and an indeterminate state.",
+      "author": "WLKR Labs",
+      "files": [
+        {
+          "path": "registry/wlkr/pixel-progress.tsx",
+          "type": "registry:component",
+          "target": "components/wlkr/pixel-progress.tsx"
         }
       ]
     },
@@ -82,7 +315,7 @@
       "name": "wlkr-loader",
       "type": "registry:component",
       "title": "WLKR loader",
-      "description": "A tunable Open Lens loader with optional liquid split-body motion, pause and reduced-motion support.",
+      "description": "A tunable Open Lens loader with optional liquid split-body motion, a hover bounce, pause and reduced-motion support.",
       "author": "WLKR Labs",
       "files": [
         {
@@ -94,6 +327,424 @@
           "path": "lib/open-lens-motion.ts",
           "type": "registry:lib",
           "target": "lib/open-lens-motion.ts"
+        }
+      ]
+    },
+    {
+      "name": "toaster",
+      "type": "registry:component",
+      "title": "Toaster",
+      "description": "Ink-block toast notifications with a draining pixel timer, called from anywhere with toast().",
+      "author": "WLKR Labs",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "files": [
+        {
+          "path": "registry/wlkr/toaster.tsx",
+          "type": "registry:component",
+          "target": "components/wlkr/toaster.tsx"
+        }
+      ]
+    },
+    {
+      "name": "status-dot",
+      "type": "registry:component",
+      "title": "Status dot",
+      "description": "An inline status indicator: a small square dot with a label, a pixel-stepped ping when live and a caret blink when busy.",
+      "author": "WLKR Labs",
+      "files": [
+        {
+          "path": "registry/wlkr/status-dot.tsx",
+          "type": "registry:component",
+          "target": "components/wlkr/status-dot.tsx"
+        }
+      ]
+    },
+    {
+      "name": "pixel-skeleton",
+      "type": "registry:component",
+      "title": "Pixel skeleton",
+      "description": "A loading placeholder for text, blocks and avatars, drawn as a checker texture with a stepped pixel band sweeping across.",
+      "author": "WLKR Labs",
+      "files": [
+        {
+          "path": "registry/wlkr/pixel-skeleton.tsx",
+          "type": "registry:component",
+          "target": "components/wlkr/pixel-skeleton.tsx"
+        }
+      ]
+    },
+    {
+      "name": "shimmer-text",
+      "type": "registry:component",
+      "title": "Shimmer text",
+      "description": "Inline status text in a quiet grey with a stepped, dithered band of brighter text passing through it while work is in progress.",
+      "author": "WLKR Labs",
+      "files": [
+        {
+          "path": "registry/wlkr/shimmer-text.tsx",
+          "type": "registry:component",
+          "target": "components/wlkr/shimmer-text.tsx"
+        }
+      ]
+    },
+    {
+      "name": "rolling-number",
+      "type": "registry:component",
+      "title": "Rolling number",
+      "description": "A formatted number whose digits roll to each new value like an odometer.",
+      "author": "WLKR Labs",
+      "files": [
+        {
+          "path": "registry/wlkr/rolling-number.tsx",
+          "type": "registry:component",
+          "target": "components/wlkr/rolling-number.tsx"
+        }
+      ]
+    },
+    {
+      "name": "dot-matrix",
+      "type": "registry:component",
+      "title": "Dot matrix",
+      "description": "A dot-matrix display with a built-in 5×7 font and stepped scrolling for long messages.",
+      "author": "WLKR Labs",
+      "files": [
+        {
+          "path": "registry/wlkr/dot-matrix.tsx",
+          "type": "registry:component",
+          "target": "components/wlkr/dot-matrix.tsx"
+        }
+      ]
+    },
+    {
+      "name": "countdown",
+      "type": "registry:component",
+      "title": "Countdown",
+      "description": "A countdown to a target time with days, hours, minutes and seconds on rolling digit wheels, a hydration-safe placeholder and one shared wall-clock ticker.",
+      "author": "WLKR Labs",
+      "files": [
+        {
+          "path": "registry/wlkr/countdown.tsx",
+          "type": "registry:component",
+          "target": "components/wlkr/countdown.tsx"
+        }
+      ]
+    },
+    {
+      "name": "pixel-bars",
+      "type": "registry:component",
+      "title": "Pixel bars",
+      "description": "A bar chart drawn as stacks of square cells that build up on view, with a hover and keyboard readout.",
+      "author": "WLKR Labs",
+      "files": [
+        {
+          "path": "registry/wlkr/pixel-bars.tsx",
+          "type": "registry:component",
+          "target": "components/wlkr/pixel-bars.tsx"
+        }
+      ]
+    },
+    {
+      "name": "heat-grid",
+      "type": "registry:component",
+      "title": "Heat grid",
+      "description": "An activity grid of days by week, shaded in four ink steps with the busiest days in brand green.",
+      "author": "WLKR Labs",
+      "files": [
+        {
+          "path": "registry/wlkr/heat-grid.tsx",
+          "type": "registry:component",
+          "target": "components/wlkr/heat-grid.tsx"
+        }
+      ]
+    },
+    {
+      "name": "pixel-avatar",
+      "type": "registry:component",
+      "title": "Pixel avatar",
+      "description": "A deterministic, symmetric pixel identicon drawn from any string, with optional image and an overlapping group.",
+      "author": "WLKR Labs",
+      "files": [
+        {
+          "path": "registry/wlkr/pixel-avatar.tsx",
+          "type": "registry:component",
+          "target": "components/wlkr/pixel-avatar.tsx"
+        }
+      ]
+    },
+    {
+      "name": "secret-field",
+      "type": "registry:component",
+      "title": "Secret field",
+      "description": "A masked API key or token field that decodes on reveal, re-masks on a timer and copies without showing the value.",
+      "author": "WLKR Labs",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "files": [
+        {
+          "path": "registry/wlkr/secret-field.tsx",
+          "type": "registry:component",
+          "target": "components/wlkr/secret-field.tsx"
+        }
+      ]
+    },
+    {
+      "name": "page-intro",
+      "type": "registry:component",
+      "title": "Page intro",
+      "description": "Gallery typography with a width-stable binary heading reveal.",
+      "author": "WLKR Labs",
+      "files": [
+        {
+          "path": "registry/wlkr/page-intro.tsx",
+          "type": "registry:component",
+          "target": "components/wlkr/page-intro.tsx"
+        }
+      ]
+    },
+    {
+      "name": "decode-text",
+      "type": "registry:component",
+      "title": "Decode text",
+      "description": "Inline text that resolves out of glyph noise on view, hover or focus, with a stable width.",
+      "author": "WLKR Labs",
+      "files": [
+        {
+          "path": "registry/wlkr/decode-text.tsx",
+          "type": "registry:component",
+          "target": "components/wlkr/decode-text.tsx"
+        }
+      ]
+    },
+    {
+      "name": "typewriter",
+      "type": "registry:component",
+      "title": "Typewriter",
+      "description": "Inline text that types a phrase, holds, deletes back to the beginning it shares with the next and types that, behind a block caret.",
+      "author": "WLKR Labs",
+      "files": [
+        {
+          "path": "registry/wlkr/typewriter.tsx",
+          "type": "registry:component",
+          "target": "components/wlkr/typewriter.tsx"
+        }
+      ]
+    },
+    {
+      "name": "marker",
+      "type": "registry:component",
+      "title": "Marker",
+      "description": "Inline emphasis that draws a highlight, underline or strike through its words in discrete steps, across line breaks, on view, mount or hover.",
+      "author": "WLKR Labs",
+      "files": [
+        {
+          "path": "registry/wlkr/marker.tsx",
+          "type": "registry:component",
+          "target": "components/wlkr/marker.tsx"
+        }
+      ]
+    },
+    {
+      "name": "terminal",
+      "type": "registry:component",
+      "title": "Terminal",
+      "description": "A self-playing terminal session that types commands behind a block caret and lands output a row at a time, at its final height from the first frame.",
+      "author": "WLKR Labs",
+      "files": [
+        {
+          "path": "registry/wlkr/terminal.tsx",
+          "type": "registry:component",
+          "target": "components/wlkr/terminal.tsx"
+        }
+      ]
+    },
+    {
+      "name": "ticker",
+      "type": "registry:component",
+      "title": "Ticker",
+      "description": "A constant-speed marquee that eases to a stop on hover and focus, drags with momentum, and steps out at the edges.",
+      "author": "WLKR Labs",
+      "files": [
+        {
+          "path": "registry/wlkr/ticker.tsx",
+          "type": "registry:component",
+          "target": "components/wlkr/ticker.tsx"
+        }
+      ]
+    },
+    {
+      "name": "pixel-object",
+      "type": "registry:component",
+      "title": "Pixel object",
+      "description": "A projected pixel sphere, custom point cloud or mask, with rotation, flicker patterns, shape morphing and considerate motion controls.",
+      "author": "WLKR Labs",
+      "files": [
+        {
+          "path": "registry/wlkr/pixel-object.tsx",
+          "type": "registry:component",
+          "target": "components/wlkr/pixel-object.tsx"
+        }
+      ]
+    },
+    {
+      "name": "pixel-image",
+      "type": "registry:component",
+      "title": "Pixel image",
+      "description": "An image that resolves from coarse colour blocks to the real picture when it enters view.",
+      "author": "WLKR Labs",
+      "files": [
+        {
+          "path": "registry/wlkr/pixel-image.tsx",
+          "type": "registry:component",
+          "target": "components/wlkr/pixel-image.tsx"
+        }
+      ]
+    },
+    {
+      "name": "compare",
+      "type": "registry:component",
+      "title": "Compare",
+      "description": "A before-and-after comparison with a draggable, clickable and keyboard-controlled divider.",
+      "author": "WLKR Labs",
+      "files": [
+        {
+          "path": "registry/wlkr/compare.tsx",
+          "type": "registry:component",
+          "target": "components/wlkr/compare.tsx"
+        }
+      ]
+    },
+    {
+      "name": "pixel-wave",
+      "type": "registry:component",
+      "title": "Pixel wave",
+      "description": "An audio meter of square-cell bars for listening, speaking and recording states, driven by a microphone stream, a supplied level or a simulation.",
+      "author": "WLKR Labs",
+      "files": [
+        {
+          "path": "registry/wlkr/pixel-wave.tsx",
+          "type": "registry:component",
+          "target": "components/wlkr/pixel-wave.tsx"
+        }
+      ]
+    },
+    {
+      "name": "dot-field",
+      "type": "registry:component",
+      "title": "Dot field",
+      "description": "A canvas dot grid that swells, tints and springs away from the pointer, with a slow ambient wave.",
+      "author": "WLKR Labs",
+      "files": [
+        {
+          "path": "registry/wlkr/dot-field.tsx",
+          "type": "registry:component",
+          "target": "components/wlkr/dot-field.tsx"
+        }
+      ]
+    },
+    {
+      "name": "dither-field",
+      "type": "registry:component",
+      "title": "Dither field",
+      "description": "A canvas background that renders a slow, soft light field through an ordered-dither matrix as crisp one-bit pixels, with children on top.",
+      "author": "WLKR Labs",
+      "files": [
+        {
+          "path": "registry/wlkr/dither-field.tsx",
+          "type": "registry:component",
+          "target": "components/wlkr/dither-field.tsx"
+        }
+      ]
+    },
+    {
+      "name": "pixel-trail",
+      "type": "registry:component",
+      "title": "Pixel trail",
+      "description": "A wrapper with an invisible grid whose cells light up under the pointer and switch off in stepped pixels, leaving a short blocky trail.",
+      "author": "WLKR Labs",
+      "files": [
+        {
+          "path": "registry/wlkr/pixel-trail.tsx",
+          "type": "registry:component",
+          "target": "components/wlkr/pixel-trail.tsx"
+        }
+      ]
+    },
+    {
+      "name": "dissolve",
+      "type": "registry:component",
+      "title": "Dissolve",
+      "description": "A wrapper that reveals or hides any content through a 4×4 ordered-dither mask, on view, on mount or on command.",
+      "author": "WLKR Labs",
+      "files": [
+        {
+          "path": "registry/wlkr/dissolve.tsx",
+          "type": "registry:component",
+          "target": "components/wlkr/dissolve.tsx"
+        }
+      ]
+    },
+    {
+      "name": "magnetic",
+      "type": "registry:component",
+      "title": "Magnetic",
+      "description": "A wrapper that pulls its children a little way toward a nearby pointer on a spring, with a deeper parallax layer, and springs them home on leave.",
+      "author": "WLKR Labs",
+      "files": [
+        {
+          "path": "registry/wlkr/magnetic.tsx",
+          "type": "registry:component",
+          "target": "components/wlkr/magnetic.tsx"
+        }
+      ]
+    },
+    {
+      "name": "theme-toggle",
+      "type": "registry:component",
+      "title": "Theme toggle",
+      "description": "A basic shadcn Toggle that switches light and dark themes, follows the system until chosen and remembers the choice.",
+      "author": "WLKR Labs",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "toggle"
+      ],
+      "files": [
+        {
+          "path": "registry/wlkr/theme-toggle.tsx",
+          "type": "registry:component",
+          "target": "components/wlkr/theme-toggle.tsx"
+        },
+        {
+          "path": "hooks/use-display-theme.ts",
+          "type": "registry:hook",
+          "target": "hooks/use-display-theme.ts"
+        }
+      ]
+    },
+    {
+      "name": "footer-controls",
+      "type": "registry:component",
+      "title": "Footer controls",
+      "description": "Compact system, light and dark theme controls with a link to a real app-owned plain-text page for agents.",
+      "author": "WLKR Labs",
+      "registryDependencies": [
+        "toggle-group",
+        "tooltip"
+      ],
+      "files": [
+        {
+          "path": "registry/wlkr/footer-controls.tsx",
+          "type": "registry:component",
+          "target": "components/wlkr/footer-controls.tsx"
+        },
+        {
+          "path": "hooks/use-display-theme.ts",
+          "type": "registry:hook",
+          "target": "hooks/use-display-theme.ts"
         }
       ]
     },
@@ -158,76 +809,6 @@
       }
     },
     {
-      "name": "page-intro",
-      "type": "registry:component",
-      "title": "Page intro",
-      "description": "Gallery typography with a width-stable binary heading reveal.",
-      "author": "WLKR Labs",
-      "files": [
-        {
-          "path": "registry/wlkr/page-intro.tsx",
-          "type": "registry:component",
-          "target": "components/wlkr/page-intro.tsx"
-        }
-      ]
-    },
-    {
-      "name": "index-row",
-      "type": "registry:component",
-      "title": "Index row",
-      "description": "Borderless index link with three fixed digits that roll on hover and focus.",
-      "author": "WLKR Labs",
-      "files": [
-        {
-          "path": "registry/wlkr/index-row.tsx",
-          "type": "registry:component",
-          "target": "components/wlkr/index-row.tsx"
-        }
-      ]
-    },
-    {
-      "name": "text-link",
-      "type": "registry:component",
-      "title": "Text link",
-      "description": "A normal text link with an optional keyboard-accessible Radix HoverCard preview.",
-      "author": "WLKR Labs",
-      "files": [
-        {
-          "path": "registry/wlkr/text-link.tsx",
-          "type": "registry:component",
-          "target": "components/wlkr/text-link.tsx"
-        }
-      ],
-      "registryDependencies": [
-        "hover-card"
-      ]
-    },
-    {
-      "name": "theme-toggle",
-      "type": "registry:component",
-      "title": "Theme toggle",
-      "description": "Basic shadcn Toggle with light, dark and system-aware persistence.",
-      "author": "WLKR Labs",
-      "files": [
-        {
-          "path": "registry/wlkr/theme-toggle.tsx",
-          "type": "registry:component",
-          "target": "components/wlkr/theme-toggle.tsx"
-        },
-        {
-          "path": "hooks/use-display-theme.ts",
-          "type": "registry:hook",
-          "target": "hooks/use-display-theme.ts"
-        }
-      ],
-      "registryDependencies": [
-        "toggle"
-      ],
-      "dependencies": [
-        "lucide-react"
-      ]
-    },
-    {
       "name": "typography",
       "type": "registry:style",
       "title": "WLKR typography",
@@ -237,189 +818,6 @@
           "path": "registry/wlkr/typography.css",
           "type": "registry:file",
           "target": "styles/wlkr-typography.css"
-        }
-      ]
-    },
-    {
-      "name": "footer-controls",
-      "type": "registry:component",
-      "title": "Footer controls",
-      "description": "Quiet system/light/dark controls with a real app-owned plain-text agent link.",
-      "author": "WLKR Labs",
-      "registryDependencies": [
-        "toggle-group",
-        "tooltip"
-      ],
-      "files": [
-        {
-          "path": "registry/wlkr/footer-controls.tsx",
-          "type": "registry:component",
-          "target": "components/wlkr/footer-controls.tsx"
-        },
-        {
-          "path": "hooks/use-display-theme.ts",
-          "type": "registry:hook",
-          "target": "hooks/use-display-theme.ts"
-        }
-      ]
-    },
-    {
-      "name": "github-star",
-      "type": "registry:component",
-      "title": "GitHub star",
-      "description": "A native repository link with an app-supplied count, rolling digits, green star fill, and a bounded burst.",
-      "author": "WLKR Labs",
-      "dependencies": [
-        "lucide-react"
-      ],
-      "files": [
-        {
-          "path": "registry/wlkr/github-star.tsx",
-          "type": "registry:component",
-          "target": "components/wlkr/github-star.tsx"
-        }
-      ]
-    },
-    {
-      "name": "dot-field",
-      "type": "registry:component",
-      "title": "Dot field",
-      "description": "A canvas dot grid that swells, tints and springs away from the pointer, with a slow ambient wave.",
-      "author": "WLKR Labs",
-      "files": [
-        {
-          "path": "registry/wlkr/dot-field.tsx",
-          "type": "registry:component",
-          "target": "components/wlkr/dot-field.tsx"
-        }
-      ]
-    },
-    {
-      "name": "pixel-image",
-      "type": "registry:component",
-      "title": "Pixel image",
-      "description": "An image that resolves from coarse colour blocks to the real picture when it enters view.",
-      "author": "WLKR Labs",
-      "files": [
-        {
-          "path": "registry/wlkr/pixel-image.tsx",
-          "type": "registry:component",
-          "target": "components/wlkr/pixel-image.tsx"
-        }
-      ]
-    },
-    {
-      "name": "dot-matrix",
-      "type": "registry:component",
-      "title": "Dot matrix",
-      "description": "A dot-matrix display with a built-in 5×7 font and stepped scrolling for long messages.",
-      "author": "WLKR Labs",
-      "files": [
-        {
-          "path": "registry/wlkr/dot-matrix.tsx",
-          "type": "registry:component",
-          "target": "components/wlkr/dot-matrix.tsx"
-        }
-      ]
-    },
-    {
-      "name": "pixel-progress",
-      "type": "registry:component",
-      "title": "Pixel progress",
-      "description": "An accessible pixel-grid progress bar with a dithered leading edge and an indeterminate state.",
-      "author": "WLKR Labs",
-      "files": [
-        {
-          "path": "registry/wlkr/pixel-progress.tsx",
-          "type": "registry:component",
-          "target": "components/wlkr/pixel-progress.tsx"
-        }
-      ]
-    },
-    {
-      "name": "liquid-tabs",
-      "type": "registry:component",
-      "title": "Liquid tabs",
-      "description": "A keyboard-accessible segmented control with a liquid selection that stretches and snaps.",
-      "author": "WLKR Labs",
-      "files": [
-        {
-          "path": "registry/wlkr/liquid-tabs.tsx",
-          "type": "registry:component",
-          "target": "components/wlkr/liquid-tabs.tsx"
-        }
-      ]
-    },
-    {
-      "name": "ticker",
-      "type": "registry:component",
-      "title": "Ticker",
-      "description": "A constant-speed marquee that eases to a stop on hover and focus, drags with momentum, and steps out at the edges.",
-      "author": "WLKR Labs",
-      "files": [
-        {
-          "path": "registry/wlkr/ticker.tsx",
-          "type": "registry:component",
-          "target": "components/wlkr/ticker.tsx"
-        }
-      ]
-    },
-    {
-      "name": "decode-text",
-      "type": "registry:component",
-      "title": "Decode text",
-      "description": "Inline text that resolves out of glyph noise on view, hover or focus, with a stable width.",
-      "author": "WLKR Labs",
-      "files": [
-        {
-          "path": "registry/wlkr/decode-text.tsx",
-          "type": "registry:component",
-          "target": "components/wlkr/decode-text.tsx"
-        }
-      ]
-    },
-    {
-      "name": "rolling-number",
-      "type": "registry:component",
-      "title": "Rolling number",
-      "description": "A formatted number whose digits roll to each new value like an odometer.",
-      "author": "WLKR Labs",
-      "files": [
-        {
-          "path": "registry/wlkr/rolling-number.tsx",
-          "type": "registry:component",
-          "target": "components/wlkr/rolling-number.tsx"
-        }
-      ]
-    },
-    {
-      "name": "hold-action",
-      "type": "registry:component",
-      "title": "Hold action",
-      "description": "A press-and-hold confirmation button with a pixel-stepped fill and a two-step fallback for assistive technology.",
-      "author": "WLKR Labs",
-      "dependencies": [
-        "lucide-react"
-      ],
-      "files": [
-        {
-          "path": "registry/wlkr/hold-action.tsx",
-          "type": "registry:component",
-          "target": "components/wlkr/hold-action.tsx"
-        }
-      ]
-    },
-    {
-      "name": "shortcut",
-      "type": "registry:component",
-      "title": "Shortcut",
-      "description": "Platform-aware keycaps that press with the real keys and run a handler when the combination lands.",
-      "author": "WLKR Labs",
-      "files": [
-        {
-          "path": "registry/wlkr/shortcut.tsx",
-          "type": "registry:component",
-          "target": "components/wlkr/shortcut.tsx"
         }
       ]
     }

@@ -1,5 +1,5 @@
 import { execFileSync, spawnSync } from "node:child_process"
-import { access, readFile } from "node:fs/promises"
+import { access, readdir, readFile } from "node:fs/promises"
 
 function requireClean() {
   const status = execFileSync("git", ["status", "--porcelain"], { encoding: "utf8" })
@@ -19,5 +19,6 @@ run("typecheck")
 // Registry generation must reproduce the committed static artifacts exactly.
 requireClean()
 const catalog = JSON.parse(await readFile("out/registry.json", "utf8"))
-for (const path of ["out/build-info.json", "out/llms.txt", "out/index.html", "out/animation.html", "out/pixels.html", "out/contrast.html", "out/opengraph-image", "out/pixels/opengraph-image", "out/contrast/opengraph-image", "out/404.html", "out/registry.json", "out/r/registry.json", ...catalog.items.map(item => `out/r/${item.name}.json`)]) await access(path)
+const pages = (await readdir("registry/meta")).filter(file => file.endsWith(".ts")).map(file => file.slice(0, -3))
+for (const path of ["out/build-info.json", "out/llms.txt", "out/index.html", "out/animation.html", "out/pixels.html", "out/contrast.html", "out/opengraph-image", "out/pixels/opengraph-image", "out/contrast/opengraph-image", "out/404.html", "out/registry.json", "out/r/registry.json", "out/components.html", "out/installation.html", "out/sitemap.xml", ...catalog.items.map(item => `out/r/${item.name}.json`), ...pages.flatMap(slug => [`out/components/${slug}.html`, `out/og/${slug}.png`])]) await access(path)
 console.log(`Static release verified from ${revision}.`)

@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.23.0 — 2026-11-20
+
+- 28 new original components, taking the collection to 49: Scrub input, Code input, Pixel slider, Liquid switch, Dock, Scroll spy, Steps, Pager, File tree, Scroll progress, Toaster, Status dot, Pixel skeleton, Shimmer text, Countdown, Pixel bars, Heat grid, Pixel avatar, Secret field, Typewriter, Marker, Terminal, Compare, Pixel wave, Dither field, Pixel trail, Dissolve and Magnetic.
+- The gallery is now a component library site. A persistent sidebar groups every component (Actions, Inputs, Navigation, Feedback, Data, Text, Media, Effects, System) with a filter and ⌘K; each component has its own page at `/components/<name>` with a live preview and replay, an install line in pnpm, npm, yarn or bun, usage, an API table, behaviour notes, source, related components and previous/next links. The home page leads with featured live demos and the full catalog.
+- Each component page has its own title, description and share image, and the site publishes a sitemap. Old `/#name` links and root Pixels share links redirect to their new homes.
+- One file per component (`registry/meta/<name>.ts`) is now the single source for its page, its sidebar entry and its registry item. `pnpm registry:build` regenerates `registry.json` and the site index from those files.
+- Install lines use the registry URL, so they work in any shadcn project without configuring a namespace. `@wlkr/<name>` still works once the namespace is added.
+- The page-per-component API replaces the hand-written tables in `docs/interface-components.md`.
+
 ## 0.22.0 — 2026-11-20
 
 - Ten new original components, each in the registry and the gallery: Dot field, Pixel image, Dot matrix, Pixel progress, Liquid tabs, Ticker, Decode text, Rolling number, Hold action and Shortcut. The collection is now 21 originals plus typography and the theme (23 items).
