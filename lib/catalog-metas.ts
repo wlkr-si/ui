@@ -5,53 +5,73 @@ import { meta as m1 } from "@/registry/meta/async-action"
 import { meta as m2 } from "@/registry/meta/hold-action"
 import { meta as m3 } from "@/registry/meta/shortcut"
 import { meta as m4 } from "@/registry/meta/github-star"
-import { meta as m5 } from "@/registry/meta/filter-list"
-import { meta as m6 } from "@/registry/meta/scrub-input"
-import { meta as m7 } from "@/registry/meta/code-input"
-import { meta as m8 } from "@/registry/meta/pixel-slider"
-import { meta as m9 } from "@/registry/meta/liquid-switch"
-import { meta as m10 } from "@/registry/meta/liquid-tabs"
-import { meta as m11 } from "@/registry/meta/index-row"
-import { meta as m12 } from "@/registry/meta/text-link"
-import { meta as m13 } from "@/registry/meta/dock"
-import { meta as m14 } from "@/registry/meta/scroll-spy"
-import { meta as m15 } from "@/registry/meta/steps"
-import { meta as m16 } from "@/registry/meta/pager"
-import { meta as m17 } from "@/registry/meta/file-tree"
-import { meta as m18 } from "@/registry/meta/scroll-progress"
-import { meta as m19 } from "@/registry/meta/pixel-progress"
-import { meta as m20 } from "@/registry/meta/wlkr-loader"
-import { meta as m21 } from "@/registry/meta/toaster"
-import { meta as m22 } from "@/registry/meta/status-dot"
-import { meta as m23 } from "@/registry/meta/pixel-skeleton"
-import { meta as m24 } from "@/registry/meta/shimmer-text"
-import { meta as m25 } from "@/registry/meta/rolling-number"
-import { meta as m26 } from "@/registry/meta/dot-matrix"
-import { meta as m27 } from "@/registry/meta/countdown"
-import { meta as m28 } from "@/registry/meta/pixel-bars"
-import { meta as m29 } from "@/registry/meta/heat-grid"
-import { meta as m30 } from "@/registry/meta/pixel-avatar"
-import { meta as m31 } from "@/registry/meta/secret-field"
-import { meta as m32 } from "@/registry/meta/page-intro"
-import { meta as m33 } from "@/registry/meta/decode-text"
-import { meta as m34 } from "@/registry/meta/typewriter"
-import { meta as m35 } from "@/registry/meta/marker"
-import { meta as m36 } from "@/registry/meta/terminal"
-import { meta as m37 } from "@/registry/meta/ticker"
-import { meta as m38 } from "@/registry/meta/pixel-object"
-import { meta as m39 } from "@/registry/meta/pixel-image"
-import { meta as m40 } from "@/registry/meta/compare"
-import { meta as m41 } from "@/registry/meta/pixel-wave"
-import { meta as m42 } from "@/registry/meta/dot-field"
-import { meta as m43 } from "@/registry/meta/dither-field"
-import { meta as m44 } from "@/registry/meta/pixel-trail"
-import { meta as m45 } from "@/registry/meta/dissolve"
-import { meta as m46 } from "@/registry/meta/magnetic"
-import { meta as m47 } from "@/registry/meta/theme-toggle"
-import { meta as m48 } from "@/registry/meta/footer-controls"
-import { meta as m49 } from "@/registry/meta/typography"
-import { meta as m50 } from "@/registry/meta/theme"
-import { meta as m51 } from "@/registry/meta/primitives"
+import { meta as m5 } from "@/registry/meta/pixel-button"
+import { meta as m6 } from "@/registry/meta/filter-list"
+import { meta as m7 } from "@/registry/meta/scrub-input"
+import { meta as m8 } from "@/registry/meta/code-input"
+import { meta as m9 } from "@/registry/meta/pixel-slider"
+import { meta as m10 } from "@/registry/meta/liquid-switch"
+import { meta as m11 } from "@/registry/meta/dial"
+import { meta as m12 } from "@/registry/meta/pixel-calendar"
+import { meta as m13 } from "@/registry/meta/pixel-canvas"
+import { meta as m14 } from "@/registry/meta/pixel-checkbox"
+import { meta as m15 } from "@/registry/meta/pixel-rating"
+import { meta as m16 } from "@/registry/meta/tag-input"
+import { meta as m17 } from "@/registry/meta/liquid-tabs"
+import { meta as m18 } from "@/registry/meta/index-row"
+import { meta as m19 } from "@/registry/meta/text-link"
+import { meta as m20 } from "@/registry/meta/dock"
+import { meta as m21 } from "@/registry/meta/scroll-spy"
+import { meta as m22 } from "@/registry/meta/steps"
+import { meta as m23 } from "@/registry/meta/pager"
+import { meta as m24 } from "@/registry/meta/file-tree"
+import { meta as m25 } from "@/registry/meta/scroll-progress"
+import { meta as m26 } from "@/registry/meta/command-menu"
+import { meta as m27 } from "@/registry/meta/crumbs"
+import { meta as m28 } from "@/registry/meta/pop-menu"
+import { meta as m29 } from "@/registry/meta/pixel-progress"
+import { meta as m30 } from "@/registry/meta/wlkr-loader"
+import { meta as m31 } from "@/registry/meta/toaster"
+import { meta as m32 } from "@/registry/meta/status-dot"
+import { meta as m33 } from "@/registry/meta/pixel-skeleton"
+import { meta as m34 } from "@/registry/meta/shimmer-text"
+import { meta as m35 } from "@/registry/meta/dither-dialog"
+import { meta as m36 } from "@/registry/meta/hint"
+import { meta as m37 } from "@/registry/meta/pixel-spinner"
+import { meta as m38 } from "@/registry/meta/rolling-number"
+import { meta as m39 } from "@/registry/meta/dot-matrix"
+import { meta as m40 } from "@/registry/meta/countdown"
+import { meta as m41 } from "@/registry/meta/pixel-bars"
+import { meta as m42 } from "@/registry/meta/heat-grid"
+import { meta as m43 } from "@/registry/meta/pixel-avatar"
+import { meta as m44 } from "@/registry/meta/secret-field"
+import { meta as m45 } from "@/registry/meta/diff-view"
+import { meta as m46 } from "@/registry/meta/ring-meter"
+import { meta as m47 } from "@/registry/meta/sparkline"
+import { meta as m48 } from "@/registry/meta/page-intro"
+import { meta as m49 } from "@/registry/meta/decode-text"
+import { meta as m50 } from "@/registry/meta/typewriter"
+import { meta as m51 } from "@/registry/meta/marker"
+import { meta as m52 } from "@/registry/meta/terminal"
+import { meta as m53 } from "@/registry/meta/ticker"
+import { meta as m54 } from "@/registry/meta/segment-display"
+import { meta as m55 } from "@/registry/meta/split-flap"
+import { meta as m56 } from "@/registry/meta/pixel-object"
+import { meta as m57 } from "@/registry/meta/pixel-image"
+import { meta as m58 } from "@/registry/meta/compare"
+import { meta as m59 } from "@/registry/meta/pixel-wave"
+import { meta as m60 } from "@/registry/meta/dot-field"
+import { meta as m61 } from "@/registry/meta/dither-field"
+import { meta as m62 } from "@/registry/meta/pixel-trail"
+import { meta as m63 } from "@/registry/meta/dissolve"
+import { meta as m64 } from "@/registry/meta/magnetic"
+import { meta as m65 } from "@/registry/meta/binary-rain"
+import { meta as m66 } from "@/registry/meta/pixel-burst"
+import { meta as m67 } from "@/registry/meta/theme-toggle"
+import { meta as m68 } from "@/registry/meta/footer-controls"
+import { meta as m69 } from "@/registry/meta/typography"
+import { meta as m70 } from "@/registry/meta/theme"
+import { meta as m71 } from "@/registry/meta/primitives"
 
 export const metas: [slug: string, meta: ComponentMeta][] = [
   ["copy-command", m0],
@@ -59,51 +79,71 @@ export const metas: [slug: string, meta: ComponentMeta][] = [
   ["hold-action", m2],
   ["shortcut", m3],
   ["github-star", m4],
-  ["filter-list", m5],
-  ["scrub-input", m6],
-  ["code-input", m7],
-  ["pixel-slider", m8],
-  ["liquid-switch", m9],
-  ["liquid-tabs", m10],
-  ["index-row", m11],
-  ["text-link", m12],
-  ["dock", m13],
-  ["scroll-spy", m14],
-  ["steps", m15],
-  ["pager", m16],
-  ["file-tree", m17],
-  ["scroll-progress", m18],
-  ["pixel-progress", m19],
-  ["wlkr-loader", m20],
-  ["toaster", m21],
-  ["status-dot", m22],
-  ["pixel-skeleton", m23],
-  ["shimmer-text", m24],
-  ["rolling-number", m25],
-  ["dot-matrix", m26],
-  ["countdown", m27],
-  ["pixel-bars", m28],
-  ["heat-grid", m29],
-  ["pixel-avatar", m30],
-  ["secret-field", m31],
-  ["page-intro", m32],
-  ["decode-text", m33],
-  ["typewriter", m34],
-  ["marker", m35],
-  ["terminal", m36],
-  ["ticker", m37],
-  ["pixel-object", m38],
-  ["pixel-image", m39],
-  ["compare", m40],
-  ["pixel-wave", m41],
-  ["dot-field", m42],
-  ["dither-field", m43],
-  ["pixel-trail", m44],
-  ["dissolve", m45],
-  ["magnetic", m46],
-  ["theme-toggle", m47],
-  ["footer-controls", m48],
-  ["typography", m49],
-  ["theme", m50],
-  ["primitives", m51],
+  ["pixel-button", m5],
+  ["filter-list", m6],
+  ["scrub-input", m7],
+  ["code-input", m8],
+  ["pixel-slider", m9],
+  ["liquid-switch", m10],
+  ["dial", m11],
+  ["pixel-calendar", m12],
+  ["pixel-canvas", m13],
+  ["pixel-checkbox", m14],
+  ["pixel-rating", m15],
+  ["tag-input", m16],
+  ["liquid-tabs", m17],
+  ["index-row", m18],
+  ["text-link", m19],
+  ["dock", m20],
+  ["scroll-spy", m21],
+  ["steps", m22],
+  ["pager", m23],
+  ["file-tree", m24],
+  ["scroll-progress", m25],
+  ["command-menu", m26],
+  ["crumbs", m27],
+  ["pop-menu", m28],
+  ["pixel-progress", m29],
+  ["wlkr-loader", m30],
+  ["toaster", m31],
+  ["status-dot", m32],
+  ["pixel-skeleton", m33],
+  ["shimmer-text", m34],
+  ["dither-dialog", m35],
+  ["hint", m36],
+  ["pixel-spinner", m37],
+  ["rolling-number", m38],
+  ["dot-matrix", m39],
+  ["countdown", m40],
+  ["pixel-bars", m41],
+  ["heat-grid", m42],
+  ["pixel-avatar", m43],
+  ["secret-field", m44],
+  ["diff-view", m45],
+  ["ring-meter", m46],
+  ["sparkline", m47],
+  ["page-intro", m48],
+  ["decode-text", m49],
+  ["typewriter", m50],
+  ["marker", m51],
+  ["terminal", m52],
+  ["ticker", m53],
+  ["segment-display", m54],
+  ["split-flap", m55],
+  ["pixel-object", m56],
+  ["pixel-image", m57],
+  ["compare", m58],
+  ["pixel-wave", m59],
+  ["dot-field", m60],
+  ["dither-field", m61],
+  ["pixel-trail", m62],
+  ["dissolve", m63],
+  ["magnetic", m64],
+  ["binary-rain", m65],
+  ["pixel-burst", m66],
+  ["theme-toggle", m67],
+  ["footer-controls", m68],
+  ["typography", m69],
+  ["theme", m70],
+  ["primitives", m71],
 ]

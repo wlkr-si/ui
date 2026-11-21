@@ -5,11 +5,18 @@ import { AsyncActionDemo } from "@/components/demos/async-action-demo"
 import { HoldActionDemo } from "@/components/demos/hold-action-demo"
 import { ShortcutDemo } from "@/components/demos/shortcut-demo"
 import { GithubStarDemo } from "@/components/demos/github-star-demo"
+import { PixelButtonDemo } from "@/components/demos/pixel-button-demo"
 import { FilterListDemo } from "@/components/demos/filter-list-demo"
 import { ScrubInputDemo } from "@/components/demos/scrub-input-demo"
 import { CodeInputDemo } from "@/components/demos/code-input-demo"
 import { PixelSliderDemo } from "@/components/demos/pixel-slider-demo"
 import { LiquidSwitchDemo } from "@/components/demos/liquid-switch-demo"
+import { DialDemo } from "@/components/demos/dial-demo"
+import { PixelCalendarDemo } from "@/components/demos/pixel-calendar-demo"
+import { PixelCanvasDemo } from "@/components/demos/pixel-canvas-demo"
+import { PixelCheckboxDemo } from "@/components/demos/pixel-checkbox-demo"
+import { PixelRatingDemo } from "@/components/demos/pixel-rating-demo"
+import { TagInputDemo } from "@/components/demos/tag-input-demo"
 import { LiquidTabsDemo } from "@/components/demos/liquid-tabs-demo"
 import { IndexRowDemo } from "@/components/demos/index-row-demo"
 import { TextLinkDemo } from "@/components/demos/text-link-demo"
@@ -19,12 +26,18 @@ import { StepsDemo } from "@/components/demos/steps-demo"
 import { PagerDemo } from "@/components/demos/pager-demo"
 import { FileTreeDemo } from "@/components/demos/file-tree-demo"
 import { ScrollProgressDemo } from "@/components/demos/scroll-progress-demo"
+import { CommandMenuDemo } from "@/components/demos/command-menu-demo"
+import { CrumbsDemo } from "@/components/demos/crumbs-demo"
+import { PopMenuDemo } from "@/components/demos/pop-menu-demo"
 import { PixelProgressDemo } from "@/components/demos/pixel-progress-demo"
 import { WlkrLoaderDemo } from "@/components/demos/wlkr-loader-demo"
 import { ToasterDemo } from "@/components/demos/toaster-demo"
 import { StatusDotDemo } from "@/components/demos/status-dot-demo"
 import { PixelSkeletonDemo } from "@/components/demos/pixel-skeleton-demo"
 import { ShimmerTextDemo } from "@/components/demos/shimmer-text-demo"
+import { DitherDialogDemo } from "@/components/demos/dither-dialog-demo"
+import { HintDemo } from "@/components/demos/hint-demo"
+import { PixelSpinnerDemo } from "@/components/demos/pixel-spinner-demo"
 import { RollingNumberDemo } from "@/components/demos/rolling-number-demo"
 import { DotMatrixDemo } from "@/components/demos/dot-matrix-demo"
 import { CountdownDemo } from "@/components/demos/countdown-demo"
@@ -32,12 +45,17 @@ import { PixelBarsDemo } from "@/components/demos/pixel-bars-demo"
 import { HeatGridDemo } from "@/components/demos/heat-grid-demo"
 import { PixelAvatarDemo } from "@/components/demos/pixel-avatar-demo"
 import { SecretFieldDemo } from "@/components/demos/secret-field-demo"
+import { DiffViewDemo } from "@/components/demos/diff-view-demo"
+import { RingMeterDemo } from "@/components/demos/ring-meter-demo"
+import { SparklineDemo } from "@/components/demos/sparkline-demo"
 import { PageIntroDemo } from "@/components/demos/page-intro-demo"
 import { DecodeTextDemo } from "@/components/demos/decode-text-demo"
 import { TypewriterDemo } from "@/components/demos/typewriter-demo"
 import { MarkerDemo } from "@/components/demos/marker-demo"
 import { TerminalDemo } from "@/components/demos/terminal-demo"
 import { TickerDemo } from "@/components/demos/ticker-demo"
+import { SegmentDisplayDemo } from "@/components/demos/segment-display-demo"
+import { SplitFlapDemo } from "@/components/demos/split-flap-demo"
 import { PixelObjectDemo } from "@/components/demos/pixel-object-demo"
 import { PixelImageDemo } from "@/components/demos/pixel-image-demo"
 import { CompareDemo } from "@/components/demos/compare-demo"
@@ -47,6 +65,8 @@ import { DitherFieldDemo } from "@/components/demos/dither-field-demo"
 import { PixelTrailDemo } from "@/components/demos/pixel-trail-demo"
 import { DissolveDemo } from "@/components/demos/dissolve-demo"
 import { MagneticDemo } from "@/components/demos/magnetic-demo"
+import { BinaryRainDemo } from "@/components/demos/binary-rain-demo"
+import { PixelBurstDemo } from "@/components/demos/pixel-burst-demo"
 import { ThemeToggleDemo } from "@/components/demos/theme-toggle-demo"
 import { FooterControlsDemo } from "@/components/demos/footer-controls-demo"
 import { TypographyDemo } from "@/components/demos/typography-demo"
@@ -59,11 +79,18 @@ export const demos: Record<string, ComponentType> = {
   "hold-action": HoldActionDemo,
   "shortcut": ShortcutDemo,
   "github-star": GithubStarDemo,
+  "pixel-button": PixelButtonDemo,
   "filter-list": FilterListDemo,
   "scrub-input": ScrubInputDemo,
   "code-input": CodeInputDemo,
   "pixel-slider": PixelSliderDemo,
   "liquid-switch": LiquidSwitchDemo,
+  "dial": DialDemo,
+  "pixel-calendar": PixelCalendarDemo,
+  "pixel-canvas": PixelCanvasDemo,
+  "pixel-checkbox": PixelCheckboxDemo,
+  "pixel-rating": PixelRatingDemo,
+  "tag-input": TagInputDemo,
   "liquid-tabs": LiquidTabsDemo,
   "index-row": IndexRowDemo,
   "text-link": TextLinkDemo,
@@ -73,12 +100,18 @@ export const demos: Record<string, ComponentType> = {
   "pager": PagerDemo,
   "file-tree": FileTreeDemo,
   "scroll-progress": ScrollProgressDemo,
+  "command-menu": CommandMenuDemo,
+  "crumbs": CrumbsDemo,
+  "pop-menu": PopMenuDemo,
   "pixel-progress": PixelProgressDemo,
   "wlkr-loader": WlkrLoaderDemo,
   "toaster": ToasterDemo,
   "status-dot": StatusDotDemo,
   "pixel-skeleton": PixelSkeletonDemo,
   "shimmer-text": ShimmerTextDemo,
+  "dither-dialog": DitherDialogDemo,
+  "hint": HintDemo,
+  "pixel-spinner": PixelSpinnerDemo,
   "rolling-number": RollingNumberDemo,
   "dot-matrix": DotMatrixDemo,
   "countdown": CountdownDemo,
@@ -86,12 +119,17 @@ export const demos: Record<string, ComponentType> = {
   "heat-grid": HeatGridDemo,
   "pixel-avatar": PixelAvatarDemo,
   "secret-field": SecretFieldDemo,
+  "diff-view": DiffViewDemo,
+  "ring-meter": RingMeterDemo,
+  "sparkline": SparklineDemo,
   "page-intro": PageIntroDemo,
   "decode-text": DecodeTextDemo,
   "typewriter": TypewriterDemo,
   "marker": MarkerDemo,
   "terminal": TerminalDemo,
   "ticker": TickerDemo,
+  "segment-display": SegmentDisplayDemo,
+  "split-flap": SplitFlapDemo,
   "pixel-object": PixelObjectDemo,
   "pixel-image": PixelImageDemo,
   "compare": CompareDemo,
@@ -101,6 +139,8 @@ export const demos: Record<string, ComponentType> = {
   "pixel-trail": PixelTrailDemo,
   "dissolve": DissolveDemo,
   "magnetic": MagneticDemo,
+  "binary-rain": BinaryRainDemo,
+  "pixel-burst": PixelBurstDemo,
   "theme-toggle": ThemeToggleDemo,
   "footer-controls": FooterControlsDemo,
   "typography": TypographyDemo,

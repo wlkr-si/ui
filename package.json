@@ -1,6 +1,6 @@
 {
   "name": "wlkr-ui",
-  "version": "0.23.0",
+  "version": "0.24.0",
   "private": true,
   "scripts": {
     "dev": "node scripts/registry-sync.mjs && next dev --turbopack",

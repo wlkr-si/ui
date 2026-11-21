@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.24.0 — 2026-11-20
+
+- 20 new original components, taking the collection to 69: Pixel button, Pixel checkbox, Tag input, Pixel rating, Dial, Pixel calendar, Pixel canvas, Command menu, Crumbs, Pop menu, Hint, Dither dialog, Pixel spinner, Sparkline, Ring meter, Diff view, Split flap, Segment display, Binary rain and Pixel burst.
+
 ## 0.23.0 — 2026-11-20
 
 - 28 new original components, taking the collection to 49: Scrub input, Code input, Pixel slider, Liquid switch, Dock, Scroll spy, Steps, Pager, File tree, Scroll progress, Toaster, Status dot, Pixel skeleton, Shimmer text, Countdown, Pixel bars, Heat grid, Pixel avatar, Secret field, Typewriter, Marker, Terminal, Compare, Pixel wave, Dither field, Pixel trail, Dissolve and Magnetic.

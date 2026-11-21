@@ -92,6 +92,20 @@
       ]
     },
     {
+      "name": "pixel-button",
+      "type": "registry:component",
+      "title": "Pixel button",
+      "description": "A button whose fill sweeps across as an ordered-dither grid of square pixels on hover and focus, with solid, outline and brand variants and a three-pixel loading state.",
+      "author": "WLKR Labs",
+      "files": [
+        {
+          "path": "registry/wlkr/pixel-button.tsx",
+          "type": "registry:component",
+          "target": "components/wlkr/pixel-button.tsx"
+        }
+      ]
+    },
+    {
       "name": "filter-list",
       "type": "registry:component",
       "title": "Filter list",
@@ -165,6 +179,90 @@
           "path": "registry/wlkr/liquid-switch.tsx",
           "type": "registry:component",
           "target": "components/wlkr/liquid-switch.tsx"
+        }
+      ]
+    },
+    {
+      "name": "dial",
+      "type": "registry:component",
+      "title": "Dial",
+      "description": "A rotary knob input drawn in SVG with a ring of ticks, a green current tick and a mono readout, driven by pointer drag and the keyboard.",
+      "author": "WLKR Labs",
+      "files": [
+        {
+          "path": "registry/wlkr/dial.tsx",
+          "type": "registry:component",
+          "target": "components/wlkr/dial.tsx"
+        }
+      ]
+    },
+    {
+      "name": "pixel-calendar",
+      "type": "registry:component",
+      "title": "Pixel calendar",
+      "description": "A single-month date picker on a borderless seven-column grid with a solid selected block, a green pixel for today and full ARIA grid keyboard support.",
+      "author": "WLKR Labs",
+      "files": [
+        {
+          "path": "registry/wlkr/pixel-calendar.tsx",
+          "type": "registry:component",
+          "target": "components/wlkr/pixel-calendar.tsx"
+        }
+      ]
+    },
+    {
+      "name": "pixel-canvas",
+      "type": "registry:component",
+      "title": "Pixel canvas",
+      "description": "A pixel-art drawing pad: a grid of square cells you paint by click or drag in ink, WLKR green or erase, with keyboard control and a numeric value.",
+      "author": "WLKR Labs",
+      "files": [
+        {
+          "path": "registry/wlkr/pixel-canvas.tsx",
+          "type": "registry:component",
+          "target": "components/wlkr/pixel-canvas.tsx"
+        }
+      ]
+    },
+    {
+      "name": "pixel-checkbox",
+      "type": "registry:component",
+      "title": "Pixel checkbox",
+      "description": "A native checkbox whose square box fills with a 4x4 grid of pixels in ordered-dither order, with an indeterminate middle row.",
+      "author": "WLKR Labs",
+      "files": [
+        {
+          "path": "registry/wlkr/pixel-checkbox.tsx",
+          "type": "registry:component",
+          "target": "components/wlkr/pixel-checkbox.tsx"
+        }
+      ]
+    },
+    {
+      "name": "pixel-rating",
+      "type": "registry:component",
+      "title": "Pixel rating",
+      "description": "A rating input made of square blocks: hover previews, click sets, and filled blocks pop in with a stepped stagger, the newest in WLKR green.",
+      "author": "WLKR Labs",
+      "files": [
+        {
+          "path": "registry/wlkr/pixel-rating.tsx",
+          "type": "registry:component",
+          "target": "components/wlkr/pixel-rating.tsx"
+        }
+      ]
+    },
+    {
+      "name": "tag-input",
+      "type": "registry:component",
+      "title": "Tag input",
+      "description": "A token field on a single underline: Enter or comma adds a square mono tag, Backspace removes, paste splits on commas and newlines, and duplicates shake.",
+      "author": "WLKR Labs",
+      "files": [
+        {
+          "path": "registry/wlkr/tag-input.tsx",
+          "type": "registry:component",
+          "target": "components/wlkr/tag-input.tsx"
         }
       ]
     },
@@ -298,6 +396,48 @@
       ]
     },
     {
+      "name": "command-menu",
+      "type": "registry:component",
+      "title": "Command menu",
+      "description": "A command palette in a native modal dialog with a mono prompt, subsequence filtering, grouped commands, shortcuts and combobox ARIA.",
+      "author": "WLKR Labs",
+      "files": [
+        {
+          "path": "registry/wlkr/command-menu.tsx",
+          "type": "registry:component",
+          "target": "components/wlkr/command-menu.tsx"
+        }
+      ]
+    },
+    {
+      "name": "crumbs",
+      "type": "registry:component",
+      "title": "Crumbs",
+      "description": "A mono breadcrumb trail with slash separators, a blinking block caret on the current page and a collapsible middle.",
+      "author": "WLKR Labs",
+      "files": [
+        {
+          "path": "registry/wlkr/crumbs.tsx",
+          "type": "registry:component",
+          "target": "components/wlkr/crumbs.tsx"
+        }
+      ]
+    },
+    {
+      "name": "pop-menu",
+      "type": "registry:component",
+      "title": "Pop menu",
+      "description": "A dropdown menu button following the WAI-ARIA menu button pattern, with an outlined flat panel, stepped row reveal and an inverted active row.",
+      "author": "WLKR Labs",
+      "files": [
+        {
+          "path": "registry/wlkr/pop-menu.tsx",
+          "type": "registry:component",
+          "target": "components/wlkr/pop-menu.tsx"
+        }
+      ]
+    },
+    {
       "name": "pixel-progress",
       "type": "registry:component",
       "title": "Pixel progress",
@@ -386,6 +526,48 @@
           "path": "registry/wlkr/shimmer-text.tsx",
           "type": "registry:component",
           "target": "components/wlkr/shimmer-text.tsx"
+        }
+      ]
+    },
+    {
+      "name": "dither-dialog",
+      "type": "registry:component",
+      "title": "Dither dialog",
+      "description": "A modal dialog on the native dialog element with an ordered-dither backdrop that steps in through three densities and a square panel that snaps into place.",
+      "author": "WLKR Labs",
+      "files": [
+        {
+          "path": "registry/wlkr/dither-dialog.tsx",
+          "type": "registry:component",
+          "target": "components/wlkr/dither-dialog.tsx"
+        }
+      ]
+    },
+    {
+      "name": "hint",
+      "type": "registry:component",
+      "title": "Hint",
+      "description": "A tooltip that shows a solid mono label beside its trigger on hover or keyboard focus, with a stepped clip reveal and viewport flipping.",
+      "author": "WLKR Labs",
+      "files": [
+        {
+          "path": "registry/wlkr/hint.tsx",
+          "type": "registry:component",
+          "target": "components/wlkr/hint.tsx"
+        }
+      ]
+    },
+    {
+      "name": "pixel-spinner",
+      "type": "registry:component",
+      "title": "Pixel spinner",
+      "description": "A family of inline loading indicators drawn on a 3x3 pixel grid, animated with stepped CSS keyframes in six patterns.",
+      "author": "WLKR Labs",
+      "files": [
+        {
+          "path": "registry/wlkr/pixel-spinner.tsx",
+          "type": "registry:component",
+          "target": "components/wlkr/pixel-spinner.tsx"
         }
       ]
     },
@@ -491,6 +673,48 @@
       ]
     },
     {
+      "name": "diff-view",
+      "type": "registry:component",
+      "title": "Diff view",
+      "description": "A unified line-level text diff with old and new line numbers, a sign column, hatched removed lines and collapsible unchanged runs.",
+      "author": "WLKR Labs",
+      "files": [
+        {
+          "path": "registry/wlkr/diff-view.tsx",
+          "type": "registry:component",
+          "target": "components/wlkr/diff-view.tsx"
+        }
+      ]
+    },
+    {
+      "name": "ring-meter",
+      "type": "registry:component",
+      "title": "Ring meter",
+      "description": "A radial progress meter drawn as discrete SVG segments, with a green leading tick, stepped fill transitions and a mono value in the centre.",
+      "author": "WLKR Labs",
+      "files": [
+        {
+          "path": "registry/wlkr/ring-meter.tsx",
+          "type": "registry:component",
+          "target": "components/wlkr/ring-meter.tsx"
+        }
+      ]
+    },
+    {
+      "name": "sparkline",
+      "type": "registry:component",
+      "title": "Sparkline",
+      "description": "A small inline SVG trend line drawn as pixel steps, with an optional dithered fill and pointer or keyboard scrubbing.",
+      "author": "WLKR Labs",
+      "files": [
+        {
+          "path": "registry/wlkr/sparkline.tsx",
+          "type": "registry:component",
+          "target": "components/wlkr/sparkline.tsx"
+        }
+      ]
+    },
+    {
       "name": "page-intro",
       "type": "registry:component",
       "title": "Page intro",
@@ -571,6 +795,34 @@
           "path": "registry/wlkr/ticker.tsx",
           "type": "registry:component",
           "target": "components/wlkr/ticker.tsx"
+        }
+      ]
+    },
+    {
+      "name": "segment-display",
+      "type": "registry:component",
+      "title": "Segment display",
+      "description": "A seven-segment SVG readout for numbers, a few letters and a live clock, with ghost segments and a stepped colon blink.",
+      "author": "WLKR Labs",
+      "files": [
+        {
+          "path": "registry/wlkr/segment-display.tsx",
+          "type": "registry:component",
+          "target": "components/wlkr/segment-display.tsx"
+        }
+      ]
+    },
+    {
+      "name": "split-flap",
+      "type": "registry:component",
+      "title": "Split flap",
+      "description": "A split-flap text display: square ink cells that step through a character set, staggered left to right, whenever the value changes.",
+      "author": "WLKR Labs",
+      "files": [
+        {
+          "path": "registry/wlkr/split-flap.tsx",
+          "type": "registry:component",
+          "target": "components/wlkr/split-flap.tsx"
         }
       ]
     },
@@ -697,6 +949,34 @@
           "path": "registry/wlkr/magnetic.tsx",
           "type": "registry:component",
           "target": "components/wlkr/magnetic.tsx"
+        }
+      ]
+    },
+    {
+      "name": "binary-rain",
+      "type": "registry:component",
+      "title": "Binary rain",
+      "description": "A decorative canvas background of stepped, falling binary columns with a brand-green head and an ordered fade, with content layered on top.",
+      "author": "WLKR Labs",
+      "files": [
+        {
+          "path": "registry/wlkr/binary-rain.tsx",
+          "type": "registry:component",
+          "target": "components/wlkr/binary-rain.tsx"
+        }
+      ]
+    },
+    {
+      "name": "pixel-burst",
+      "type": "registry:component",
+      "title": "Pixel burst",
+      "description": "A wrapper that throws a stepped burst of square ink and green pixels from the click point, or on demand through a ref.",
+      "author": "WLKR Labs",
+      "files": [
+        {
+          "path": "registry/wlkr/pixel-burst.tsx",
+          "type": "registry:component",
+          "target": "components/wlkr/pixel-burst.tsx"
         }
       ]
     },
