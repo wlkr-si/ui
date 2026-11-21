@@ -3,7 +3,7 @@
   "name": "wlkr-loader",
   "title": "WLKR loader",
   "author": "WLKR Labs",
-  "description": "A tunable Open Lens loader with optional liquid split-body motion, pause and reduced-motion support.",
+  "description": "A tunable Open Lens loader with optional liquid split-body motion, a hover bounce, pause and reduced-motion support.",
   "files": [
     {
       "path": "registry/wlkr/wlkr-loader.tsx",

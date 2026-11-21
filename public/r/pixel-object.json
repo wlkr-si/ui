@@ -3,7 +3,7 @@
   "name": "pixel-object",
   "title": "Pixel object",
   "author": "WLKR Labs",
-  "description": "A projected pixel sphere, custom point cloud, or mask with considerate motion controls.",
+  "description": "A projected pixel sphere, custom point cloud or mask, with rotation, flicker patterns, shape morphing and considerate motion controls.",
   "files": [
     {
       "path": "registry/wlkr/pixel-object.tsx",

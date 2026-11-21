@@ -8,7 +8,7 @@ const green = "#33F282"
 const white = "#F7F7F7"
 const black = "#010101"
 
-type PreviewKind = "gallery" | "pixels" | "contrast"
+type PreviewKind = "gallery" | "pixels" | "contrast" | "component"
 
 function PixelArt({ cell = 24, gap = 6 }: { cell?: number; gap?: number }) {
   return <div style={{ display: "flex", flexDirection: "column", gap }}>
@@ -42,9 +42,9 @@ function ContrastSample() {
   </div>
 }
 
-export function SocialPreview({ kind }: { kind: PreviewKind }) {
-  const title = kind === "gallery" ? "Components" : kind === "pixels" ? "Pixels" : "Contrast"
-  const art = kind === "gallery" ? <GalleryTiles /> : kind === "pixels"
+export function SocialPreview({ kind, name, eyebrow }: { kind: PreviewKind; name?: string; eyebrow?: string }) {
+  const title = name ?? (kind === "gallery" ? "Components" : kind === "pixels" ? "Pixels" : "Contrast")
+  const art = kind === "gallery" ? <GalleryTiles /> : kind === "pixels" || kind === "component"
     ? <div style={{ display: "flex", width: 430, height: 300, alignItems: "center", justifyContent: "center", background: "#111111", border: "1px solid #303030" }}><PixelArt /></div>
     : <ContrastSample />
 
@@ -61,7 +61,8 @@ export function SocialPreview({ kind }: { kind: PreviewKind }) {
     </div>
     <div style={{ position: "absolute", left: 64, top: 144, width: 1072, height: 350, display: "flex", alignItems: "center", justifyContent: "space-between", gap: 48 }}>
       <div style={{ display: "flex", flexDirection: "column", width: 490 }}>
-        <span style={{ marginTop: 18, fontSize: 72, lineHeight: 1.04, letterSpacing: -3, fontWeight: 600 }}>{title}</span>
+        {eyebrow && <span style={{ fontSize: 20, color: "#A0A0A0" }}>{eyebrow}</span>}
+        <span style={{ marginTop: 18, fontSize: title.length > 12 ? 60 : 72, lineHeight: 1.04, letterSpacing: -3, fontWeight: 600 }}>{title}</span>
       </div>
       {art}
     </div>
