@@ -18,8 +18,16 @@ import e14 from "@/components/examples/segmented/small"
 import e15 from "@/components/examples/segmented/without-label"
 import e16 from "@/components/examples/segmented/disabled-option"
 import e17 from "@/components/examples/segmented/disabled-group"
+import e18 from "@/components/examples/select/default"
+import e19 from "@/components/examples/select/xs"
+import e20 from "@/components/examples/select/sm"
+import e21 from "@/components/examples/select/lg"
+import e22 from "@/components/examples/select/prefix"
+import e23 from "@/components/examples/select/invalid"
+import e24 from "@/components/examples/select/disabled"
 
 export const examples: Record<string, Record<string, ComponentType>> = {
   "button": { "default": e0, "secondary": e1, "outline": e2, "ghost": e3, "destructive": e4, "link": e5, "sizes": e6, "icon": e7, "with-icon": e8, "loading": e9, "pressed": e10, "glow": e11, "as-child": e12 },
   "segmented": { "default": e13, "small": e14, "without-label": e15, "disabled-option": e16, "disabled-group": e17 },
+  "select": { "default": e18, "xs": e19, "sm": e20, "lg": e21, "prefix": e22, "invalid": e23, "disabled": e24 },
 }

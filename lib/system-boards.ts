@@ -2,8 +2,10 @@
 import type { ComponentType } from "react"
 import b0 from "@/components/system-boards/button"
 import b1 from "@/components/system-boards/segmented"
+import b2 from "@/components/system-boards/select"
 
 export const boards: Record<string, ComponentType> = {
   "button": b0,
   "segmented": b1,
+  "select": b2,
 }

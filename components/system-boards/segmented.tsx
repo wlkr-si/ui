@@ -22,7 +22,7 @@ export default function SegmentedBoard() {
       <div>
         <Segmented size={size} label="View" options={options} defaultValue="week" />
         <Button size={size} variant="outline">Today</Button>
-        <Select size={size === "sm" ? "sm" : undefined} aria-label="Time zone">
+        <Select size={size} aria-label="Time zone">
           <option>Local time</option>
           <option>UTC</option>
         </Select>
