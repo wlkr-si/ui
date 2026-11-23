@@ -13,7 +13,15 @@ import e9 from "@/components/examples/button/loading"
 import e10 from "@/components/examples/button/pressed"
 import e11 from "@/components/examples/button/glow"
 import e12 from "@/components/examples/button/as-child"
+import e13 from "@/components/examples/select/default"
+import e14 from "@/components/examples/select/xs"
+import e15 from "@/components/examples/select/sm"
+import e16 from "@/components/examples/select/lg"
+import e17 from "@/components/examples/select/prefix"
+import e18 from "@/components/examples/select/invalid"
+import e19 from "@/components/examples/select/disabled"
 
 export const examples: Record<string, Record<string, ComponentType>> = {
   "button": { "default": e0, "secondary": e1, "outline": e2, "ghost": e3, "destructive": e4, "link": e5, "sizes": e6, "icon": e7, "with-icon": e8, "loading": e9, "pressed": e10, "glow": e11, "as-child": e12 },
+  "select": { "default": e13, "xs": e14, "sm": e15, "lg": e16, "prefix": e17, "invalid": e18, "disabled": e19 },
 }
