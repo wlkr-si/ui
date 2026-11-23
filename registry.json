@@ -41,8 +41,11 @@
       "name": "segmented",
       "type": "registry:component",
       "title": "Segmented",
-      "description": "A controlled or uncontrolled radiogroup with roving focus, optional prefix label and compact Bach Bench styling.",
+      "description": "A single-choice control with an optional leading label and arrow-key navigation.",
       "author": "WLKR Labs",
+      "registryDependencies": [
+        "https://ui.wlkr.si/r/theme.json"
+      ],
       "files": [
         {
           "path": "registry/wlkr/segmented.tsx",

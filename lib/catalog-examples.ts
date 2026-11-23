@@ -13,7 +13,13 @@ import e9 from "@/components/examples/button/loading"
 import e10 from "@/components/examples/button/pressed"
 import e11 from "@/components/examples/button/glow"
 import e12 from "@/components/examples/button/as-child"
+import e13 from "@/components/examples/segmented/default"
+import e14 from "@/components/examples/segmented/small"
+import e15 from "@/components/examples/segmented/without-label"
+import e16 from "@/components/examples/segmented/disabled-option"
+import e17 from "@/components/examples/segmented/disabled-group"
 
 export const examples: Record<string, Record<string, ComponentType>> = {
   "button": { "default": e0, "secondary": e1, "outline": e2, "ghost": e3, "destructive": e4, "link": e5, "sizes": e6, "icon": e7, "with-icon": e8, "loading": e9, "pressed": e10, "glow": e11, "as-child": e12 },
+  "segmented": { "default": e13, "small": e14, "without-label": e15, "disabled-option": e16, "disabled-group": e17 },
 }
