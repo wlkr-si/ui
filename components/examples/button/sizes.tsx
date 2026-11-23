@@ -2,7 +2,7 @@ import { ArrowUpRight } from "lucide-react"
 import { Button } from "@/registry/wlkr/button"
 
 export default function ButtonSizes() {
-  return <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-4">
+  return <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-4">
     <div className="flex items-center gap-2">
       <Button variant="outline" size="xs">Extra small</Button>
       <Button variant="outline" size="icon-xs" aria-label="Open"><ArrowUpRight aria-hidden="true" /></Button>

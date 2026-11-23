@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.26.3 — 2026-11-23
+
+- Large buttons are 36px tall with 12px side padding, one step above default instead of a jump. The scale is now 24, 28, 32 and 36px tall with 8, 10, 12 and 12px padding, and every size keeps the 6px radius (5px at xs).
+
 ## 0.26.2 — 2026-11-23
 
 - Button spacing follows one scale: side padding grows 8, 12, 14 and 24px across xs, sm, default and lg, and large buttons and their icon twins round to 8px. Large keeps 14px text and 16px icons. A leading icon trims the padding on its side.

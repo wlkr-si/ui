@@ -18,7 +18,7 @@ export const meta: ComponentMeta = {
     { id: "ghost", title: "Ghost", description: "Only its label until the pointer is over it. Suits repeated, low-stakes actions in a toolbar or a table row." },
     { id: "destructive", title: "Destructive", description: "A red tint for delete, remove and revoke. Put it on the button that confirms the loss, not the one that opens the dialog." },
     { id: "link", title: "Link", description: "Text that underlines on hover and still runs an action. For navigation, render a real link with `asChild` instead." },
-    { id: "sizes", title: "Sizes", description: "`xs`, `sm`, `default` and `lg` are 24, 28, 32 and 40px tall, with side padding that grows from 8 to 24px. Each has a square `icon-*` twin of the same height, so text and icon buttons line up." },
+    { id: "sizes", title: "Sizes", description: "`xs`, `sm`, `default` and `lg` are 24, 28, 32 and 36px tall, with 8, 10, 12 and 12px of side padding. Each has a square `icon-*` twin of the same height, so text and icon buttons line up." },
     { id: "icon", title: "Icon", description: "A square button with only an icon. Hide the icon from screen readers and name the button with `aria-label`." },
     { id: "with-icon", title: "With icon", description: "Put the icon before the label. Spacing and icon size follow the button size." },
     { id: "loading", title: "Loading", description: "`loading` swaps the label for a spinner without changing the width, sets `aria-busy` and ignores presses until it finishes. Press it to see." },
@@ -29,7 +29,7 @@ export const meta: ComponentMeta = {
   api: [{
     props: [
       { name: "variant", type: "\"default\" | \"secondary\" | \"outline\" | \"ghost\" | \"destructive\" | \"link\"", default: "\"default\"", description: "The look. Outline and ghost also show `aria-pressed`." },
-      { name: "size", type: "\"xs\" | \"sm\" | \"default\" | \"lg\" | \"icon-xs\" | \"icon-sm\" | \"icon\" | \"icon-lg\"", default: "\"default\"", description: "24, 28, 32 or 40px tall. The `icon-*` sizes are squares of the same heights." },
+      { name: "size", type: "\"xs\" | \"sm\" | \"default\" | \"lg\" | \"icon-xs\" | \"icon-sm\" | \"icon\" | \"icon-lg\"", default: "\"default\"", description: "24, 28, 32 or 36px tall. The `icon-*` sizes are squares of the same heights." },
       { name: "loading", type: "boolean", default: "false", description: "Shows a spinner in place of the label, keeps the width, sets `aria-busy` and blocks presses." },
       { name: "glow", type: "boolean", default: "false", description: "Adds the moving spectrum rim and light. One per screen." },
       { name: "asChild", type: "boolean", default: "false", description: "Renders the single child with the button's look and behaviour." },
