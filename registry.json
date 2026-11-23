@@ -135,13 +135,14 @@
       "name": "menu",
       "type": "registry:component",
       "title": "Menu",
-      "description": "A menu button with a Bach Bench popover, arrow navigation, typeahead, separators, disabled actions and focus return.",
+      "description": "An accessible menu button with keyboard navigation, typeahead, icons, separators and disabled actions.",
       "author": "WLKR Labs",
       "dependencies": [
         "radix-ui",
         "lucide-react"
       ],
       "registryDependencies": [
+        "https://ui.wlkr.si/r/theme.json",
         "https://ui.wlkr.si/r/button.json"
       ],
       "files": [

@@ -52,6 +52,15 @@ import e48 from "@/components/examples/chip/static"
 import e49 from "@/components/examples/chip/swatch"
 import e50 from "@/components/examples/chip/icon"
 import e51 from "@/components/examples/chip/disabled"
+import e52 from "@/components/examples/menu/default"
+import e53 from "@/components/examples/menu/xs"
+import e54 from "@/components/examples/menu/sm"
+import e55 from "@/components/examples/menu/lg"
+import e56 from "@/components/examples/menu/align-start"
+import e57 from "@/components/examples/menu/custom-trigger"
+import e58 from "@/components/examples/menu/icons"
+import e59 from "@/components/examples/menu/separator"
+import e60 from "@/components/examples/menu/disabled-item"
 
 export const examples: Record<string, Record<string, ComponentType>> = {
   "button": { "default": e0, "secondary": e1, "outline": e2, "ghost": e3, "destructive": e4, "link": e5, "sizes": e6, "icon": e7, "with-icon": e8, "loading": e9, "pressed": e10, "glow": e11, "as-child": e12 },
@@ -60,4 +69,5 @@ export const examples: Record<string, Record<string, ComponentType>> = {
   "select": { "default": e27, "xs": e28, "sm": e29, "lg": e30, "prefix": e31, "invalid": e32, "disabled": e33 },
   "combobox": { "default": e34, "xs": e35, "sm": e36, "lg": e37, "selected": e38, "disabled": e39, "disabled-option": e40, "read-only": e41, "invalid": e42, "empty": e43 },
   "chip": { "pressed": e44, "unpressed": e45, "xs": e46, "sm": e47, "static": e48, "swatch": e49, "icon": e50, "disabled": e51 },
+  "menu": { "default": e52, "xs": e53, "sm": e54, "lg": e55, "align-start": e56, "custom-trigger": e57, "icons": e58, "separator": e59, "disabled-item": e60 },
 }
