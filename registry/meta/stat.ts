@@ -4,26 +4,25 @@ export const meta: ComponentMeta = {
   name: "Stat",
   category: "basics",
   order: 10,
-  description: "A label, a number and a short note. Four tiles when there is room.",
-  summary: "A Bach Bench stat tile with a mono tabular value and optional note, plus a responsive two-to-four-column Stats grid.",
-  keywords: [
-    "stat",
-    "stats",
-    "metric",
-    "tile",
-    "number",
-    "dashboard",
-    "Bach Bench"
-  ],
+  description: "Show a metric with a label and an optional note.",
+  summary: "A metric tile with a monospaced value and an optional note, alongside a responsive Stats grid.",
+  keywords: ["stat", "stats", "metric", "tile", "number", "dashboard"],
   since: "0.25.0",
+  system: true,
+  registryDependencies: ["https://ui.wlkr.si/r/theme.json"],
   usage: `import { Stat, Stats } from "@/components/wlkr/stat"
 
 <Stats>
   <Stat label="Recordings" value="128" note="This year" />
-  <Stat label="Listening" value="42h" />
+  <Stat label="Listening" value="42h" note="This year" />
   <Stat label="Composers" value="24" />
   <Stat label="Saved" value="96" />
 </Stats>`,
+  examples: [
+    { id: "default", title: "Single metric", description: "Show a single tile when the label already explains the value." },
+    { id: "with-note", title: "With a note", description: "Add a note when the value needs context such as a time range." },
+    { id: "grid", title: "Stats grid", description: "Group related metrics in a grid that switches from two to four columns on wider screens." }
+  ],
   api: [
     {
       title: "Stat",
@@ -36,12 +35,12 @@ export const meta: ComponentMeta = {
         {
           name: "value",
           type: "ReactNode",
-          description: "Required metric value."
+          description: "Required metric value, shown in text-2xl with tabular figures."
         },
         {
           name: "note",
           type: "ReactNode",
-          description: "Optional muted note under the value."
+          description: "Optional supporting text below the value, shown in text-xs."
         },
         {
           name: "Native props and ref",
@@ -67,9 +66,9 @@ export const meta: ComponentMeta = {
     }
   ],
   notes: [
-    "Values use the mono font, tabular figures and a 28px size. Text can wrap rather than overflowing narrow tiles.",
-    "Stats uses two equal columns on phones and four at viewport widths of 900px or more, with an 8px gap.",
-    "These are static containers. Set aria-live explicitly when a changing value needs announcements."
+    "Values use font-mono and wrap in narrow tiles.",
+    "Stats uses two equal columns by default and four at 56.25em and wider.",
+    "Set aria-live when a changing value needs to be announced."
   ],
   related: [
     "card",

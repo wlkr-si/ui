@@ -349,9 +349,9 @@
 .dark .doc-preview-code .shiki,.dark .doc-preview-code .shiki span { color:var(--shiki-dark,inherit)!important; }
 .doc-example { margin-top:44px; scroll-margin-top:28px; }
 .doc-example:first-of-type { margin-top:0; }
-.doc-example h3 { font-size:16px; font-weight:550; letter-spacing:-.3px; }
-.doc-example p { max-width:620px; margin:8px 0 16px; color:var(--muted-foreground); font-size:14px; line-height:1.65; }
-.doc-example p code { color:var(--foreground); font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:12.5px; }
+.doc-example > h3 { font-size:16px; font-weight:550; letter-spacing:-.3px; }
+.doc-example > p { max-width:620px; margin:8px 0 16px; color:var(--muted-foreground); font-size:14px; line-height:1.65; }
+.doc-example > p code { color:var(--foreground); font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:12.5px; }
 .doc-install { overflow:hidden; border:1px solid var(--border); border-radius:12px; }
 .doc-install-tabs { display:flex; height:40px; padding:0 4px; border-bottom:1px solid var(--border); }
 .doc-install-tabs button { position:relative; padding:0 12px; border:0; background:none; color:var(--muted-foreground); font:inherit; font-size:13px; font-weight:500; cursor:pointer; }
@@ -449,7 +449,7 @@
 
 /* System page: the tokens, rendered. Values come from the tokens themselves. */
 .sys .sys-note { max-width:620px; margin:-6px 0 20px; color:var(--wlkr-content-secondary); font-size:var(--wlkr-text-md); line-height:1.65; }
-.sys h3,.sys .sys-sub { margin:32px 0 12px; font-size:var(--wlkr-text-md); font-weight:var(--wlkr-weight-semibold); }
+.sys .sys-ramp > h3,.sys .sys-group > h3,.sys .sys-sub { margin:32px 0 12px; font-size:var(--wlkr-text-md); font-weight:var(--wlkr-weight-semibold); }
 .sys .sys-ramp h3 { text-transform:capitalize; }
 .sys .sys-group h3 + .sys-note { margin-top:0; }
 .sys code { font-family:var(--wlkr-font-mono); font-size:var(--wlkr-text-xs); }

@@ -62,6 +62,12 @@ import e58 from "@/components/examples/chip/static"
 import e59 from "@/components/examples/chip/swatch"
 import e60 from "@/components/examples/chip/icon"
 import e61 from "@/components/examples/chip/disabled"
+import e62 from "@/components/examples/card/content"
+import e63 from "@/components/examples/card/with-tools"
+import e64 from "@/components/examples/card/with-caption"
+import e65 from "@/components/examples/stat/default"
+import e66 from "@/components/examples/stat/with-note"
+import e67 from "@/components/examples/stat/grid"
 
 export const examples: Record<string, Record<string, ComponentType>> = {
   "button": { "default": e0, "secondary": e1, "outline": e2, "ghost": e3, "destructive": e4, "link": e5, "sizes": e6, "icon": e7, "with-icon": e8, "loading": e9, "pressed": e10, "glow": e11, "as-child": e12 },
@@ -71,4 +77,6 @@ export const examples: Record<string, Record<string, ComponentType>> = {
   "input": { "default": e34, "xs": e35, "sm": e36, "lg": e37, "with-icon": e38, "clearable": e39, "focus": e40, "invalid": e41, "disabled": e42, "read-only": e43 },
   "combobox": { "default": e44, "xs": e45, "sm": e46, "lg": e47, "selected": e48, "disabled": e49, "disabled-option": e50, "read-only": e51, "invalid": e52, "empty": e53 },
   "chip": { "pressed": e54, "unpressed": e55, "xs": e56, "sm": e57, "static": e58, "swatch": e59, "icon": e60, "disabled": e61 },
+  "card": { "content": e62, "with-tools": e63, "with-caption": e64 },
+  "stat": { "default": e65, "with-note": e66, "grid": e67 },
 }
