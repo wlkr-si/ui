@@ -59,7 +59,7 @@ Components use roles, so the theme switches without a single `dark:` rule. `.dar
    - Set `system: true`.
    - List `https://ui.wlkr.si/r/theme.json` in `registryDependencies`.
    - Write examples, one per variant, size and state, each with a sentence on when to use it.
-8. Add the component to the System page's board when it belongs in the control family.
+8. Give it a board on /system: `components/system-boards/<slug>.tsx`, a default export showing every variant and size with its states in rows of `<div className="sys-board-row"><code>label</code><div>…</div></div>`. `pnpm registry:build` picks it up; never edit the System page itself for this.
 
 ## What the build enforces
 

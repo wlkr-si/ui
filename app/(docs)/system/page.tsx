@@ -1,9 +1,9 @@
 import type { Metadata } from "next"
 import Link from "next/link"
-import { ArrowUpRight, Plus } from "lucide-react"
+import { ArrowUpRight } from "lucide-react"
 import { SITE, getCatalog } from "@/lib/catalog"
 import { colour, control, elevation, motion, radius, ramps, space, type, type Token } from "@/lib/tokens"
-import { Button, type ButtonVariant } from "@/registry/wlkr/button"
+import { boards } from "@/lib/system-boards"
 import { ScrollSpy } from "@/registry/wlkr/scroll-spy"
 
 const description = "The WLKR design system: colour, type, space, radius, elevation, motion and the shared control scale, rendered from the tokens every component uses."
@@ -30,9 +30,6 @@ const v = (name: string) => `var(--wlkr-${name})`
 const valueOf = (token: Token, mode: "light" | "dark") => typeof token.value === "string" ? token.value : token.value[mode]
 const short = (value: string) => value.replace(/var\(--wlkr-([a-z0-9-]+)\)/g, "$1").replace(/color-mix\(in srgb, (\S+) (\d+)%, transparent\)/, "$1 at $2%")
 const sizes = ["xs", "sm", "md", "lg"] as const
-const buttonSize = { xs: "xs", sm: "sm", md: "default", lg: "lg" } as const
-const iconSize = { xs: "icon-xs", sm: "icon-sm", md: "icon", lg: "icon-lg" } as const
-const variants: ButtonVariant[] = ["default", "secondary", "outline", "ghost", "destructive", "link"]
 
 /** The same content in a forced light and a forced dark panel, so both themes are always reviewed together. */
 function Both({ children, className }: { children: React.ReactNode; className?: string }) {
@@ -134,22 +131,13 @@ export default async function SystemPage() {
           <div role="row" className="sys-scale-head"><span role="columnheader">Size</span><span role="columnheader">Height</span><span role="columnheader">Padding</span><span role="columnheader">Text</span><span role="columnheader">Icon</span><span role="columnheader">Gap</span></div>
           {sizes.map(size => <div role="row" key={size}>{[size, `control-h-${size}`, `control-px-${size}`, `control-text-${size}`, `control-icon-${size}`, `control-gap-${size}`].map((cell, index) => <span role="cell" key={cell}>{index === 0 ? <strong>{cell}</strong> : <code>{control.find(token => token.name === cell)?.value as string}</code>}</span>)}</div>)}
         </div>
-        <h3 className="sys-sub">Button, every variant and size</h3>
-        <Both className="sys-board">
-          {variants.map(variant => <div key={variant} className="sys-board-row">
-            <code>{variant}</code>
-            <div>{sizes.map(size => <span key={size} className="sys-board-pair">
-              <Button variant={variant} size={buttonSize[size]}>{variant === "destructive" ? "Delete" : "Button"}</Button>
-              {variant !== "link" && <Button variant={variant} size={iconSize[size]} aria-label="Add"><Plus aria-hidden="true" /></Button>}
-            </span>)}</div>
-          </div>)}
-          <div className="sys-board-row"><code>states</code><div>
-            <Button variant="outline" aria-pressed>Pressed</Button>
-            <Button loading>Saving</Button>
-            <Button disabled>Disabled</Button>
-            <Button glow>Glow</Button>
-          </div></div>
-        </Both>
+        {onSystem.filter(entry => boards[entry.slug]).map(entry => {
+          const Board = boards[entry.slug]
+          return <div key={entry.slug}>
+            <h3 className="sys-sub"><Link href={`/components/${entry.slug}`} prefetch={false}>{entry.name}</Link></h3>
+            <Both className="sys-board"><Board /></Both>
+          </div>
+        })}
       </section>
 
       <section id="coverage" aria-labelledby="coverage-title">
