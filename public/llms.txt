@@ -34,7 +34,7 @@ The CLI installs original source and pulls stock shadcn dependencies directly fr
 - [Icon button](/components/icon-button): A round icon-only button with glass, plain and outline variants, four sizes that match Button and a brand-coloured toggle state. [Source JSON](/r/icon-button.json)
 - [Segmented](/components/segmented): A single-choice control with an optional leading label and arrow-key navigation. [Source JSON](/r/segmented.json)
 - [Select](/components/select): A native select with four control sizes, an optional prefix label and a chevron. [Source JSON](/r/select.json)
-- [Input](/components/input): A native text input with two sizes, optional leading icon and clear button, and destructive invalid styling. [Source JSON](/r/input.json)
+- [Input](/components/input): A text field with four control sizes, an optional leading icon and clear action, and focus, invalid and disabled states. [Source JSON](/r/input.json)
 - [Combobox](/components/combobox): An editable combobox with accent-insensitive filtering, a listbox, keyboard navigation and a clear action. [Source JSON](/r/combobox.json)
 - [Chip](/components/chip): A small pill toggle or static legend label with an optional leading colour swatch or icon. [Source JSON](/r/chip.json)
 - [Menu](/components/menu): An accessible menu button with keyboard navigation, typeahead, icons, separators and disabled actions. [Source JSON](/r/menu.json)

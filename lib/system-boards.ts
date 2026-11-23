@@ -4,16 +4,18 @@ import b0 from "@/components/system-boards/button"
 import b1 from "@/components/system-boards/chip"
 import b2 from "@/components/system-boards/combobox"
 import b3 from "@/components/system-boards/icon-button"
-import b4 from "@/components/system-boards/menu"
-import b5 from "@/components/system-boards/segmented"
-import b6 from "@/components/system-boards/select"
+import b4 from "@/components/system-boards/input"
+import b5 from "@/components/system-boards/menu"
+import b6 from "@/components/system-boards/segmented"
+import b7 from "@/components/system-boards/select"
 
 export const boards: Record<string, ComponentType> = {
   "button": b0,
   "chip": b1,
   "combobox": b2,
   "icon-button": b3,
-  "menu": b4,
-  "segmented": b5,
-  "select": b6,
+  "input": b4,
+  "menu": b5,
+  "segmented": b6,
+  "select": b7,
 }
