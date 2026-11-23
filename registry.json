@@ -72,10 +72,13 @@
       "name": "input",
       "type": "registry:component",
       "title": "Input",
-      "description": "A native text input with two sizes, optional leading icon and clear button, and destructive invalid styling.",
+      "description": "A text field with four control sizes, an optional leading icon and clear action, and focus, invalid and disabled states.",
       "author": "WLKR Labs",
       "dependencies": [
         "lucide-react"
+      ],
+      "registryDependencies": [
+        "https://ui.wlkr.si/r/theme.json"
       ],
       "files": [
         {
