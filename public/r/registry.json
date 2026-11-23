@@ -160,8 +160,11 @@
       "name": "card",
       "type": "registry:component",
       "title": "Card",
-      "description": "A Bach Bench card frame with seven composable sections, a 12px radius, hairline border and theme-aware surface.",
+      "description": "A raised panel with composable slots for a heading, tools, content and a footer.",
       "author": "WLKR Labs",
+      "registryDependencies": [
+        "https://ui.wlkr.si/r/theme.json"
+      ],
       "files": [
         {
           "path": "registry/wlkr/card.tsx",
@@ -174,8 +177,11 @@
       "name": "stat",
       "type": "registry:component",
       "title": "Stat",
-      "description": "A Bach Bench stat tile with a mono tabular value and optional note, plus a responsive two-to-four-column Stats grid.",
+      "description": "A metric tile with a monospaced value and an optional note, alongside a responsive Stats grid.",
       "author": "WLKR Labs",
+      "registryDependencies": [
+        "https://ui.wlkr.si/r/theme.json"
+      ],
       "files": [
         {
           "path": "registry/wlkr/stat.tsx",

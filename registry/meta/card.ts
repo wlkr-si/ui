@@ -4,27 +4,26 @@ export const meta: ComponentMeta = {
   name: "Card",
   category: "basics",
   order: 9,
-  description: "A frame for content, with a title, tools and a quiet caption.",
-  summary: "A Bach Bench card frame with seven composable sections, a 12px radius, hairline border and theme-aware surface.",
-  keywords: [
-    "card",
-    "frame",
-    "panel",
-    "header",
-    "caption",
-    "Bach Bench"
-  ],
+  description: "Group related content, headings and controls in a raised panel.",
+  summary: "A raised panel with composable slots for a heading, tools, content and a footer.",
+  keywords: ["card", "surface", "panel", "header", "caption"],
   since: "0.25.0",
-  usage: `import { Card, CardHeader, CardTitle, CardTools, CardContent, CardFooter, CardCaption } from "@/components/wlkr/card"
+  system: true,
+  registryDependencies: ["https://ui.wlkr.si/r/theme.json"],
+  usage: `import { Card, CardHeader, CardTitle, CardContent, CardFooter, CardCaption } from "@/components/wlkr/card"
 
 <Card>
   <CardHeader>
-    <CardTitle>Recordings</CardTitle>
-    <CardTools>{/* Actions */}</CardTools>
+    <CardTitle>Goldberg Variations</CardTitle>
   </CardHeader>
-  <CardContent>Goldberg Variations</CardContent>
-  <CardFooter><CardCaption>Recorded in Leipzig, 2026.</CardCaption></CardFooter>
+  <CardContent>Johann Sebastian Bach</CardContent>
+  <CardFooter><CardCaption>Recorded in Leipzig, 2026</CardCaption></CardFooter>
 </Card>`,
+  examples: [
+    { id: "content", title: "Content only", description: "Use a card on its own to group content that already has a heading nearby." },
+    { id: "with-tools", title: "Header with tools", description: "Put a control beside the title when it acts on the card's content." },
+    { id: "with-caption", title: "Footer with caption", description: "Put supporting details such as a source or date in the footer." }
+  ],
   api: [
     {
       title: "Card",
@@ -32,7 +31,7 @@ export const meta: ComponentMeta = {
         {
           name: "children",
           type: "ReactNode",
-          description: "Outer 12px frame with hairline border and themed card surface."
+          description: "Content to place inside the raised surface."
         },
         {
           name: "Native props and ref",
@@ -62,7 +61,7 @@ export const meta: ComponentMeta = {
         {
           name: "children",
           type: "ReactNode",
-          description: "Flexible 15px semibold heading."
+          description: "Semibold heading in the text-md size."
         },
         {
           name: "Native props and ref",
@@ -77,7 +76,7 @@ export const meta: ComponentMeta = {
         {
           name: "children",
           type: "ReactNode",
-          description: "Right-aligned slot for controls."
+          description: "Controls placed at the end of the header."
         },
         {
           name: "Native props and ref",
@@ -92,7 +91,7 @@ export const meta: ComponentMeta = {
         {
           name: "children",
           type: "ReactNode",
-          description: "Main content with 6px top spacing."
+          description: "Main content of the card."
         },
         {
           name: "Native props and ref",
@@ -107,7 +106,7 @@ export const meta: ComponentMeta = {
         {
           name: "children",
           type: "ReactNode",
-          description: "Footer with 14px top spacing."
+          description: "Supporting content or controls below the main content."
         },
         {
           name: "Native props and ref",
@@ -122,7 +121,7 @@ export const meta: ComponentMeta = {
         {
           name: "children",
           type: "ReactNode",
-          description: "Muted italic caption, up to 76 characters wide."
+          description: "Supporting text in the text-xs size and content-secondary colour."
         },
         {
           name: "Native props and ref",
@@ -133,9 +132,9 @@ export const meta: ComponentMeta = {
     }
   ],
   notes: [
-    "The card is a layout container, not an interactive control. Give nested controls their own accessible names.",
+    "Give each control inside the card an accessible name.",
     "CardTitle renders h3. Match the surrounding document heading order when composing the screen.",
-    "All sections forward native props and refs; the frame supplies their shared styles."
+    "All sections are optional. Card supplies the surface and spacing between sections."
   ],
   related: [
     "stat",
