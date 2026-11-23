@@ -15,7 +15,7 @@ export type SegmentedProps = Omit<React.ComponentProps<"div">, "defaultValue" | 
 }
 
 const styles = `
-.wlkr-segmented{box-sizing:border-box;display:inline-flex;align-items:center;gap:2px;max-width:100%;height:32px;padding:2px;border:1px solid var(--border,#dedede);border-radius:6px;background:var(--card,#fff);font:500 14px/1 var(--font-sans,Arial,sans-serif);transition:border-color 120ms ease}
+.wlkr-segmented{box-sizing:border-box;display:inline-flex;align-items:center;gap:2px;max-width:100%;height:32px;padding:2px;border:1px solid var(--border,#dedede);border-radius:6px;background:var(--card,#fff);font-family:inherit;font-weight:500;font-size:14px;line-height:1;transition:border-color 120ms ease}
 .wlkr-segmented[data-size=sm]{height:28px;font-size:12px}.wlkr-segmented-label{padding:0 4px 0 5px;color:var(--muted-foreground,#696969);opacity:.7;font-size:11px;white-space:nowrap}
 .wlkr-segmented-option{box-sizing:border-box;min-width:0;height:100%;padding:0 8px;border:0;border-radius:4px;background:transparent;color:var(--muted-foreground,#696969);font:inherit;white-space:nowrap;cursor:pointer;transition:background-color 120ms ease,color 120ms ease}
 .wlkr-segmented-option[aria-checked=true]{background:var(--secondary,#f3f3f3);color:var(--foreground,#010101);box-shadow:inset 0 0 0 1px var(--border,#dedede)}

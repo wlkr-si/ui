@@ -9,7 +9,7 @@ export type StatProps = Omit<React.ComponentProps<"div">, "children"> & {
 export type StatsProps = React.ComponentProps<"div">
 
 const styles = `
-.wlkr-stat{box-sizing:border-box;display:flex;flex-direction:column;gap:6px;min-width:0;padding:14px 16px 16px;border:1px solid var(--border,#dedede);border-radius:12px;background:var(--card,#fff);color:var(--foreground,#010101);font-family:var(--font-sans,Arial,sans-serif)}
+.wlkr-stat{box-sizing:border-box;display:flex;flex-direction:column;gap:6px;min-width:0;padding:14px 16px 16px;border:1px solid var(--border,#dedede);border-radius:12px;background:var(--card,#fff);color:var(--foreground,#010101);font-family:inherit}
 .wlkr-stat-label{margin:0;font-size:13px;line-height:1.4;color:var(--muted-foreground,#696969)}.wlkr-stat-value{margin:0;font:600 28px/1.1 var(--font-mono,ui-monospace,monospace);letter-spacing:-.04em;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}.wlkr-stat-note{margin:4px 0 0;font-size:12px;line-height:1.45;color:var(--muted-foreground,#696969);overflow-wrap:anywhere}.wlkr-stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:0}
 .wlkr-stat:focus-visible,.wlkr-stats:focus-visible{outline:2px solid var(--brand,#33f282);outline-offset:2px}
 @media(min-width:900px){.wlkr-stats{grid-template-columns:repeat(4,minmax(0,1fr))}}

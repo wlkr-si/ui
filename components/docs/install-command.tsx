@@ -2,7 +2,6 @@
 
 import * as React from "react"
 import { CopyCommand } from "@/registry/wlkr/copy-command"
-import { LiquidTabs } from "@/registry/wlkr/liquid-tabs"
 
 const managers = [
   { value: "pnpm", label: "pnpm", run: "pnpm dlx shadcn@latest add" },
@@ -31,7 +30,16 @@ export function InstallCommand({ target, label = "Package manager" }: { target: 
     window.dispatchEvent(new Event(EVENT))
   }
   return <div className="doc-install">
-    <LiquidTabs label={label} size="sm" items={managers} value={manager.value} onValueChange={choose} />
+    <div role="radiogroup" aria-label={label} className="doc-install-tabs" onKeyDown={event => {
+      if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") return
+      event.preventDefault()
+      const index = managers.indexOf(manager) + (event.key === "ArrowRight" ? 1 : -1)
+      const nextManager = managers[(index + managers.length) % managers.length]
+      choose(nextManager.value)
+      event.currentTarget.querySelector<HTMLElement>(`[data-value="${nextManager.value}"]`)?.focus()
+    }}>
+      {managers.map(item => <button key={item.value} type="button" role="radio" data-value={item.value} aria-checked={item.value === manager.value} tabIndex={item.value === manager.value ? 0 : -1} onClick={() => choose(item.value)}>{item.label}</button>)}
+    </div>
     <CopyCommand command={`${manager.run} ${target}`} />
   </div>
 }

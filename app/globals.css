@@ -354,10 +354,10 @@
 .doc-preview-stage { display:grid; grid-template-columns:minmax(0,1fr); min-height:320px; }
 .doc-preview-stage[hidden],.doc-preview-code[hidden] { display:none; }
 .doc-preview-content { display:grid; grid-template-columns:minmax(0,1fr); align-items:center; min-width:0; padding:56px 32px; }
-.doc-preview-content>* { width:100%; min-width:0; max-width:560px; margin-inline:auto; }
+.doc-preview:not([data-fit]) .doc-preview-content>* { width:100%; min-width:0; max-width:560px; margin-inline:auto; }
 .doc-preview[data-fit] .doc-preview-stage { min-height:280px; }
 .doc-preview[data-fit] .doc-preview-content { display:flex; justify-content:center; }
-.doc-preview[data-fit] .doc-preview-content>* { width:auto; max-width:100%; margin:0; }
+.doc-preview[data-fit] .doc-preview-content>* { max-width:100%; }
 .doc-preview[data-variant=fill] .doc-preview-content { padding:0; }
 .doc-preview[data-variant=fill] .doc-preview-content>*,.doc-preview[data-variant=plain] .doc-preview-content>* { max-width:none; }
 .doc-preview[data-variant=plain] .doc-preview-stage { min-height:0; }
@@ -372,7 +372,13 @@
 .doc-example h3 { font-size:16px; font-weight:550; letter-spacing:-.3px; }
 .doc-example p { max-width:620px; margin:8px 0 16px; color:var(--muted-foreground); font-size:14px; line-height:1.65; }
 .doc-example p code { color:var(--foreground); font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:12.5px; }
-.doc-install { display:grid; gap:6px; }
+.doc-install { overflow:hidden; border:1px solid var(--border); border-radius:12px; }
+.doc-install-tabs { display:flex; height:40px; padding:0 4px; border-bottom:1px solid var(--border); }
+.doc-install-tabs button { position:relative; padding:0 12px; border:0; background:none; color:var(--muted-foreground); font:inherit; font-size:13px; font-weight:500; cursor:pointer; }
+.doc-install-tabs button:hover,.doc-install-tabs button[aria-checked=true] { color:var(--foreground); }
+.doc-install-tabs button[aria-checked=true]::after { content:""; position:absolute; left:12px; right:12px; bottom:-1px; height:1.5px; background:var(--foreground); }
+.doc-install-tabs button:focus-visible { outline:2px solid var(--ring); outline-offset:-4px; border-radius:6px; }
+.doc-install>:last-child { padding:4px 8px 4px 16px; background:var(--control-surface); }
 .doc-table { overflow-x:auto; outline-offset:4px; }
 .doc-table table { width:100%; border-collapse:collapse; font-size:13px; line-height:1.6; }
 .doc-table th,.doc-table td { padding:13px 20px 13px 0; border-bottom:1px solid var(--border); text-align:left; vertical-align:top; }
