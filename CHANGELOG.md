@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.27.0 — 2026-11-23
+
+- Design tokens. `lib/tokens.ts` is now the only place a colour, size, space, radius, shadow or timing is written. Primitives (a neutral gray ramp, green, red and amber) sit under semantic roles for surface, content, border, fill, action, brand and status that switch between light and dark on their own. One control scale (24, 28, 32 and 36px, with matching padding, text, icon and gap) is shared by every control. shadcn/ui's own variable names stay as aliases.
+- The `theme` registry item installs the full token set, and system components list it as a dependency so it always comes with them.
+- A System page at /system renders every token live in both themes: palette, colour roles, type, space, radius, elevation, motion, the control scale, a board of every Button variant and size, and which components are on the system so far.
+- Button is the first component on the system and the model for the rest. Icon-only sizes now require an `aria-label` at the type level.
+- `pnpm lint` fails when a component marked `system: true` uses a raw colour, a non-token variable, a palette primitive, a token fallback, a raw duration or easing, or a pixel value over 2px. `docs/design-system.md` is the recipe agents follow.
+
 ## 0.26.4 — 2026-11-23
 
 - Liquid tabs no longer show a bump on the selected pill's edge. The thin neck that joins the drop mid-travel now stops short of the drop's ends, so the goo filter can't swell it past the resting shape.

@@ -1,3 +1,7 @@
+## Design system
+
+Before building or changing a component, read `docs/design-system.md`. Token values live only in `lib/tokens.ts`; components use `--wlkr-*` roles and scales, never raw colours, sizes or timings, and `pnpm lint` enforces it for every component marked `system: true`. Button is the model to copy. Review new work against `/system`, the live rendering of the tokens.
+
 <!-- BEGIN:nextjs-agent-rules -->
 
 ## This is NOT the Next.js you know
