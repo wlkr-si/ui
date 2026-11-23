@@ -32,7 +32,7 @@ The CLI installs original source and pulls stock shadcn dependencies directly fr
 
 - [Button](/components/button): A button with six variants, four sizes and matching square icon sizes, width-preserving loading, aria-pressed toggling, asChild links and an optional animated spectrum rim. [Source JSON](/r/button.json)
 - [Icon button](/components/icon-button): A round icon-only button with glass, plain and outline variants, four sizes that match Button and a brand-coloured toggle state. [Source JSON](/r/icon-button.json)
-- [Segmented](/components/segmented): A controlled or uncontrolled radiogroup with roving focus, optional prefix label and compact Bach Bench styling. [Source JSON](/r/segmented.json)
+- [Segmented](/components/segmented): A single-choice control with an optional leading label and arrow-key navigation. [Source JSON](/r/segmented.json)
 - [Select](/components/select): A native select with four control sizes, an optional prefix label and a chevron. [Source JSON](/r/select.json)
 - [Input](/components/input): A native text input with two sizes, optional leading icon and clear button, and destructive invalid styling. [Source JSON](/r/input.json)
 - [Combobox](/components/combobox): An editable combobox with accent-insensitive filtering, a listbox, keyboard navigation and a clear action. [Source JSON](/r/combobox.json)
