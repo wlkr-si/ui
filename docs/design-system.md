@@ -38,9 +38,17 @@ Components use roles, so the theme switches without a single `dark:` rule. `.dar
 | Controls | `control-h-{xs,sm,md,lg}` (24, 28, 32, 36px), with `control-px-*`, `control-text-*`, `control-icon-*` and `control-gap-*`. Every control (button, input, select, segmented, chip, combobox) uses this one scale, so equal sizes line up. Also `control-border`, `focus-width`, `focus-offset`, `press-scale` and `disabled-opacity`. |
 | Space | `space-{0_5,1,1_5,2,2_5,3,4,5,6,8,10,12,16,20}`, a 4px grid |
 | Type | `text-{2xs…5xl}`, `weight-{regular,medium,semibold}` and `font-mono` |
-| Radius | `radius-md` for controls, `radius-lg` for menus and popovers, `radius-xl` for cards and dialogs, `radius-full` for pills |
+| Radius | `radius-md` for controls, `radius-lg` for overlays, `radius-xl` for cards and inline panels, `radius-full` for pills |
 | Elevation | `shadow-raised`, `shadow-overlay`, `shadow-dialog` and `z-*` |
 | Motion | `duration-{instant,fast,base,slow,slower}` and `ease-{out,in-out,spring}` |
+
+## Overlay pattern
+
+Combobox, Menu, Popover, Tooltip and Dialog share these rules for floating panels.
+
+- Use `surface-overlay`, a `border-default` hairline at `control-border` width, `shadow-overlay` and `radius-lg`.
+- Give the panel `space-1` inner padding. Where it has options, use the matching control height and `radius-md` for each row. Use `fill-hover` for the active row and `content-primary` for selected text.
+- Layer the panel at `z-overlay`. On open and close, transition opacity and a small translate or scale with `duration-base` and `ease-out`. Remove the transition and transform when reduced motion is requested.
 
 ## Building a component
 
