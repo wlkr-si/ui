@@ -10,7 +10,7 @@ export type CardFooterProps = React.ComponentProps<"div">
 export type CardCaptionProps = React.ComponentProps<"p">
 
 const styles = `
-.wlkr-card{box-sizing:border-box;position:relative;min-width:0;padding:14px 16px 12px;border:1px solid var(--border,#dedede);border-radius:12px;background:var(--card,#fff);color:var(--foreground,#010101);font-family:var(--font-sans,Arial,sans-serif)}
+.wlkr-card{box-sizing:border-box;position:relative;min-width:0;padding:14px 16px 12px;border:1px solid var(--border,#dedede);border-radius:12px;background:var(--card,#fff);color:var(--foreground,#010101);font-family:inherit}
 .wlkr-card-header{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px}.wlkr-card-title{display:flex;align-items:center;gap:8px;flex:1 1 auto;min-width:0;margin:0;font-size:15px;font-weight:600;line-height:1.4;letter-spacing:-.012em;overflow-wrap:anywhere}.wlkr-card-tools{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin-left:auto}.wlkr-card-content{position:relative;min-width:0;margin-top:6px;font-size:14px;line-height:1.5}.wlkr-card-footer{margin-top:14px}.wlkr-card-caption{max-width:76ch;margin:0;font-size:12px;font-style:italic;color:var(--muted-foreground,#696969);line-height:1.45}
 .wlkr-card :focus-visible{outline:2px solid var(--brand,#33f282);outline-offset:2px}
 `

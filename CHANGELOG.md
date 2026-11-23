@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.26.1 — 2026-11-23
+
+- The basics now use the page's own font instead of falling back to Arial in projects that don't expose `--font-sans`.
+- Icon-only buttons keep their square size inside example frames.
+- A pressed button scales as one piece, so its label and icon no longer move at different rates.
+- Large buttons use 15px text and 18px icons, completing the 12, 13, 14, 15px scale.
+- The install line is a framed box with plain text tabs for pnpm, npm, yarn and bun.
+- The Button "As child" example links within the page instead of leaving it.
+
 ## 0.26.0 — 2026-11-23
 
 - Component pages are rebuilt around examples. The top preview and every example sit in a framed Preview / Code switch, and a component can list focused examples, each in its own section with a sentence on when to use it and the exact code shown. Previous and next arrows sit beside the title, and long union types in the API table wrap between options instead of running off the page.

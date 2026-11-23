@@ -18,13 +18,13 @@ export const meta: ComponentMeta = {
     { id: "ghost", title: "Ghost", description: "Only its label until the pointer is over it. Suits repeated, low-stakes actions in a toolbar or a table row." },
     { id: "destructive", title: "Destructive", description: "A red tint for delete, remove and revoke. Put it on the button that confirms the loss, not the one that opens the dialog." },
     { id: "link", title: "Link", description: "Text that underlines on hover and still runs an action. For navigation, render a real link with `asChild` instead." },
-    { id: "sizes", title: "Sizes", description: "`xs`, `sm`, `default` and `lg` are 24, 28, 32 and 40px tall. Each has a square `icon-*` twin of the same height, so text and icon buttons line up." },
+    { id: "sizes", title: "Sizes", description: "`xs`, `sm`, `default` and `lg` are 24, 28, 32 and 40px tall with 12, 13, 14 and 15px text. Each has a square `icon-*` twin of the same height, so text and icon buttons line up." },
     { id: "icon", title: "Icon", description: "A square button with only an icon. Hide the icon from screen readers and name the button with `aria-label`." },
     { id: "with-icon", title: "With icon", description: "Put the icon before the label. Spacing and icon size follow the button size." },
     { id: "loading", title: "Loading", description: "`loading` swaps the label for a spinner without changing the width, sets `aria-busy` and ignores presses until it finishes. Press it to see." },
     { id: "pressed", title: "Pressed", description: "Outline and ghost buttons show an on state from `aria-pressed`, for toggles like repeat or bold." },
     { id: "glow", title: "Glow", description: "A moving spectrum rim with a soft light beneath. Use it on one button per screen at most." },
-    { id: "as-child", title: "As child", description: "`asChild` gives a single child, usually a link, the button's look while keeping the child's own element and behaviour." },
+    { id: "as-child", title: "As child", description: "`asChild` gives a single child, usually a link, the button’s look while it stays a real link. This one jumps to Installation on this page." },
   ],
   api: [{
     props: [
