@@ -42,6 +42,12 @@ Components use roles, so the theme switches without a single `dark:` rule. `.dar
 | Elevation | `shadow-raised`, `shadow-overlay`, `shadow-dialog` and `z-*` |
 | Motion | `duration-{instant,fast,base,slow,slower}` and `ease-{out,in-out,spring}` |
 
+## Surface pattern
+
+Use `surface-raised`, a `control-border` hairline in `border-default`, `radius-xl` and `shadow-raised` for cards, tiles and other raised containers. Pad compact tiles with `space-4` and roomier panels with `space-5`.
+
+Set titles in `text-md` with `weight-semibold` and captions in `text-xs` with `content-secondary`. Stat uses the title style for its label and the caption style for its optional note. Use `text-2xl` and tabular figures in `font-mono` for the value.
+
 ## Building a component
 
 1. Copy the shape of Button: one file at `registry/wlkr/<slug>.tsx` with its CSS in `const styles = \`...\``, class names prefixed `wlkr-<slug>`, and `<style href="wlkr-<slug>" precedence="default">`.

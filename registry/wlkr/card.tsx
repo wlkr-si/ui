@@ -10,13 +10,35 @@ export type CardFooterProps = React.ComponentProps<"div">
 export type CardCaptionProps = React.ComponentProps<"p">
 
 const styles = `
-.wlkr-card{box-sizing:border-box;position:relative;min-width:0;padding:14px 16px 12px;border:1px solid var(--border,#dedede);border-radius:12px;background:var(--card,#fff);color:var(--foreground,#010101);font-family:inherit}
-.wlkr-card-header{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px}.wlkr-card-title{display:flex;align-items:center;gap:8px;flex:1 1 auto;min-width:0;margin:0;font-size:15px;font-weight:600;line-height:1.4;letter-spacing:-.012em;overflow-wrap:anywhere}.wlkr-card-tools{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin-left:auto}.wlkr-card-content{position:relative;min-width:0;margin-top:6px;font-size:14px;line-height:1.5}.wlkr-card-footer{margin-top:14px}.wlkr-card-caption{max-width:76ch;margin:0;font-size:12px;font-style:italic;color:var(--muted-foreground,#696969);line-height:1.45}
-.wlkr-card :focus-visible{outline:2px solid var(--brand,#33f282);outline-offset:2px}
+.wlkr-card {
+  box-sizing: border-box; position: relative; display: flex; flex-direction: column;
+  min-width: 0; gap: var(--wlkr-space-3); padding: var(--wlkr-space-5);
+  border: var(--wlkr-control-border) solid var(--wlkr-border-default); border-radius: var(--wlkr-radius-xl);
+  background: var(--wlkr-surface-raised); color: var(--wlkr-content-primary); box-shadow: var(--wlkr-shadow-raised);
+  font-family: inherit;
+}
+.wlkr-card-header {
+  display: flex; flex-wrap: wrap; align-items: center; gap: var(--wlkr-space-2) var(--wlkr-space-3);
+}
+.wlkr-card-title {
+  display: flex; align-items: center; flex: auto; gap: var(--wlkr-space-2); min-width: 0; margin: 0;
+  font-size: var(--wlkr-text-md); font-weight: var(--wlkr-weight-semibold); line-height: 1.4; overflow-wrap: anywhere;
+}
+.wlkr-card-tools { display: flex; flex-wrap: wrap; align-items: center; gap: var(--wlkr-space-1_5); margin-inline-start: auto; }
+.wlkr-card-content { position: relative; min-width: 0; font-size: var(--wlkr-text-md); line-height: 1.5; overflow-wrap: anywhere; }
+.wlkr-card-caption {
+  margin: 0; color: var(--wlkr-content-secondary); font-size: var(--wlkr-text-xs); line-height: 1.5; overflow-wrap: anywhere;
+}
+.wlkr-card:focus-visible, .wlkr-card :where(:focus-visible) {
+  outline: var(--wlkr-focus-width) solid var(--wlkr-focus-ring); outline-offset: var(--wlkr-focus-offset);
+}
 `
 
 export function Card({ className, children, ...props }: CardProps) {
-  return <div {...props} className={cn("wlkr-card", className)}><style>{styles}</style>{children}</div>
+  return <>
+    <style href="wlkr-card" precedence="default">{styles}</style>
+    <div {...props} className={cn("wlkr-card", className)}>{children}</div>
+  </>
 }
 export function CardHeader({ className, ...props }: CardHeaderProps) { return <div {...props} className={cn("wlkr-card-header", className)} /> }
 export function CardTitle({ className, ...props }: CardTitleProps) { return <h3 {...props} className={cn("wlkr-card-title", className)} /> }

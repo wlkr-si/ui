@@ -9,15 +9,41 @@ export type StatProps = Omit<React.ComponentProps<"div">, "children"> & {
 export type StatsProps = React.ComponentProps<"div">
 
 const styles = `
-.wlkr-stat{box-sizing:border-box;display:flex;flex-direction:column;gap:6px;min-width:0;padding:14px 16px 16px;border:1px solid var(--border,#dedede);border-radius:12px;background:var(--card,#fff);color:var(--foreground,#010101);font-family:inherit}
-.wlkr-stat-label{margin:0;font-size:13px;line-height:1.4;color:var(--muted-foreground,#696969)}.wlkr-stat-value{margin:0;font:600 28px/1.1 var(--font-mono,ui-monospace,monospace);letter-spacing:-.04em;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}.wlkr-stat-note{margin:4px 0 0;font-size:12px;line-height:1.45;color:var(--muted-foreground,#696969);overflow-wrap:anywhere}.wlkr-stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:0}
-.wlkr-stat:focus-visible,.wlkr-stats:focus-visible{outline:2px solid var(--brand,#33f282);outline-offset:2px}
-@media(min-width:900px){.wlkr-stats{grid-template-columns:repeat(4,minmax(0,1fr))}}
+.wlkr-stat {
+  box-sizing: border-box; display: flex; flex-direction: column;
+  min-width: 0; gap: var(--wlkr-space-1_5); padding: var(--wlkr-space-4);
+  border: var(--wlkr-control-border) solid var(--wlkr-border-default); border-radius: var(--wlkr-radius-xl);
+  background: var(--wlkr-surface-raised); color: var(--wlkr-content-primary); box-shadow: var(--wlkr-shadow-raised);
+  font-family: inherit; overflow-wrap: anywhere;
+}
+.wlkr-stat-label { margin: 0; font-size: var(--wlkr-text-md); font-weight: var(--wlkr-weight-semibold); line-height: 1.4; }
+.wlkr-stat-value {
+  margin: 0; font-family: var(--wlkr-font-mono); font-size: var(--wlkr-text-2xl);
+  font-weight: var(--wlkr-weight-semibold); font-variant-numeric: tabular-nums; line-height: 1.1;
+}
+.wlkr-stat-note { margin: 0; color: var(--wlkr-content-secondary); font-size: var(--wlkr-text-xs); line-height: 1.5; }
+.wlkr-stats { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); min-width: 0; gap: var(--wlkr-space-2); margin: 0; }
+.wlkr-stat:focus-visible, .wlkr-stats:focus-visible {
+  outline: var(--wlkr-focus-width) solid var(--wlkr-focus-ring); outline-offset: var(--wlkr-focus-offset);
+}
+@media (min-width: 56.25em) {
+  .wlkr-stats { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
 `
 
 export function Stat({ label, value, note, className, ...props }: StatProps) {
-  return <div {...props} className={cn("wlkr-stat", className)}><style>{styles}</style><p className="wlkr-stat-label">{label}</p><p className="wlkr-stat-value">{value}</p>{note != null && <p className="wlkr-stat-note">{note}</p>}</div>
+  return <>
+    <style href="wlkr-stat" precedence="default">{styles}</style>
+    <div {...props} className={cn("wlkr-stat", className)}>
+      <p className="wlkr-stat-label">{label}</p>
+      <p className="wlkr-stat-value">{value}</p>
+      {note != null && <p className="wlkr-stat-note">{note}</p>}
+    </div>
+  </>
 }
 export function Stats({ className, children, ...props }: StatsProps) {
-  return <div {...props} className={cn("wlkr-stats", className)}><style>{styles}</style>{children}</div>
+  return <>
+    <style href="wlkr-stat" precedence="default">{styles}</style>
+    <div {...props} className={cn("wlkr-stats", className)}>{children}</div>
+  </>
 }
