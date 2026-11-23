@@ -27,8 +27,11 @@
       "name": "icon-button",
       "type": "registry:component",
       "title": "Icon button",
-      "description": "A round icon-only button with glass, plain and outline variants, three sizes and a brand-coloured pressed indicator.",
+      "description": "A round icon-only button with glass, plain and outline variants, four sizes that match Button and a brand-coloured toggle state.",
       "author": "WLKR Labs",
+      "registryDependencies": [
+        "https://ui.wlkr.si/r/theme.json"
+      ],
       "files": [
         {
           "path": "registry/wlkr/icon-button.tsx",
@@ -95,10 +98,13 @@
       "name": "combobox",
       "type": "registry:component",
       "title": "Combobox",
-      "description": "An editable WAI-ARIA combobox with accent-insensitive filtering, a listbox popup, keyboard selection and a clear action.",
+      "description": "An editable combobox with accent-insensitive filtering, a listbox, keyboard navigation and a clear action.",
       "author": "WLKR Labs",
       "dependencies": [
         "lucide-react"
+      ],
+      "registryDependencies": [
+        "https://ui.wlkr.si/r/theme.json"
       ],
       "files": [
         {
@@ -112,8 +118,11 @@
       "name": "chip",
       "type": "registry:component",
       "title": "Chip",
-      "description": "A pill toggle with controlled or uncontrolled pressed state, optional colour swatch or icon, and a static span variant.",
+      "description": "A small pill toggle or static legend label with an optional leading colour swatch or icon.",
       "author": "WLKR Labs",
+      "registryDependencies": [
+        "https://ui.wlkr.si/r/theme.json"
+      ],
       "files": [
         {
           "path": "registry/wlkr/chip.tsx",
