@@ -13,7 +13,17 @@ import e9 from "@/components/examples/button/loading"
 import e10 from "@/components/examples/button/pressed"
 import e11 from "@/components/examples/button/glow"
 import e12 from "@/components/examples/button/as-child"
+import e13 from "@/components/examples/icon-button/glass"
+import e14 from "@/components/examples/icon-button/plain"
+import e15 from "@/components/examples/icon-button/outline"
+import e16 from "@/components/examples/icon-button/size-xs"
+import e17 from "@/components/examples/icon-button/size-sm"
+import e18 from "@/components/examples/icon-button/size-default"
+import e19 from "@/components/examples/icon-button/size-lg"
+import e20 from "@/components/examples/icon-button/pressed"
+import e21 from "@/components/examples/icon-button/disabled"
 
 export const examples: Record<string, Record<string, ComponentType>> = {
   "button": { "default": e0, "secondary": e1, "outline": e2, "ghost": e3, "destructive": e4, "link": e5, "sizes": e6, "icon": e7, "with-icon": e8, "loading": e9, "pressed": e10, "glow": e11, "as-child": e12 },
+  "icon-button": { "glass": e13, "plain": e14, "outline": e15, "size-xs": e16, "size-sm": e17, "size-default": e18, "size-lg": e19, "pressed": e20, "disabled": e21 },
 }
