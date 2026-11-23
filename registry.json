@@ -27,8 +27,11 @@
       "name": "icon-button",
       "type": "registry:component",
       "title": "Icon button",
-      "description": "A round icon-only button with glass, plain and outline variants, three sizes and a brand-coloured pressed indicator.",
+      "description": "A round icon-only button with glass, plain and outline variants, four sizes that match Button and a brand-coloured toggle state.",
       "author": "WLKR Labs",
+      "registryDependencies": [
+        "https://ui.wlkr.si/r/theme.json"
+      ],
       "files": [
         {
           "path": "registry/wlkr/icon-button.tsx",

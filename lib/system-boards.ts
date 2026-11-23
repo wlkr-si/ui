@@ -3,11 +3,13 @@ import type { ComponentType } from "react"
 import b0 from "@/components/system-boards/button"
 import b1 from "@/components/system-boards/chip"
 import b2 from "@/components/system-boards/combobox"
-import b3 from "@/components/system-boards/select"
+import b3 from "@/components/system-boards/icon-button"
+import b4 from "@/components/system-boards/select"
 
 export const boards: Record<string, ComponentType> = {
   "button": b0,
   "chip": b1,
   "combobox": b2,
-  "select": b3,
+  "icon-button": b3,
+  "select": b4,
 }
