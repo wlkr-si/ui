@@ -36,7 +36,7 @@ The CLI installs original source and pulls stock shadcn dependencies directly fr
 - [Select](/components/select): A native select with four control sizes, an optional prefix label and a chevron. [Source JSON](/r/select.json)
 - [Input](/components/input): A native text input with two sizes, optional leading icon and clear button, and destructive invalid styling. [Source JSON](/r/input.json)
 - [Combobox](/components/combobox): An editable WAI-ARIA combobox with accent-insensitive filtering, a listbox popup, keyboard selection and a clear action. [Source JSON](/r/combobox.json)
-- [Chip](/components/chip): A pill toggle with controlled or uncontrolled pressed state, optional colour swatch or icon, and a static span variant. [Source JSON](/r/chip.json)
+- [Chip](/components/chip): A small pill toggle or static legend label with an optional leading colour swatch or icon. [Source JSON](/r/chip.json)
 - [Menu](/components/menu): A menu button with a Bach Bench popover, arrow navigation, typeahead, separators, disabled actions and focus return. [Source JSON](/r/menu.json)
 - [Card](/components/card): A Bach Bench card frame with seven composable sections, a 12px radius, hairline border and theme-aware surface. [Source JSON](/r/card.json)
 - [Stat](/components/stat): A Bach Bench stat tile with a mono tabular value and optional note, plus a responsive two-to-four-column Stats grid. [Source JSON](/r/stat.json)

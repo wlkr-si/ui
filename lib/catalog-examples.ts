@@ -20,8 +20,17 @@ import e16 from "@/components/examples/select/lg"
 import e17 from "@/components/examples/select/prefix"
 import e18 from "@/components/examples/select/invalid"
 import e19 from "@/components/examples/select/disabled"
+import e20 from "@/components/examples/chip/pressed"
+import e21 from "@/components/examples/chip/unpressed"
+import e22 from "@/components/examples/chip/xs"
+import e23 from "@/components/examples/chip/sm"
+import e24 from "@/components/examples/chip/static"
+import e25 from "@/components/examples/chip/swatch"
+import e26 from "@/components/examples/chip/icon"
+import e27 from "@/components/examples/chip/disabled"
 
 export const examples: Record<string, Record<string, ComponentType>> = {
   "button": { "default": e0, "secondary": e1, "outline": e2, "ghost": e3, "destructive": e4, "link": e5, "sizes": e6, "icon": e7, "with-icon": e8, "loading": e9, "pressed": e10, "glow": e11, "as-child": e12 },
   "select": { "default": e13, "xs": e14, "sm": e15, "lg": e16, "prefix": e17, "invalid": e18, "disabled": e19 },
+  "chip": { "pressed": e20, "unpressed": e21, "xs": e22, "sm": e23, "static": e24, "swatch": e25, "icon": e26, "disabled": e27 },
 }
