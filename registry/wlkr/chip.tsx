@@ -3,41 +3,148 @@
 import * as React from "react"
 import { cn } from "@/lib/utils"
 
-type ChipDecoration = { swatch?: string; icon?: React.ReactNode }
-export type ChipProps = ChipDecoration & (
-  | (React.ComponentProps<"button"> & { as?: "button"; pressed?: boolean; defaultPressed?: boolean; onPressedChange?: (pressed: boolean) => void })
-  | (React.ComponentProps<"span"> & { as: "span"; pressed?: never; defaultPressed?: never; onPressedChange?: never })
-)
+export type ChipSize = "xs" | "sm"
+type ChipDecoration = { swatch?: boolean; icon?: never } | { swatch?: never; icon?: React.ReactNode }
+type ChipStyle = React.CSSProperties & { "--wlkr-chip-color"?: string }
+
+type ToggleChipProps = React.ComponentProps<"button"> & {
+  as?: "button"
+  pressed?: boolean
+  defaultPressed?: boolean
+  onPressedChange?: (pressed: boolean) => void
+}
+
+type StaticChipProps = React.ComponentProps<"span"> & {
+  as: "span"
+  pressed?: never
+  defaultPressed?: never
+  onPressedChange?: never
+  "aria-pressed"?: never
+  disabled?: never
+}
+
+type SharedChipProps = ChipDecoration & { size?: ChipSize; style?: ChipStyle }
+export type ChipProps = SharedChipProps & (ToggleChipProps | StaticChipProps)
 
 const styles = `
-.wlkr-chip{box-sizing:border-box;display:inline-flex;align-items:center;gap:5px;height:22px;padding:0 6px 0 4px;border:1px solid transparent;border-radius:999px;background:transparent;font-family:inherit;font-weight:500;font-size:12px;line-height:1;color:var(--foreground,#010101);white-space:nowrap;cursor:pointer;transition:border-color 120ms ease,background-color 120ms ease,opacity 160ms ease,transform 120ms cubic-bezier(.23,1,.32,1)}
-.wlkr-chip-decoration{display:inline-flex;flex:none}.wlkr-chip svg{width:12px;height:12px;flex:none}.wlkr-chip-swatch{width:8px;height:8px;border-radius:50%;background:var(--wlkr-chip-color,currentColor)}
-.wlkr-chip[aria-pressed=false]{color:var(--muted-foreground,#696969)}.wlkr-chip[aria-pressed=false] .wlkr-chip-decoration{opacity:.3}
-.wlkr-chip:focus-visible{outline:2px solid var(--brand,#33f282);outline-offset:2px}.wlkr-chip:active{transform:scale(.97)}.wlkr-chip:disabled{opacity:.38;cursor:default;transform:none;pointer-events:none}.wlkr-chip[data-static=true]{cursor:default}.wlkr-chip[data-static=true]:active{transform:none}
-@media(hover:hover) and (pointer:fine){.wlkr-chip:not([data-static=true]):not(:disabled):hover{border-color:var(--border,#dedede);background:var(--control-surface,#fafafa)}}
-@media(prefers-reduced-motion:reduce){.wlkr-chip{transition:none}.wlkr-chip:active{transform:none}}
+.wlkr-chip {
+  --wlkr-chip-h: var(--wlkr-control-h-sm);
+  --wlkr-chip-px: var(--wlkr-control-px-sm);
+  --wlkr-chip-text: var(--wlkr-control-text-sm);
+  --wlkr-chip-icon: var(--wlkr-control-icon-sm);
+  --wlkr-chip-gap: var(--wlkr-control-gap-sm);
+  box-sizing: border-box;
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  gap: var(--wlkr-chip-gap);
+  max-width: 100%;
+  height: var(--wlkr-chip-h);
+  padding: 0 var(--wlkr-chip-px);
+  border: var(--wlkr-control-border) solid var(--wlkr-border-default);
+  border-radius: var(--wlkr-radius-full);
+  background: var(--wlkr-fill-subtle);
+  color: var(--wlkr-content-primary);
+  font-family: inherit;
+  font-size: var(--wlkr-chip-text);
+  font-weight: var(--wlkr-weight-medium);
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.wlkr-chip[data-size=xs] {
+  --wlkr-chip-h: var(--wlkr-control-h-xs);
+  --wlkr-chip-px: var(--wlkr-control-px-xs);
+  --wlkr-chip-text: var(--wlkr-control-text-xs);
+  --wlkr-chip-icon: var(--wlkr-control-icon-xs);
+  --wlkr-chip-gap: var(--wlkr-control-gap-xs);
+}
+
+.wlkr-chip-label { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+.wlkr-chip-icon { display: inline-flex; flex: none; }
+.wlkr-chip-icon svg { width: var(--wlkr-chip-icon); height: var(--wlkr-chip-icon); }
+.wlkr-chip-swatch {
+  box-sizing: border-box;
+  flex: none;
+  width: var(--wlkr-space-2);
+  height: var(--wlkr-space-2);
+  border: var(--wlkr-control-border) solid var(--wlkr-border-default);
+  border-radius: var(--wlkr-radius-full);
+  background: var(--wlkr-chip-color);
+}
+
+button.wlkr-chip {
+  cursor: pointer;
+  transition: color var(--wlkr-duration-fast) var(--wlkr-ease-out),
+    border-color var(--wlkr-duration-fast) var(--wlkr-ease-out),
+    background-color var(--wlkr-duration-fast) var(--wlkr-ease-out),
+    transform var(--wlkr-duration-fast) var(--wlkr-ease-out);
+}
+
+.wlkr-chip[aria-pressed=false] { color: var(--wlkr-content-tertiary); }
+.wlkr-chip[aria-pressed=true] {
+  border-color: var(--wlkr-border-strong);
+  background: var(--wlkr-fill-active);
+}
+
+.wlkr-chip:focus-visible { outline: var(--wlkr-focus-width) solid var(--wlkr-focus-ring); outline-offset: var(--wlkr-focus-offset); }
+button.wlkr-chip:not(:disabled, [aria-disabled=true]):active { transform: scale(var(--wlkr-press-scale)); }
+button.wlkr-chip:is(:disabled, [aria-disabled=true]) { opacity: var(--wlkr-disabled-opacity); cursor: default; }
+
+@media (hover: hover) and (pointer: fine) {
+  .wlkr-chip[aria-pressed=false]:not(:disabled, [aria-disabled=true]):hover {
+    border-color: var(--wlkr-border-strong);
+    background: var(--wlkr-fill-hover);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  button.wlkr-chip { transition: none; }
+  button.wlkr-chip:not(:disabled, [aria-disabled=true]):active { transform: none; }
+}
 `
 
-function Decoration({ swatch, icon }: ChipDecoration) {
-  return <>{swatch && <span aria-hidden="true" className="wlkr-chip-decoration wlkr-chip-swatch" style={{ "--wlkr-chip-color": swatch } as React.CSSProperties} />}{icon && <span aria-hidden="true" className="wlkr-chip-decoration">{icon}</span>}</>
-}
-
-function ToggleChip({ as = "button", swatch, icon, pressed, defaultPressed = true, onPressedChange, className, children, onClick, type = "button", ...props }: Extract<ChipProps, { as?: "button" }>) {
+function ToggleChip({
+  as: Tag = "button", pressed, defaultPressed = true, onPressedChange, onClick, type = "button",
+  "aria-pressed": ariaPressed, "aria-disabled": ariaDisabled, ...props
+}: ToggleChipProps) {
   const [inner, setInner] = React.useState(defaultPressed)
-  const selected = pressed ?? (props["aria-pressed"] === undefined ? inner : props["aria-pressed"] === true || props["aria-pressed"] === "true")
-  const Tag = as
-  return <Tag {...props} type={type} aria-pressed={selected} className={cn("wlkr-chip", className)} onClick={event => {
+  const selected = pressed ?? (ariaPressed === undefined ? inner : ariaPressed === true || ariaPressed === "true")
+
+  function handleClick(event: React.MouseEvent<HTMLButtonElement>) {
+    if (ariaDisabled === true || ariaDisabled === "true") {
+      event.preventDefault()
+      return
+    }
     onClick?.(event)
     if (event.defaultPrevented) return
-    if (pressed === undefined && props["aria-pressed"] === undefined) setInner(!selected)
+    if (pressed === undefined && ariaPressed === undefined) setInner(!selected)
     onPressedChange?.(!selected)
-  }}><Decoration swatch={swatch} icon={icon} />{children}</Tag>
+  }
+
+  return <Tag {...props} type={type} aria-pressed={selected} aria-disabled={ariaDisabled} onClick={handleClick} />
 }
 
-export function Chip(props: ChipProps) {
+export function Chip({ size = "sm", swatch, icon, className, children, ...props }: ChipProps) {
+  const stylesheet = <style href="wlkr-chip" precedence="default">{styles}</style>
+  const shared = { "data-size": size, className: cn("wlkr-chip", className) }
+  const content = <>
+    {swatch && <span aria-hidden="true" className="wlkr-chip-swatch" />}
+    {icon && <span aria-hidden="true" className="wlkr-chip-icon">{icon}</span>}
+    <span className="wlkr-chip-label">{children}</span>
+  </>
+
   if (props.as === "span") {
-    const { as: Tag, swatch, icon, className, children, ...rest } = props
-    return <><style>{styles}</style><Tag {...rest} data-static="true" className={cn("wlkr-chip", className)}><Decoration swatch={swatch} icon={icon} />{children}</Tag></>
+    const { as: Tag, ...spanProps } = props
+    return <>
+      {stylesheet}
+      <Tag {...spanProps} {...shared}>{content}</Tag>
+    </>
   }
-  return <><style>{styles}</style><ToggleChip {...props} /></>
+
+  return <>
+    {stylesheet}
+    <ToggleChip {...props} {...shared}>{content}</ToggleChip>
+  </>
 }

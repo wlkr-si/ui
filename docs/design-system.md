@@ -38,7 +38,7 @@ Components use roles, so the theme switches without a single `dark:` rule. `.dar
 | Controls | `control-h-{xs,sm,md,lg}` (24, 28, 32, 36px), with `control-px-*`, `control-text-*`, `control-icon-*` and `control-gap-*`. Every control (button, input, select, segmented, chip, combobox) uses this one scale, so equal sizes line up. Also `control-border`, `focus-width`, `focus-offset`, `press-scale` and `disabled-opacity`. |
 | Space | `space-{0_5,1,1_5,2,2_5,3,4,5,6,8,10,12,16,20}`, a 4px grid |
 | Type | `text-{2xs…5xl}`, `weight-{regular,medium,semibold}` and `font-mono` |
-| Radius | `radius-md` for controls, `radius-lg` for menus and popovers, `radius-xl` for cards and dialogs, `radius-full` for pills |
+| Radius | `radius-md` for controls, `radius-lg` for overlays, `radius-xl` for cards and inline panels, `radius-full` for pills |
 | Elevation | `shadow-raised`, `shadow-overlay`, `shadow-dialog` and `z-*` |
 | Motion | `duration-{instant,fast,base,slow,slower}` and `ease-{out,in-out,spring}` |
 
@@ -47,6 +47,14 @@ Components use roles, so the theme switches without a single `dark:` rule. `.dar
 Use `surface-raised`, a `control-border` hairline in `border-default`, `radius-xl` and `shadow-raised` for cards, tiles and other raised containers. Pad compact tiles with `space-4` and roomier panels with `space-5`.
 
 Set titles in `text-md` with `weight-semibold` and captions in `text-xs` with `content-secondary`. Stat uses the title style for its label and the caption style for its optional note. Use `text-2xl` and tabular figures in `font-mono` for the value.
+
+## Overlay pattern
+
+Combobox, Menu, Popover, Tooltip and Dialog share these rules for floating panels.
+
+- Use `surface-overlay`, a `border-default` hairline at `control-border` width, `shadow-overlay` and `radius-lg`.
+- Give the panel `space-1` inner padding. Where it has options, use the matching control height and `radius-md` for each row. Use `fill-hover` for the active row and `content-primary` for selected text.
+- Layer the panel at `z-overlay`. On open and close, transition opacity and a small translate or scale with `duration-base` and `ease-out`. Remove the transition and transform when reduced motion is requested.
 
 ## Building a component
 

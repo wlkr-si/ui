@@ -1,37 +1,139 @@
 "use client"
 
-import * as React from "react"
+import type * as React from "react"
 import { X } from "lucide-react"
 import { cn } from "@/lib/utils"
 
-export type InputProps = Omit<React.ComponentProps<"input">, "size"> & {
-  size?: "sm" | "md"
+export type InputProps = Omit<React.ComponentProps<"input">, "size" | "children" | "dangerouslySetInnerHTML"> & {
+  size?: "xs" | "sm" | "default" | "lg"
   icon?: React.ReactNode
   clearable?: boolean
   clearLabel?: string
 }
 
 const styles = `
-.wlkr-input{box-sizing:border-box;display:inline-flex;align-items:center;gap:6px;max-width:100%;height:32px;padding:0 4px 0 8px;border:1px solid var(--input,var(--border,#dedede));border-radius:6px;background:var(--card,#fff);color:var(--muted-foreground,#696969);transition:border-color 120ms ease,background-color 120ms ease}
-.wlkr-input[data-size=sm]{height:28px}.wlkr-input-control{flex:1;min-width:0;width:100%;height:100%;padding:0;border:0;background:transparent;outline:none;color:var(--foreground,#010101);font-family:inherit;font-weight:500;font-size:14px;line-height:1}
-.wlkr-input[data-size=sm] .wlkr-input-control{font-size:12px}.wlkr-input-control::placeholder{color:var(--muted-foreground,#696969);opacity:.7}.wlkr-input-icon{display:inline-flex;flex:none}.wlkr-input-icon svg{width:14px;height:14px}
-.wlkr-input:has(input:focus-visible){outline:2px solid var(--brand,#33f282);outline-offset:2px}.wlkr-input:has([aria-invalid=true]){border-color:var(--destructive,#b42318)}.wlkr-input:has(input:disabled){opacity:.45;cursor:default}
-.wlkr-input-clear{display:inline-grid;place-items:center;flex:none;width:20px;height:20px;padding:0;border:0;border-radius:4px;background:transparent;color:var(--muted-foreground,#696969);cursor:pointer}.wlkr-input-clear svg{width:12px;height:12px}.wlkr-input:has(input:placeholder-shown) .wlkr-input-clear{visibility:hidden}.wlkr-input-clear:focus-visible{outline:2px solid var(--brand,#33f282);outline-offset:2px}
-@media(hover:hover) and (pointer:fine){.wlkr-input:not(:has(input:disabled)):hover{border-color:color-mix(in srgb,var(--border,#dedede),var(--foreground,#010101) 16%)}.wlkr-input-clear:hover{background:var(--secondary,#f3f3f3);color:var(--foreground,#010101)}}
-@media(prefers-reduced-motion:reduce){.wlkr-input{transition:none}}
+.wlkr-input {
+  --wlkr-input-height: var(--wlkr-control-h-md);
+  --wlkr-input-padding: var(--wlkr-control-px-md);
+  --wlkr-input-text-size: var(--wlkr-control-text-md);
+  --wlkr-input-icon-size: var(--wlkr-control-icon-md);
+  --wlkr-input-gap: var(--wlkr-control-gap-md);
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--wlkr-input-gap);
+  max-width: 100%;
+  height: var(--wlkr-input-height);
+  padding: 0 var(--wlkr-input-padding);
+  border: var(--wlkr-control-border) solid var(--wlkr-border-default);
+  border-radius: var(--wlkr-radius-md);
+  color: var(--wlkr-content-primary);
+  transition: border-color var(--wlkr-duration-fast) var(--wlkr-ease-out);
+}
+.wlkr-input[data-size=xs] {
+  --wlkr-input-height: var(--wlkr-control-h-xs);
+  --wlkr-input-padding: var(--wlkr-control-px-xs);
+  --wlkr-input-text-size: var(--wlkr-control-text-xs);
+  --wlkr-input-icon-size: var(--wlkr-control-icon-xs);
+  --wlkr-input-gap: var(--wlkr-control-gap-xs);
+  border-radius: var(--wlkr-radius-sm);
+}
+.wlkr-input[data-size=sm] {
+  --wlkr-input-height: var(--wlkr-control-h-sm);
+  --wlkr-input-padding: var(--wlkr-control-px-sm);
+  --wlkr-input-text-size: var(--wlkr-control-text-sm);
+  --wlkr-input-icon-size: var(--wlkr-control-icon-sm);
+  --wlkr-input-gap: var(--wlkr-control-gap-sm);
+}
+.wlkr-input[data-size=lg] {
+  --wlkr-input-height: var(--wlkr-control-h-lg);
+  --wlkr-input-padding: var(--wlkr-control-px-lg);
+  --wlkr-input-text-size: var(--wlkr-control-text-lg);
+  --wlkr-input-icon-size: var(--wlkr-control-icon-lg);
+  --wlkr-input-gap: var(--wlkr-control-gap-lg);
+}
+.wlkr-input-control {
+  flex: 1;
+  min-width: 0;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  outline: none;
+  color: inherit;
+  font-family: inherit;
+  font-size: var(--wlkr-input-text-size);
+  font-weight: var(--wlkr-weight-medium);
+  line-height: 1;
+}
+.wlkr-input-control::placeholder { color: var(--wlkr-content-tertiary); opacity: 1; }
+.wlkr-input-icon { display: inline-flex; flex: none; color: var(--wlkr-content-secondary); }
+.wlkr-input-icon svg, .wlkr-input-clear svg { width: var(--wlkr-input-icon-size); height: var(--wlkr-input-icon-size); }
+.wlkr-input:has(> .wlkr-input-control:focus), .wlkr-input-clear:focus-visible {
+  outline: var(--wlkr-focus-width) solid var(--wlkr-focus-ring);
+  outline-offset: var(--wlkr-focus-offset);
+}
+.wlkr-input:has(> .wlkr-input-control:is([aria-invalid=true],[aria-invalid=grammar],[aria-invalid=spelling])) {
+  border-color: var(--wlkr-danger);
+}
+.wlkr-input:has(> .wlkr-input-control:disabled) { opacity: var(--wlkr-disabled-opacity); }
+.wlkr-input-clear {
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  width: calc(var(--wlkr-input-icon-size) + var(--wlkr-input-gap));
+  height: calc(var(--wlkr-input-icon-size) + var(--wlkr-input-gap));
+  padding: 0;
+  border: 0;
+  border-radius: inherit;
+  background: transparent;
+  color: var(--wlkr-content-secondary);
+  cursor: pointer;
+  transition: color var(--wlkr-duration-fast) var(--wlkr-ease-out), background-color var(--wlkr-duration-fast) var(--wlkr-ease-out), transform var(--wlkr-duration-fast) var(--wlkr-ease-out);
+}
+.wlkr-input-control:placeholder-shown + .wlkr-input-clear, .wlkr-input-clear:disabled { visibility: hidden; }
+.wlkr-input:has(> .wlkr-input-clear) .wlkr-input-control::-webkit-search-cancel-button { appearance: none; }
+.wlkr-input-clear:active { transform: scale(var(--wlkr-press-scale)); }
+@media (hover: hover) and (pointer: fine) {
+  .wlkr-input:hover:has(> .wlkr-input-control:enabled:not([aria-invalid=true],[aria-invalid=grammar],[aria-invalid=spelling])) {
+    border-color: var(--wlkr-border-strong);
+  }
+  .wlkr-input-clear:hover { background: var(--wlkr-fill-hover); color: var(--wlkr-content-primary); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .wlkr-input, .wlkr-input-clear { transition: none; }
+  .wlkr-input-clear:active { transform: none; }
+}
 `
 
-export function Input({ size = "md", icon, clearable = false, clearLabel = "Clear input", className, placeholder = " ", ...props }: InputProps) {
-  return <><style>{styles}</style><span data-size={size} className={cn("wlkr-input", className)}>
-    {icon && <span className="wlkr-input-icon" aria-hidden="true">{icon}</span>}
-    <input {...props} placeholder={placeholder} className="wlkr-input-control" />
-    {clearable && !props.readOnly && <button type="button" className="wlkr-input-clear" aria-label={clearLabel} disabled={props.disabled} onClick={event => {
-      const input = event.currentTarget.parentElement?.querySelector("input")
-      if (!input) return
-      // Use the native setter so React observes the same input event as typing.
-      Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, "value")?.set?.call(input, "")
-      input.dispatchEvent(new Event("input", { bubbles: true }))
-      input.focus()
-    }}><X aria-hidden="true" /></button>}
-  </span></>
+function clearInput(event: React.MouseEvent<HTMLButtonElement>) {
+  const input = event.currentTarget.previousElementSibling
+  if (!(input instanceof HTMLInputElement)) return
+
+  // The native setter lets React observe the value change as it would for typing.
+  Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, "value")?.set?.call(input, "")
+  input.dispatchEvent(new Event("input", { bubbles: true }))
+  input.focus()
+}
+
+export function Input({ size = "default", icon, clearable = false, clearLabel = "Clear input", className, placeholder, disabled, readOnly, ...props }: InputProps) {
+  const showClear = clearable && !readOnly
+
+  return <>
+    <style href="wlkr-input" precedence="default">{styles}</style>
+    <span data-size={size} className={cn("wlkr-input", className)}>
+      {icon && <span className="wlkr-input-icon" aria-hidden="true">{icon}</span>}
+      <input
+        {...props}
+        placeholder={showClear ? placeholder || " " : placeholder}
+        disabled={disabled}
+        readOnly={readOnly}
+        className="wlkr-input-control"
+      />
+      {showClear && <button type="button" className="wlkr-input-clear" aria-label={clearLabel} disabled={disabled} onClick={clearInput}>
+        <X aria-hidden="true" />
+      </button>}
+    </span>
+  </>
 }
