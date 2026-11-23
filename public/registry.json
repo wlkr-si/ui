@@ -55,10 +55,13 @@
       "name": "select",
       "type": "registry:component",
       "title": "Select",
-      "description": "A native select with an optional prefix label, chevron, two sizes and a wrapper focus ring.",
+      "description": "A native select with four control sizes, an optional prefix label and a chevron.",
       "author": "WLKR Labs",
       "dependencies": [
         "lucide-react"
+      ],
+      "registryDependencies": [
+        "https://ui.wlkr.si/r/theme.json"
       ],
       "files": [
         {
@@ -1378,6 +1381,7 @@
           "wlkr-shadow-raised": "0 1px 2px rgb(0 0 0 / 5%)",
           "wlkr-shadow-overlay": "0 8px 24px rgb(0 0 0 / 8%), 0 2px 6px rgb(0 0 0 / 4%)",
           "wlkr-shadow-dialog": "0 24px 64px rgb(0 0 0 / 14%)",
+          "wlkr-color-scheme": "light",
           "background": "var(--wlkr-surface-page)",
           "foreground": "var(--wlkr-content-primary)",
           "card": "var(--wlkr-surface-raised)",
@@ -1433,6 +1437,7 @@
           "wlkr-shadow-raised": "0 1px 2px rgb(0 0 0 / 40%)",
           "wlkr-shadow-overlay": "0 16px 40px rgb(0 0 0 / 55%)",
           "wlkr-shadow-dialog": "0 24px 64px rgb(0 0 0 / 65%)",
+          "wlkr-color-scheme": "dark",
           "background": "var(--wlkr-surface-page)",
           "foreground": "var(--wlkr-content-primary)",
           "card": "var(--wlkr-surface-raised)",
