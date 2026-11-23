@@ -1,0 +1,19 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "select",
+  "title": "Select",
+  "author": "WLKR Labs",
+  "description": "A native select with an optional prefix label, chevron, two sizes and a wrapper focus ring.",
+  "dependencies": [
+    "lucide-react"
+  ],
+  "files": [
+    {
+      "path": "registry/wlkr/select.tsx",
+      "content": "import * as React from \"react\"\nimport { ChevronDown } from \"lucide-react\"\nimport { cn } from \"@/lib/utils\"\n\nexport type SelectProps = Omit<React.ComponentProps<\"select\">, \"size\"> & {\n  label?: string\n  size?: \"sm\" | \"md\"\n}\n\nconst styles = `\n.wlkr-select{position:relative;box-sizing:border-box;display:inline-flex;align-items:center;max-width:100%;height:32px;padding-left:8px;border:1px solid var(--input,var(--border,#dedede));border-radius:6px;background:var(--card,#fff);transition:border-color 120ms ease,background-color 120ms ease}\n.wlkr-select[data-size=sm]{height:28px}.wlkr-select-label{color:var(--muted-foreground,#696969);opacity:.7;font:500 11px/1 var(--font-sans,Arial,sans-serif)}\n.wlkr-select-control{appearance:none;-webkit-appearance:none;min-width:0;max-width:100%;height:100%;border:0;background:transparent;padding:0 24px 0 6px;font:500 14px/1 var(--font-sans,Arial,sans-serif);color:var(--foreground,#010101);cursor:pointer;outline:none}\n.wlkr-select[data-size=sm] .wlkr-select-control{font-size:12px}.wlkr-select-control option{background:var(--popover,#fff);color:var(--foreground,#010101)}\n.wlkr-select-chevron{position:absolute;right:7px;width:12px;height:12px;pointer-events:none;color:var(--muted-foreground,#696969)}\n.wlkr-select:has(select:focus-visible){outline:2px solid var(--brand,#33f282);outline-offset:2px}.wlkr-select:has(select:disabled){opacity:.45;cursor:default}.wlkr-select-control:disabled{cursor:default}.wlkr-select:has([aria-invalid=true]){border-color:var(--destructive,#b42318)}\n@media(hover:hover) and (pointer:fine){.wlkr-select:not(:has(select:disabled)):hover{border-color:color-mix(in srgb,var(--border,#dedede),var(--foreground,#010101) 16%)}}\n@media(prefers-reduced-motion:reduce){.wlkr-select{transition:none}}\n`\n\nexport function Select({ label, size = \"md\", className, children, ...props }: SelectProps) {\n  return <><style>{styles}</style><label data-size={size} className={cn(\"wlkr-select\", className)}>\n    {label && <span className=\"wlkr-select-label\">{label}</span>}\n    <select {...props} className=\"wlkr-select-control\">{children}</select>\n    <ChevronDown aria-hidden=\"true\" className=\"wlkr-select-chevron\" />\n  </label></>\n}\n",
+      "type": "registry:component",
+      "target": "components/wlkr/select.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

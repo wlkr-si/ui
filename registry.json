@@ -4,6 +4,165 @@
   "homepage": "https://ui.wlkr.si",
   "items": [
     {
+      "name": "button",
+      "type": "registry:component",
+      "title": "Button",
+      "description": "A Bach Bench button with four variants, three sizes, width-preserving loading and an optional animated spectrum rim.",
+      "author": "WLKR Labs",
+      "dependencies": [
+        "radix-ui"
+      ],
+      "files": [
+        {
+          "path": "registry/wlkr/button.tsx",
+          "type": "registry:component",
+          "target": "components/wlkr/button.tsx"
+        }
+      ]
+    },
+    {
+      "name": "icon-button",
+      "type": "registry:component",
+      "title": "Icon button",
+      "description": "A round icon-only button with glass, plain and outline variants, three sizes and a brand-coloured pressed indicator.",
+      "author": "WLKR Labs",
+      "files": [
+        {
+          "path": "registry/wlkr/icon-button.tsx",
+          "type": "registry:component",
+          "target": "components/wlkr/icon-button.tsx"
+        }
+      ]
+    },
+    {
+      "name": "segmented",
+      "type": "registry:component",
+      "title": "Segmented",
+      "description": "A controlled or uncontrolled radiogroup with roving focus, optional prefix label and compact Bach Bench styling.",
+      "author": "WLKR Labs",
+      "files": [
+        {
+          "path": "registry/wlkr/segmented.tsx",
+          "type": "registry:component",
+          "target": "components/wlkr/segmented.tsx"
+        }
+      ]
+    },
+    {
+      "name": "select",
+      "type": "registry:component",
+      "title": "Select",
+      "description": "A native select with an optional prefix label, chevron, two sizes and a wrapper focus ring.",
+      "author": "WLKR Labs",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "files": [
+        {
+          "path": "registry/wlkr/select.tsx",
+          "type": "registry:component",
+          "target": "components/wlkr/select.tsx"
+        }
+      ]
+    },
+    {
+      "name": "input",
+      "type": "registry:component",
+      "title": "Input",
+      "description": "A native text input with two sizes, optional leading icon and clear button, and destructive invalid styling.",
+      "author": "WLKR Labs",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "files": [
+        {
+          "path": "registry/wlkr/input.tsx",
+          "type": "registry:component",
+          "target": "components/wlkr/input.tsx"
+        }
+      ]
+    },
+    {
+      "name": "combobox",
+      "type": "registry:component",
+      "title": "Combobox",
+      "description": "An editable WAI-ARIA combobox with accent-insensitive filtering, a listbox popup, keyboard selection and a clear action.",
+      "author": "WLKR Labs",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "files": [
+        {
+          "path": "registry/wlkr/combobox.tsx",
+          "type": "registry:component",
+          "target": "components/wlkr/combobox.tsx"
+        }
+      ]
+    },
+    {
+      "name": "chip",
+      "type": "registry:component",
+      "title": "Chip",
+      "description": "A pill toggle with controlled or uncontrolled pressed state, optional colour swatch or icon, and a static span variant.",
+      "author": "WLKR Labs",
+      "files": [
+        {
+          "path": "registry/wlkr/chip.tsx",
+          "type": "registry:component",
+          "target": "components/wlkr/chip.tsx"
+        }
+      ]
+    },
+    {
+      "name": "menu",
+      "type": "registry:component",
+      "title": "Menu",
+      "description": "A menu button with a Bach Bench popover, arrow navigation, typeahead, separators, disabled actions and focus return.",
+      "author": "WLKR Labs",
+      "dependencies": [
+        "radix-ui",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "https://ui.wlkr.si/r/button.json"
+      ],
+      "files": [
+        {
+          "path": "registry/wlkr/menu.tsx",
+          "type": "registry:component",
+          "target": "components/wlkr/menu.tsx"
+        }
+      ]
+    },
+    {
+      "name": "card",
+      "type": "registry:component",
+      "title": "Card",
+      "description": "A Bach Bench card frame with seven composable sections, a 12px radius, hairline border and theme-aware surface.",
+      "author": "WLKR Labs",
+      "files": [
+        {
+          "path": "registry/wlkr/card.tsx",
+          "type": "registry:component",
+          "target": "components/wlkr/card.tsx"
+        }
+      ]
+    },
+    {
+      "name": "stat",
+      "type": "registry:component",
+      "title": "Stat",
+      "description": "A Bach Bench stat tile with a mono tabular value and optional note, plus a responsive two-to-four-column Stats grid.",
+      "author": "WLKR Labs",
+      "files": [
+        {
+          "path": "registry/wlkr/stat.tsx",
+          "type": "registry:component",
+          "target": "components/wlkr/stat.tsx"
+        }
+      ]
+    },
+    {
       "name": "copy-command",
       "type": "registry:component",
       "title": "Copy command",

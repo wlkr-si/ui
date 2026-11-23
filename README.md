@@ -22,7 +22,7 @@ import { PixelObject } from "@/components/wlkr/pixel-object"
 <PixelObject label="A rotating pixel sphere" />
 ```
 
-Use your project's configured import alias. Components are copied into your source; there is no WLKR runtime service or account. The collection contains 69 original components, optional typography and a light/dark theme. Original component code is MIT; brand assets and fonts have separate terms.
+Use your project's configured import alias. Components are copied into your source; there is no WLKR runtime service or account. The collection contains 79 original components, optional typography and a light/dark theme. Original component code is MIT; brand assets and fonts have separate terms.
 
 The gallery and focused tools use primary-domain canonical and social metadata with static, page-specific 1200×630 previews. Next.js renders these previews during the static build from the approved local mark and Geist font; no image service is called. The existing **ui.wlkrlabs.com** host remains available.
 
@@ -167,7 +167,7 @@ Every component has its own page with a live preview, an install line, usage, th
 | Effects | [Dot field](https://ui.wlkr.si/components/dot-field), [Dither field](https://ui.wlkr.si/components/dither-field), [Pixel trail](https://ui.wlkr.si/components/pixel-trail), [Dissolve](https://ui.wlkr.si/components/dissolve), [Magnetic](https://ui.wlkr.si/components/magnetic), [Binary rain](https://ui.wlkr.si/components/binary-rain), [Pixel burst](https://ui.wlkr.si/components/pixel-burst) |
 | System | [Theme toggle](https://ui.wlkr.si/components/theme-toggle), [Footer controls](https://ui.wlkr.si/components/footer-controls), [Typography](https://ui.wlkr.si/components/typography), [Theme](https://ui.wlkr.si/components/theme), [Primitives](https://ui.wlkr.si/components/primitives) |
 
-The public collection has 69 original components, typography styles, and the theme (71 registry items). Each component is described once, in `registry/meta/<name>.ts`; that file drives its gallery page, the sidebar and its registry entry. `pnpm registry:build` regenerates `registry.json` and the site index from those files.
+The public collection has 79 original components, typography styles, and the theme (81 registry items). Each component is described once, in `registry/meta/<name>.ts`; that file drives its gallery page, the sidebar and its registry entry. `pnpm registry:build` regenerates `registry.json` and the site index from those files.
 
 Clipboard requires a secure context (HTTPS or localhost). On failure the selectable command remains available. Async actions require rejected promises for failures: throw when a fetch response is not OK. The preview’s “Simulate a failed save” switch exercises retry. Filter item IDs must be unique; results preserve input ordering.
 

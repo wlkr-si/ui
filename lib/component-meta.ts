@@ -2,6 +2,7 @@
  *  gallery page, the sidebar, search, and the component's registry entry. */
 
 export const categories = [
+  { id: "basics", name: "Basics" },
   { id: "actions", name: "Actions" },
   { id: "inputs", name: "Inputs" },
   { id: "navigation", name: "Navigation" },

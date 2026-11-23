@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.25.0 — 2026-11-23
+
+- Ten everyday basics ported from Bach Bench, taking the collection to 79: Button, Icon button, Segmented, Select, Input, Combobox, Chip, Menu, Card and Stat. A new Basics category comes first in the sidebar.
+
 ## 0.24.0 — 2026-11-20
 
 - 20 new original components, taking the collection to 69: Pixel button, Pixel checkbox, Tag input, Pixel rating, Dial, Pixel calendar, Pixel canvas, Command menu, Crumbs, Pop menu, Hint, Dither dialog, Pixel spinner, Sparkline, Ring meter, Diff view, Split flap, Segment display, Binary rain and Pixel burst.
