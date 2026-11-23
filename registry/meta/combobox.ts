@@ -4,84 +4,48 @@ export const meta: ComponentMeta = {
   name: "Combobox",
   category: "basics",
   order: 6,
-  description: "Search a short list and choose a match. Accents do not get in the way.",
-  summary: "An editable WAI-ARIA combobox with accent-insensitive filtering, a listbox popup, keyboard selection and a clear action.",
-  keywords: [
-    "combobox",
-    "autocomplete",
-    "search",
-    "listbox",
-    "filter",
-    "Bach Bench"
-  ],
+  description: "Search a list of options and choose a match.",
+  summary: "An editable combobox with accent-insensitive filtering, a listbox, keyboard navigation and a clear action.",
+  keywords: ["combobox", "autocomplete", "search", "listbox", "filter"],
   since: "0.25.0",
   usage: `import { Combobox } from "@/components/wlkr/combobox"
 
-<Combobox aria-label="Composer" placeholder="Find a composer" options={[
-  { value: "bach", label: "Johann Sebastian Bach" },
-  { value: "faure", label: "Gabriel Fauré" },
+<Combobox aria-label="City" placeholder="Find a city" options={[
+  { value: "bogota", label: "Bogotá" },
+  { value: "montreal", label: "Montréal" },
 ]} onValueChange={value => console.log(value)} />`,
-  api: [
-    {
-      props: [
-        {
-          name: "options",
-          type: "ComboboxOption[]",
-          description: "Required choices: { value: string; label: string; disabled?: boolean }. Use unique, nonempty values."
-        },
-        {
-          name: "value",
-          type: "string",
-          description: "Controlled selected option value; an empty string clears selection."
-        },
-        {
-          name: "defaultValue",
-          type: "string",
-          default: "\"\"",
-          description: "Initial uncontrolled selected value."
-        },
-        {
-          name: "onValueChange",
-          type: "(value: string) => void",
-          description: "Called when an option is selected or cleared; typing only filters."
-        },
-        {
-          name: "size",
-          type: "\"sm\" | \"md\"",
-          default: "\"md\"",
-          description: "28 or 32px high."
-        },
-        {
-          name: "emptyMessage",
-          type: "string",
-          default: "\"No results\"",
-          description: "Text shown when there are no matches."
-        },
-        {
-          name: "clearLabel",
-          type: "string",
-          default: "\"Clear selection\"",
-          description: "Accessible name for the clear action."
-        },
-        {
-          name: "Native props and ref",
-          type: "React.ComponentProps<\"input\">",
-          description: "Native input props and ref pass through. className styles the wrapper."
-        }
-      ]
-    }
+  examples: [
+    { id: "default", title: "Default", description: "Use the 32px field for most searchable lists." },
+    { id: "xs", title: "Extra small", description: "Use the 24px field in dense rows." },
+    { id: "sm", title: "Small", description: "Use the 28px field beside small toolbar controls." },
+    { id: "lg", title: "Large", description: "Use the 36px field beside large controls." },
+    { id: "selected", title: "Selected", description: "Set a default when a likely choice is known and users can change or clear it." },
+    { id: "disabled", title: "Disabled", description: "Disable the field when the choice is unavailable." },
+    { id: "disabled-option", title: "Disabled option", description: "Disable an individual option when it should remain visible but cannot be selected." },
+    { id: "read-only", title: "Read-only", description: "Use a read-only field to show an existing choice while allowing its text to be copied." },
+    { id: "invalid", title: "Invalid", description: "Set `aria-invalid` when a required choice is missing or the selection needs correction." },
+    { id: "empty", title: "Empty results", description: "Provide an empty message that names what users were looking for when there are no matches." },
   ],
+  api: [{
+    props: [
+      { name: "options", type: "readonly ComboboxOption[]", description: "Choices with a unique, nonempty string value, a label and an optional disabled flag." },
+      { name: "value", type: "string", description: "Controlled selected option value. An empty string clears the selection." },
+      { name: "defaultValue", type: "string", default: "\"\"", description: "Initial uncontrolled selected option value." },
+      { name: "onValueChange", type: "(value: string) => void", description: "Called when the selection changes or is cleared. Typing filters the options." },
+      { name: "size", type: "\"xs\" | \"sm\" | \"default\" | \"lg\"", default: "\"default\"", description: "Field and option row height on the shared 24, 28, 32 and 36px control scale." },
+      { name: "emptyMessage", type: "string", default: "\"No results\"", description: "Message shown when there are no matches." },
+      { name: "clearLabel", type: "string", default: "\"Clear selection\"", description: "Accessible name for the clear action." },
+      { name: "Native props and ref", type: "React.ComponentProps<\"input\">", description: "Native input props and ref pass through. className styles the wrapper." },
+    ],
+  }],
   notes: [
-    "Supply aria-label, aria-labelledby or an external label. role=combobox exposes aria-expanded, aria-controls and aria-activedescendant while focus stays in the input.",
-    "Up and Down open and move through enabled matches; Home and End move to the ends while open. Enter selects, Escape discards the search, and Tab closes.",
-    "Filtering ignores case and combining accents. Leaving the field restores the selected label; unmatched text is not committed as a new option.",
-    "The popup fades and scales over 140ms; reduced motion removes that transition. Native name and form props target the search input, whose submitted value is the displayed label."
+    "Name the field with an external label, aria-label or aria-labelledby. Focus stays on the input while navigating options.",
+    "Up and Down open the list and move through enabled matches. Home and End move to the ends while open. Enter selects, Escape drops the search, and Tab closes the list.",
+    "Filtering ignores case and accents. Leaving the field restores the selected label.",
+    "The listbox follows the WLKR overlay pattern and respects reduced motion. Native form props target the input, which submits the displayed label.",
   ],
-  related: [
-    "input",
-    "select"
-  ],
-  dependencies: [
-    "lucide-react"
-  ]
+  related: ["input", "select"],
+  dependencies: ["lucide-react"],
+  registryDependencies: ["https://ui.wlkr.si/r/theme.json"],
+  system: true,
 }

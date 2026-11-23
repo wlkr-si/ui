@@ -149,7 +149,11 @@ export const motion: Token[] = [
 ]
 
 /** Everything with a single value, for the generator. */
-export const flat: Token[] = [...space, ...radius, ...type, ...control, ...elevation, ...motion, { name: "spectrum", value: spectrum }]
+export const flat: Token[] = [
+  ...space, ...radius, ...type, ...control, ...elevation, ...motion,
+  { name: "spectrum", value: spectrum },
+  { name: "color-scheme", value: { light: "light", dark: "dark" }, role: "The browser theme for native controls and pickers." },
+]
 
 /** shadcn/ui's own names, kept so stock shadcn components installed beside WLKR ones theme with them. */
 export const shadcnAliases: Record<string, string> = {
