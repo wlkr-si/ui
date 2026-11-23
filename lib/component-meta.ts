@@ -56,6 +56,8 @@ export type ComponentMeta = {
   stage?: "center" | "fill" | "plain"
   /** Position inside its category; lower comes first. Unset sorts after, by name. */
   order?: number
+  /** Built on the WLKR tokens. `pnpm lint` then rejects raw colours, sizes and timings in its CSS. See docs/design-system.md. */
+  system?: true
   /** False for pages whose registry item is maintained by hand (theme, typography) or that have none. */
   registry?: false
   /** What follows `shadcn@latest add` when it is not this component's own registry URL. */

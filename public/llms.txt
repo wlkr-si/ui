@@ -109,7 +109,7 @@ The CLI installs original source and pulls stock shadcn dependencies directly fr
 - [Pixel burst](/components/pixel-burst): A wrapper that throws a stepped burst of square ink and green pixels from the click point, or on demand through a ref. [Source JSON](/r/pixel-burst.json)
 - [Theme toggle](/components/theme-toggle): A basic shadcn Toggle that switches light and dark themes, follows the system until chosen and remembers the choice. [Source JSON](/r/theme-toggle.json)
 - [Footer controls](/components/footer-controls): Compact system, light and dark theme controls with a link to a real app-owned plain-text page for agents. [Source JSON](/r/footer-controls.json)
-- [WLKR theme](/components/theme): Semantic light and dark tokens. Typography stays with your application. [Source JSON](/r/theme.json)
+- [WLKR theme](/components/theme): The WLKR design tokens: neutral and brand primitives, semantic light and dark roles, and the control, type, space, radius, elevation and motion scales, with shadcn/ui aliases. [Source JSON](/r/theme.json)
 - [WLKR typography](/components/typography): Opt-in exact gallery typography and layout, with semantic legacy token bridges. [Source JSON](/r/typography.json)
 
 ## Documentation

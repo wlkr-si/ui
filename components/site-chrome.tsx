@@ -5,7 +5,7 @@ import { HeaderIdentity } from "@/components/header-mark"
 
 export function SiteHeader() { return <header className="site-header">
       <HeaderIdentity />
-      <nav className="header-nav" aria-label="Main navigation"><Link href="/components" prefetch={false}>Components</Link><Link href="/pixels" prefetch={false}>Pixels</Link><Link href="/contrast" prefetch={false}>Contrast</Link><Link href="/animation" prefetch={false}>Animation</Link><Link className="desktop-link" href="/installation" prefetch={false}>Get started</Link><a className="desktop-link" href="https://wlkr.si" target="_blank" rel="noreferrer">WLKR.SI</a></nav>
+      <nav className="header-nav" aria-label="Main navigation"><Link href="/components" prefetch={false}>Components</Link><Link href="/system" prefetch={false}>System</Link><Link href="/pixels" prefetch={false}>Pixels</Link><Link href="/contrast" prefetch={false}>Contrast</Link><Link href="/animation" prefetch={false}>Animation</Link><Link className="desktop-link" href="/installation" prefetch={false}>Get started</Link><a className="desktop-link" href="https://wlkr.si" target="_blank" rel="noreferrer">WLKR.SI</a></nav>
     </header> }
 
 export function SiteFooter() { return <footer className="site-footer"><a className="studio-family-badge" href="https://wlkr.si" aria-label="Part of WLKR.SI"><Image className="studio-family-badge-light" src="/brand/part-of-wlkr-si-light.svg" alt="" width={184} height={32} /><Image className="studio-family-badge-dark" src="/brand/part-of-wlkr-si-dark.svg" alt="" width={184} height={32} /></a><div><a href="/registry.json">Registry</a><Link href="/installation" prefetch={false}>Installation</Link><FooterControls agentHref="/llms.txt" /></div></footer> }

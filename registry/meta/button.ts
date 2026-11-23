@@ -45,4 +45,6 @@ export const meta: ComponentMeta = {
   ],
   related: ["icon-button", "menu", "segmented"],
   dependencies: ["radix-ui"],
+  registryDependencies: ["https://ui.wlkr.si/r/theme.json"],
+  system: true,
 }

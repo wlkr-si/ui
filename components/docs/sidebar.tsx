@@ -11,6 +11,7 @@ export type SidebarGroup = { id: string; name: string; items: { slug: string; na
 const pages = [
   { href: "/", label: "Introduction" },
   { href: "/installation", label: "Installation" },
+  { href: "/system", label: "System" },
   { href: "/components", label: "All components" },
 ]
 

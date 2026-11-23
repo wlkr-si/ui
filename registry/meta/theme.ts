@@ -3,58 +3,60 @@ import type { ComponentMeta } from "@/lib/component-meta"
 export const meta: ComponentMeta = {
   name: "Theme",
   category: "system",
-  description: "A common language for what comes next. Semantic color, considered type, and space to think.",
-  summary: "Semantic light and dark colour tokens for shadcn/ui projects, with the WLKR green brand accent. Typography stays with your app.",
-  keywords: ["theme", "foundations", "tokens", "colors", "colours", "dark", "light", "css variables", "brand", "design"],
+  description: "The design tokens every WLKR component reads: a neutral and brand palette, colour roles for light and dark, and one scale for type, space, radius, elevation, motion and controls.",
+  summary: "Two-layer design tokens for shadcn/ui projects: raw palette primitives, semantic light and dark roles, and shared control, type, space, radius, elevation and motion scales, with shadcn aliases.",
+  keywords: ["theme", "tokens", "design tokens", "foundations", "colors", "colours", "dark", "light", "css variables", "brand", "semantic", "scale"],
   since: "0.1.0",
   order: 40,
   registry: false,
   install: "https://ui.wlkr.si/r/theme.json",
-  source: null,
+  source: "registry/wlkr/tokens.css",
   origin: "WLKR system",
-  usage: `// Dark mode is one class on the document root.
-document.documentElement.classList.toggle("dark")
+  usage: `/* Components and your own CSS use the roles, never raw values. */
+.panel {
+  background: var(--wlkr-surface-raised);
+  color: var(--wlkr-content-primary);
+  border: var(--wlkr-control-border) solid var(--wlkr-border-default);
+  border-radius: var(--wlkr-radius-xl);
+  padding: var(--wlkr-space-4);
+}
 
-// Use tokens through Tailwind…
-<p className="bg-background text-muted-foreground">Supporting text</p>
-<span className="text-success">Saved</span>
+// Tailwind classes map to the same roles.
+<p className="bg-surface-raised text-content-secondary">Supporting text</p>
 
-// …or directly as CSS variables.
-<i style={{ background: "var(--brand)", color: "var(--brand-foreground)" }} />`,
+// Dark mode is one class on the document root.
+document.documentElement.classList.toggle("dark")`,
   api: [{
-    title: "Tokens",
+    title: "Colour roles",
     columns: { name: "Token", type: "Light → dark" },
     props: [
-      { name: "--background", type: "#ffffff → #010101", description: "The page canvas." },
-      { name: "--foreground", type: "#010101 → #f7f7f7", description: "Primary text and icons." },
-      { name: "--card", type: "#ffffff → #010101", description: "Card surfaces." },
-      { name: "--card-foreground", type: "#010101 → #f7f7f7", description: "Text on cards." },
-      { name: "--popover", type: "#ffffff → #161616", description: "Popovers, menus and hover cards." },
-      { name: "--popover-foreground", type: "#010101 → #f7f7f7", description: "Text on popovers." },
-      { name: "--primary", type: "#010101 → #f7f7f7", description: "The primary action." },
-      { name: "--primary-foreground", type: "#ffffff → #010101", description: "Text on the primary action." },
-      { name: "--secondary", type: "#f3f3f3 → #191919", description: "Secondary actions." },
-      { name: "--secondary-foreground", type: "#010101 → #f7f7f7", description: "Text on secondary actions." },
-      { name: "--muted", type: "#f3f3f3 → #191919", description: "A quiet surface. Not a text colour." },
-      { name: "--muted-foreground", type: "#696969 → #a0a0a0", description: "Supporting text." },
-      { name: "--accent", type: "#f3f3f3 → #191919", description: "Hover and selected surfaces." },
-      { name: "--accent-foreground", type: "#010101 → #f7f7f7", description: "Text on accent surfaces." },
-      { name: "--border", type: "#dedede → #343434", description: "Hairlines and outlines." },
-      { name: "--input", type: "#dedede → #343434", description: "Input outlines." },
-      { name: "--ring", type: "#087d3d → #33f282", description: "Keyboard focus." },
-      { name: "--success", type: "#087d3d → #33f282", description: "Successful completion." },
-      { name: "--destructive", type: "#b42318 → #ff938a", description: "Failure and destructive actions." },
-      { name: "--brand", type: "#33f282 → #33f282", description: "WLKR green, for a useful moment." },
-      { name: "--brand-foreground", type: "#010101 → #010101", description: "Text on WLKR green." },
-      { name: "--radius", type: ".375rem", description: "Base corner radius. The same in both themes." },
+      { name: "--wlkr-surface-page", type: "gray-0 → gray-1000", description: "The page canvas. Also raised, sunken and overlay surfaces." },
+      { name: "--wlkr-content-primary", type: "gray-1000 → gray-25", description: "Text and icons. Also secondary, tertiary and inverse." },
+      { name: "--wlkr-border-default", type: "gray-200 → gray-800", description: "Outlines. Also subtle and strong." },
+      { name: "--wlkr-fill-hover", type: "content-primary at 7%", description: "Washes that tint any surface. Also subtle, active and secondary." },
+      { name: "--wlkr-action-primary", type: "gray-1000 → gray-25", description: "The primary action, with hover and ink." },
+      { name: "--wlkr-brand", type: "green-400", description: "WLKR green, for the one accent." },
+      { name: "--wlkr-focus-ring", type: "green-700 → green-400", description: "Keyboard focus." },
+      { name: "--wlkr-danger", type: "red-700 → red-300", description: "Errors and destructive actions, with subtle washes." },
+    ],
+  }, {
+    title: "Scales",
+    columns: { name: "Token", type: "Values" },
+    props: [
+      { name: "--wlkr-control-h-*", type: "24 · 28 · 32 · 36px", description: "Control heights for xs, sm, md and lg, with matching padding, text, icon and gap tokens." },
+      { name: "--wlkr-space-*", type: "2 to 80px", description: "A 4px grid with half steps." },
+      { name: "--wlkr-text-*", type: "11 to 64px", description: "The type scale." },
+      { name: "--wlkr-radius-*", type: "4 · 5 · 6 · 8 · 12 · full", description: "Corners by role." },
+      { name: "--wlkr-shadow-*", type: "raised · overlay · dialog", description: "Elevation, per theme." },
+      { name: "--wlkr-duration-* / --wlkr-ease-*", type: "90 to 460ms", description: "Motion." },
     ],
   }],
   notes: [
-    "Apply .dark to the document root for dark mode; Theme toggle and Footer controls do this for you.",
-    "The theme sets colour only and leaves your app's typography alone.",
-    "Installing merges these variables into your stylesheet. Review and merge your existing tokens before applying it.",
+    "The full set, rendered live in both themes, is on the System page at /system.",
+    "Apply .dark to the document root for dark mode. A .wlkr-light or .wlkr-dark class forces one theme inside a panel.",
+    "shadcn/ui's own names (background, foreground, muted, border, ring…) stay as aliases of these roles, so stock shadcn components match.",
+    "Every WLKR component built on the system installs this theme with it.",
     "Green marks a useful moment. It never carries the message alone, so pair it with words or an icon.",
-    "It also maps brand, brand-foreground and success into Tailwind, so classes like text-success work.",
   ],
   related: ["typography", "theme-toggle", "primitives"],
 }
