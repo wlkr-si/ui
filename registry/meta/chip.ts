@@ -16,7 +16,6 @@ export const meta: ComponentMeta = {
     "Bach Bench"
   ],
   since: "0.25.0",
-  origin: "Bach Bench",
   usage: `import { Chip } from "@/components/wlkr/chip"
 
 <Chip swatch="var(--brand)" defaultPressed={true}>Piano</Chip>

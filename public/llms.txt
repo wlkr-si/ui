@@ -30,7 +30,7 @@ The CLI installs original source and pulls stock shadcn dependencies directly fr
 
 ## Components and styles
 
-- [Button](/components/button): A Bach Bench button with four variants, three sizes, width-preserving loading and an optional animated spectrum rim. [Source JSON](/r/button.json)
+- [Button](/components/button): A button with six variants, four sizes and matching square icon sizes, width-preserving loading, aria-pressed toggling, asChild links and an optional animated spectrum rim. [Source JSON](/r/button.json)
 - [Icon button](/components/icon-button): A round icon-only button with glass, plain and outline variants, three sizes and a brand-coloured pressed indicator. [Source JSON](/r/icon-button.json)
 - [Segmented](/components/segmented): A controlled or uncontrolled radiogroup with roving focus, optional prefix label and compact Bach Bench styling. [Source JSON](/r/segmented.json)
 - [Select](/components/select): A native select with an optional prefix label, chevron, two sizes and a wrapper focus ring. [Source JSON](/r/select.json)

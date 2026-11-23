@@ -16,7 +16,6 @@ export const meta: ComponentMeta = {
     "Bach Bench"
   ],
   since: "0.25.0",
-  origin: "Bach Bench",
   usage: `import { Stat, Stats } from "@/components/wlkr/stat"
 
 <Stats>
