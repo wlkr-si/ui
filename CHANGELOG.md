@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.28.0 — 2026-11-23
+
+- All ten basics are on the design system: Button, Icon button, Segmented, Select, Input, Combobox, Chip, Menu, Card and Stat use only WLKR tokens, pass the token lint, install the theme with them, and each has per-variant examples and a board on /system.
+- Every control shares one scale. A Button, Input, Select, Segmented, Combobox and Menu trigger of the same size are the same height, with the same padding, text, radius and focus ring. Size names follow Button: `xs`, `sm`, `default` and `lg`.
+- Two shared patterns are documented in docs/design-system.md: the overlay pattern (Combobox and Menu popups, later popovers, tooltips and dialogs) and the surface pattern (Card, Stat and other raised containers).
+- A `color-scheme` token keeps native controls in step with light and dark.
+- Unpressed chips use secondary text, which meets the 4.5:1 contrast target.
+- The theme and Button were proven to install into a fresh Next.js and shadcn project.
+
 ## 0.27.0 — 2026-11-23
 
 - Design tokens. `lib/tokens.ts` is now the only place a colour, size, space, radius, shadow or timing is written. Primitives (a neutral gray ramp, green, red and amber) sit under semantic roles for surface, content, border, fill, action, brand and status that switch between light and dark on their own. One control scale (24, 28, 32 and 36px, with matching padding, text, icon and gap) is shared by every control. shadcn/ui's own variable names stay as aliases.

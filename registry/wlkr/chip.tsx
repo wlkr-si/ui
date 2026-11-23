@@ -82,7 +82,7 @@ button.wlkr-chip {
     transform var(--wlkr-duration-fast) var(--wlkr-ease-out);
 }
 
-.wlkr-chip[aria-pressed=false] { color: var(--wlkr-content-tertiary); }
+.wlkr-chip[aria-pressed=false] { color: var(--wlkr-content-secondary); }
 .wlkr-chip[aria-pressed=true] {
   border-color: var(--wlkr-border-strong);
   background: var(--wlkr-fill-active);
