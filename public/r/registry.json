@@ -106,8 +106,11 @@
       "name": "chip",
       "type": "registry:component",
       "title": "Chip",
-      "description": "A pill toggle with controlled or uncontrolled pressed state, optional colour swatch or icon, and a static span variant.",
+      "description": "A small pill toggle or static legend label with an optional leading colour swatch or icon.",
       "author": "WLKR Labs",
+      "registryDependencies": [
+        "https://ui.wlkr.si/r/theme.json"
+      ],
       "files": [
         {
           "path": "registry/wlkr/chip.tsx",

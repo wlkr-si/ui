@@ -13,7 +13,16 @@ import e9 from "@/components/examples/button/loading"
 import e10 from "@/components/examples/button/pressed"
 import e11 from "@/components/examples/button/glow"
 import e12 from "@/components/examples/button/as-child"
+import e13 from "@/components/examples/chip/pressed"
+import e14 from "@/components/examples/chip/unpressed"
+import e15 from "@/components/examples/chip/xs"
+import e16 from "@/components/examples/chip/sm"
+import e17 from "@/components/examples/chip/static"
+import e18 from "@/components/examples/chip/swatch"
+import e19 from "@/components/examples/chip/icon"
+import e20 from "@/components/examples/chip/disabled"
 
 export const examples: Record<string, Record<string, ComponentType>> = {
   "button": { "default": e0, "secondary": e1, "outline": e2, "ghost": e3, "destructive": e4, "link": e5, "sizes": e6, "icon": e7, "with-icon": e8, "loading": e9, "pressed": e10, "glow": e11, "as-child": e12 },
+  "chip": { "pressed": e13, "unpressed": e14, "xs": e15, "sm": e16, "static": e17, "swatch": e18, "icon": e19, "disabled": e20 },
 }
