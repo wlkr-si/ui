@@ -15,7 +15,6 @@ export const meta: ComponentMeta = {
     "Bach Bench"
   ],
   since: "0.25.0",
-  origin: "Bach Bench",
   usage: `import { Combobox } from "@/components/wlkr/combobox"
 
 <Combobox aria-label="Composer" placeholder="Find a composer" options={[

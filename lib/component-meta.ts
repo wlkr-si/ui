@@ -39,6 +39,9 @@ export type ComponentMeta = {
   usage: string
   /** One table per exported component (most have one; leave `title` off then). */
   api: { title?: string; props: PropRow[]; /** Column headings when the rows are not props, e.g. { name: "Class", type: "Kind" }. */ columns?: { name?: string; type?: string } }[]
+  /** Focused examples, one per section. Each lives at `components/examples/<slug>/<id>.tsx` with a default export;
+   *  the page shows it live beside its own source. */
+  examples?: { id: string; title: string; description: string; stage?: "center" | "fill" }[]
   /** Behaviour worth knowing: keyboard, reduced motion, limits, accessibility. Plain sentences. */
   notes: string[]
   /** npm packages the component imports (besides react). */

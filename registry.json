@@ -7,7 +7,7 @@
       "name": "button",
       "type": "registry:component",
       "title": "Button",
-      "description": "A Bach Bench button with four variants, three sizes, width-preserving loading and an optional animated spectrum rim.",
+      "description": "A button with six variants, four sizes and matching square icon sizes, width-preserving loading, aria-pressed toggling, asChild links and an optional animated spectrum rim.",
       "author": "WLKR Labs",
       "dependencies": [
         "radix-ui"

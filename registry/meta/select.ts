@@ -15,7 +15,6 @@ export const meta: ComponentMeta = {
     "Bach Bench"
   ],
   since: "0.25.0",
-  origin: "Bach Bench",
   usage: `import { Select } from "@/components/wlkr/select"
 
 <Select label="Sort" aria-label="Sort recordings" defaultValue="recent">

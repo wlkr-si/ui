@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.26.0 — 2026-11-23
+
+- Component pages are rebuilt around examples. The top preview and every example sit in a framed Preview / Code switch, and a component can list focused examples, each in its own section with a sentence on when to use it and the exact code shown. Previous and next arrows sit beside the title, and long union types in the API table wrap between options instead of running off the page.
+- Button now has six variants (default, secondary, outline, ghost, destructive, link) and four sizes (xs, sm, default, lg), each with a square icon twin (icon-xs, icon-sm, icon, icon-lg). Destructive is a soft red tint, loading keeps the variant's own colour, and disabled fades the real button. `solid` is now `default`, `quiet` is now `ghost` and `md` is now `default`.
+
 ## 0.25.0 — 2026-11-23
 
 - Ten everyday basics ported from Bach Bench, taking the collection to 79: Button, Icon button, Segmented, Select, Input, Combobox, Chip, Menu, Card and Stat. A new Basics category comes first in the sidebar.

@@ -15,7 +15,6 @@ export const meta: ComponentMeta = {
     "Bach Bench"
   ],
   since: "0.25.0",
-  origin: "Bach Bench",
   usage: `import { Menu } from "@/components/wlkr/menu"
 
 <Menu align="end" items={[

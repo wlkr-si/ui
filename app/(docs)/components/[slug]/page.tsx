@@ -1,19 +1,33 @@
 import { readFile } from "node:fs/promises"
+import * as React from "react"
 import type { Metadata } from "next"
 import Link from "next/link"
 import { notFound } from "next/navigation"
 import { ArrowLeft, ArrowRight } from "lucide-react"
 import { getCatalog, installTarget, latestVersion, REPOSITORY, SITE } from "@/lib/catalog"
 import { demos } from "@/lib/catalog-demos"
+import { examples } from "@/lib/catalog-examples"
 import { categories } from "@/lib/component-meta"
 import { highlightCode } from "@/lib/highlight-code"
 import { CodePanel } from "@/components/code-panel"
 import { SourcePanel } from "@/components/docs/source-panel"
 import { InstallCommand } from "@/components/docs/install-command"
-import { Stage } from "@/components/docs/stage"
+import { Preview } from "@/components/docs/preview"
 import { ScrollSpy } from "@/registry/wlkr/scroll-spy"
 
 type Props = { params: Promise<{ slug: string }> }
+
+/** Shows a repo file the way it reads once installed: registry imports point at the installed components. */
+async function exampleSource(path: string) {
+  const code = (await readFile(`${process.cwd()}/${path}`, "utf8")).replaceAll("@/registry/wlkr/", "@/components/wlkr/").trimEnd()
+  return { code, markup: await highlightCode(code, "tsx") }
+}
+
+/** Union types wrap between options, never inside one. */
+function typeLabel(type: string) {
+  const parts = type.split(" | ")
+  return parts.map((part, index) => <React.Fragment key={index}><span className="doc-type-part">{part}{index < parts.length - 1 && " |"}</span>{index < parts.length - 1 && " "}</React.Fragment>)
+}
 
 /** Catalog prose may mark code with backticks. */
 function rich(text: string) {
@@ -55,11 +69,14 @@ export default async function ComponentPage({ params }: Props) {
   const source = sourcePath ? await readFile(`${process.cwd()}/${sourcePath}`, "utf8") : null
   const [usageMarkup, sourceMarkup, fresh] = await Promise.all([highlightCode(entry.usage, "tsx"), source ? highlightCode(source, language) : null, latestVersion()])
   const Demo = demos[slug]
+  const hero = await exampleSource(`components/demos/${slug}-demo.tsx`)
+  const exampleList = await Promise.all((entry.examples ?? []).map(async example => ({ ...example, Component: examples[slug][example.id], ...(await exampleSource(`components/examples/${slug}/${example.id}.tsx`)) })))
   const target = installTarget(entry)
   const related = (entry.related ?? []).map(name => catalog.find(item => item.slug === name)).filter(item => item !== undefined)
   const sections = [
     { id: "installation", label: "Installation" },
     { id: "usage", label: "Usage" },
+    ...(exampleList.length ? [{ id: "examples", label: "Examples" }] : []),
     ...(entry.api.some(table => table.props.length) ? [{ id: "api", label: "API" }] : []),
     ...(entry.notes.length ? [{ id: "behaviour", label: "Behaviour" }] : []),
     ...(source ? [{ id: "source", label: "Source" }] : []),
@@ -68,12 +85,18 @@ export default async function ComponentPage({ params }: Props) {
   return <div className="doc">
     <article className="doc-article">
       <header className="doc-head">
-        <p className="doc-eyebrow"><Link href={`/components#${entry.category}`} prefetch={false}>{category?.name}</Link><span>{entry.origin ?? "WLKR original"}</span>{entry.since === fresh && <span className="docs-new">New</span>}</p>
+        <div className="doc-head-row">
+          <p className="doc-eyebrow"><Link href={`/components#${entry.category}`} prefetch={false}>{category?.name}</Link>{entry.origin && <span>{entry.origin}</span>}{entry.since === fresh && <span className="docs-new">New</span>}</p>
+          <nav className="doc-head-pager" aria-label="Previous and next component">
+            {previous ? <Link href={`/components/${previous.slug}`} prefetch={false} aria-label={`Previous: ${previous.name}`}><ArrowLeft aria-hidden="true" /></Link> : <span />}
+            {next ? <Link href={`/components/${next.slug}`} prefetch={false} aria-label={`Next: ${next.name}`}><ArrowRight aria-hidden="true" /></Link> : <span />}
+          </nav>
+        </div>
         <h1>{entry.name}</h1>
         <p className="doc-lede">{entry.description}</p>
       </header>
 
-      <Stage variant={entry.stage} label={entry.name}><Demo /></Stage>
+      <div className="doc-hero"><Preview variant={entry.stage} label={entry.name} code={hero.code} highlightedCode={hero.markup}><Demo /></Preview></div>
 
       <section id="installation" aria-labelledby="installation-title">
         <h2 id="installation-title">Installation</h2>
@@ -85,6 +108,15 @@ export default async function ComponentPage({ params }: Props) {
         <CodePanel code={entry.usage} highlightedCode={usageMarkup} filename={`${slug}-example.tsx`} language="tsx" />
       </section>
 
+      {exampleList.length > 0 && <section id="examples" aria-labelledby="examples-title">
+        <h2 id="examples-title">Examples</h2>
+        {exampleList.map(({ id, title, description, stage, Component, code, markup }) => <div key={id} id={`example-${id}`} className="doc-example">
+          <h3>{title}</h3>
+          <p>{rich(description)}</p>
+          <Preview fit variant={stage} label={`${entry.name}: ${title}`} code={code} highlightedCode={markup}><Component /></Preview>
+        </div>)}
+      </section>}
+
       {sections.some(section => section.id === "api") && <section id="api" aria-labelledby="api-title">
         <h2 id="api-title">API</h2>
         {entry.api.map((table, tableIndex) => <div key={tableIndex} className="doc-api">
@@ -94,7 +126,7 @@ export default async function ComponentPage({ params }: Props) {
               <thead><tr><th scope="col">{table.columns?.name ?? "Prop"}</th><th scope="col">{table.columns?.type ?? "Type"}</th>{table.props.some(prop => prop.default) && <th scope="col">Default</th>}<th scope="col">Description</th></tr></thead>
               <tbody>{table.props.map(prop => <tr key={prop.name}>
                 <th scope="row"><code>{prop.name}</code></th>
-                <td><code>{prop.type}</code></td>
+                <td><code>{typeLabel(prop.type)}</code></td>
                 {table.props.some(row => row.default) && <td>{prop.default && <code>{prop.default}</code>}</td>}
                 <td>{rich(prop.description)}</td>
               </tr>)}</tbody>
