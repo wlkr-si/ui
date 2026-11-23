@@ -34,6 +34,10 @@ const examples = entries.flatMap(entry => (entry.examples ?? []).map(example => 
 for (const { slug, id } of examples) await readFile(`components/examples/${slug}/${id}.tsx`).catch(() => { throw new Error(`registry/meta/${slug}.ts lists example "${id}" but components/examples/${slug}/${id}.tsx is missing.`) })
 await writeFile("lib/catalog-examples.ts", `${banner}import type { ComponentType } from "react"\n${examples.map(({ slug, id }, index) => `import e${index} from "@/components/examples/${slug}/${id}"`).join("\n")}\n\nexport const examples: Record<string, Record<string, ComponentType>> = {\n${[...new Set(examples.map(example => example.slug))].map(slug => `  "${slug}": { ${examples.map((example, index) => [example, index]).filter(([example]) => example.slug === slug).map(([example, index]) => `"${example.id}": e${index}`).join(", ")} },`).join("\n")}\n}\n`)
 
+// System page boards: components/system-boards/<slug>.tsx shows a system component's variants and sizes together.
+const boardSlugs = (await readdir("components/system-boards")).filter(file => file.endsWith(".tsx")).map(file => file.slice(0, -4)).sort()
+await writeFile("lib/system-boards.ts", `${banner}import type { ComponentType } from "react"\n${boardSlugs.map((slug, index) => `import b${index} from "@/components/system-boards/${slug}"`).join("\n")}\n\nexport const boards: Record<string, ComponentType> = {\n${boardSlugs.map((slug, index) => `  "${slug}": b${index},`).join("\n")}\n}\n`)
+
 registry.items = [...generated, ...kept]
 await writeFile("registry.json", JSON.stringify(registry, null, 2) + "\n")
 console.log(`registry.json: ${generated.length} components from the catalog, ${kept.length} kept as written.`)
