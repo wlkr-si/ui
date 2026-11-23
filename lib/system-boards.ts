@@ -6,9 +6,10 @@ import b2 from "@/components/system-boards/chip"
 import b3 from "@/components/system-boards/combobox"
 import b4 from "@/components/system-boards/icon-button"
 import b5 from "@/components/system-boards/input"
-import b6 from "@/components/system-boards/segmented"
-import b7 from "@/components/system-boards/select"
-import b8 from "@/components/system-boards/stat"
+import b6 from "@/components/system-boards/menu"
+import b7 from "@/components/system-boards/segmented"
+import b8 from "@/components/system-boards/select"
+import b9 from "@/components/system-boards/stat"
 
 export const boards: Record<string, ComponentType> = {
   "button": b0,
@@ -17,7 +18,8 @@ export const boards: Record<string, ComponentType> = {
   "combobox": b3,
   "icon-button": b4,
   "input": b5,
-  "segmented": b6,
-  "select": b7,
-  "stat": b8,
+  "menu": b6,
+  "segmented": b7,
+  "select": b8,
+  "stat": b9,
 }

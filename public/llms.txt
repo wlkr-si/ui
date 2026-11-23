@@ -37,7 +37,7 @@ The CLI installs original source and pulls stock shadcn dependencies directly fr
 - [Input](/components/input): A text field with four control sizes, an optional leading icon and clear action, and focus, invalid and disabled states. [Source JSON](/r/input.json)
 - [Combobox](/components/combobox): An editable combobox with accent-insensitive filtering, a listbox, keyboard navigation and a clear action. [Source JSON](/r/combobox.json)
 - [Chip](/components/chip): A small pill toggle or static legend label with an optional leading colour swatch or icon. [Source JSON](/r/chip.json)
-- [Menu](/components/menu): A menu button with a Bach Bench popover, arrow navigation, typeahead, separators, disabled actions and focus return. [Source JSON](/r/menu.json)
+- [Menu](/components/menu): An accessible menu button with keyboard navigation, typeahead, icons, separators and disabled actions. [Source JSON](/r/menu.json)
 - [Card](/components/card): A raised panel with composable slots for a heading, tools, content and a footer. [Source JSON](/r/card.json)
 - [Stat](/components/stat): A metric tile with a monospaced value and an optional note, alongside a responsive Stats grid. [Source JSON](/r/stat.json)
 - [Copy command](/components/copy-command): A copyable command with honest clipboard feedback and a manual fallback. [Source JSON](/r/copy-command.json)
