@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.26.4 — 2026-11-23
+
+- Liquid tabs no longer show a bump on the selected pill's edge. The thin neck that joins the drop mid-travel now stops short of the drop's ends, so the goo filter can't swell it past the resting shape.
+
 ## 0.26.3 — 2026-11-23
 
 - Large buttons are 36px tall with 12px side padding, one step above default instead of a jump. The scale is now 24, 28, 32 and 36px tall with 8, 10, 12 and 12px padding, and every size keeps the 6px radius (5px at xs).
