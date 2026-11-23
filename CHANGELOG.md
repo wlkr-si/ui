@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.26.2 — 2026-11-23
+
+- Button spacing follows one scale: side padding grows 8, 12, 14 and 24px across xs, sm, default and lg, and large buttons and their icon twins round to 8px. Large keeps 14px text and 16px icons. A leading icon trims the padding on its side.
+
 ## 0.26.1 — 2026-11-23
 
 - The basics now use the page's own font instead of falling back to Arial in projects that don't expose `--font-sans`.

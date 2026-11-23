@@ -19,16 +19,17 @@ export type ButtonProps = React.ComponentProps<"button"> & {
 }
 
 const styles = `
-.wlkr-button{--wlkr-button-fill:var(--foreground,#010101);--wlkr-button-ink:var(--background,#fff);--wlkr-button-line:transparent;--wlkr-button-h:32px;--wlkr-button-px:12px;--wlkr-button-icon:16px;--wlkr-button-spectrum:linear-gradient(90deg,#ff6d1b,#ffee55,#5bff89,#4d8aff,#6b5fff,#ff64f9,#ff6565,#ff6d1b);box-sizing:border-box;position:relative;display:inline-flex;flex:none;align-items:center;justify-content:center;gap:6px;max-width:100%;height:var(--wlkr-button-h);padding:0 var(--wlkr-button-px);border:1px solid var(--wlkr-button-line);border-radius:6px;background:var(--wlkr-button-fill);color:var(--wlkr-button-ink);font-family:inherit;font-weight:500;font-size:14px;line-height:1;letter-spacing:-.006em;white-space:nowrap;text-decoration:none;cursor:pointer;-webkit-tap-highlight-color:transparent;will-change:transform;backface-visibility:hidden;transition:color 120ms ease,border-color 120ms ease,background-color 120ms ease,transform 120ms cubic-bezier(.23,1,.32,1)}
+.wlkr-button{--wlkr-button-fill:var(--foreground,#010101);--wlkr-button-ink:var(--background,#fff);--wlkr-button-line:transparent;--wlkr-button-h:32px;--wlkr-button-px:14px;--wlkr-button-icon:16px;--wlkr-button-spectrum:linear-gradient(90deg,#ff6d1b,#ffee55,#5bff89,#4d8aff,#6b5fff,#ff64f9,#ff6565,#ff6d1b);box-sizing:border-box;position:relative;display:inline-flex;flex:none;align-items:center;justify-content:center;gap:6px;max-width:100%;height:var(--wlkr-button-h);padding:0 var(--wlkr-button-px);border:1px solid var(--wlkr-button-line);border-radius:6px;background:var(--wlkr-button-fill);color:var(--wlkr-button-ink);font-family:inherit;font-weight:500;font-size:14px;line-height:1;letter-spacing:-.006em;white-space:nowrap;text-decoration:none;cursor:pointer;-webkit-tap-highlight-color:transparent;will-change:transform;backface-visibility:hidden;transition:color 120ms ease,border-color 120ms ease,background-color 120ms ease,transform 120ms cubic-bezier(.23,1,.32,1)}
 .wlkr-button-label{display:inline-flex;align-items:center;justify-content:center;gap:inherit;min-width:0;overflow:hidden;text-overflow:ellipsis}
 .wlkr-button svg{flex:none;width:var(--wlkr-button-icon);height:var(--wlkr-button-icon)}
 .wlkr-button[data-size=xs]{--wlkr-button-h:24px;--wlkr-button-px:8px;--wlkr-button-icon:12px;gap:4px;font-size:12px;border-radius:5px}
-.wlkr-button[data-size=sm]{--wlkr-button-h:28px;--wlkr-button-px:10px;--wlkr-button-icon:14px;gap:5px;font-size:13px}
-.wlkr-button[data-size=lg]{--wlkr-button-h:40px;--wlkr-button-px:16px;--wlkr-button-icon:18px;gap:8px;font-size:15px}
+.wlkr-button[data-size=sm]{--wlkr-button-h:28px;--wlkr-button-px:12px;--wlkr-button-icon:14px;gap:5px;font-size:13px}
+.wlkr-button[data-size=lg]{--wlkr-button-h:40px;--wlkr-button-px:24px;gap:8px;border-radius:8px}
+.wlkr-button:not([data-size^=icon]):has(>.wlkr-button-label>svg:first-child){padding-left:calc(var(--wlkr-button-px) * .75)}
 .wlkr-button[data-size^=icon]{width:var(--wlkr-button-h);min-width:var(--wlkr-button-h);padding:0}
 .wlkr-button[data-size=icon-xs]{--wlkr-button-h:24px;--wlkr-button-icon:12px;border-radius:5px}
 .wlkr-button[data-size=icon-sm]{--wlkr-button-h:28px;--wlkr-button-icon:14px}
-.wlkr-button[data-size=icon-lg]{--wlkr-button-h:40px;--wlkr-button-icon:18px}
+.wlkr-button[data-size=icon-lg]{--wlkr-button-h:40px;border-radius:8px}
 .wlkr-button[data-variant=secondary]{--wlkr-button-fill:var(--secondary,#f3f3f3);--wlkr-button-ink:var(--secondary-foreground,#010101)}
 .wlkr-button[data-variant=outline]{--wlkr-button-fill:var(--background,#fff);--wlkr-button-ink:var(--foreground,#010101);--wlkr-button-line:var(--border,#dedede)}
 .wlkr-button[data-variant=outline][aria-pressed=true]{--wlkr-button-fill:var(--accent,#f3f3f3);--wlkr-button-line:color-mix(in srgb,var(--border,#dedede),var(--foreground,#010101) 18%)}

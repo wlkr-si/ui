@@ -18,7 +18,7 @@ export const meta: ComponentMeta = {
     { id: "ghost", title: "Ghost", description: "Only its label until the pointer is over it. Suits repeated, low-stakes actions in a toolbar or a table row." },
     { id: "destructive", title: "Destructive", description: "A red tint for delete, remove and revoke. Put it on the button that confirms the loss, not the one that opens the dialog." },
     { id: "link", title: "Link", description: "Text that underlines on hover and still runs an action. For navigation, render a real link with `asChild` instead." },
-    { id: "sizes", title: "Sizes", description: "`xs`, `sm`, `default` and `lg` are 24, 28, 32 and 40px tall with 12, 13, 14 and 15px text. Each has a square `icon-*` twin of the same height, so text and icon buttons line up." },
+    { id: "sizes", title: "Sizes", description: "`xs`, `sm`, `default` and `lg` are 24, 28, 32 and 40px tall, with side padding that grows from 8 to 24px. Each has a square `icon-*` twin of the same height, so text and icon buttons line up." },
     { id: "icon", title: "Icon", description: "A square button with only an icon. Hide the icon from screen readers and name the button with `aria-label`." },
     { id: "with-icon", title: "With icon", description: "Put the icon before the label. Spacing and icon size follow the button size." },
     { id: "loading", title: "Loading", description: "`loading` swaps the label for a spinner without changing the width, sets `aria-busy` and ignores presses until it finishes. Press it to see." },
