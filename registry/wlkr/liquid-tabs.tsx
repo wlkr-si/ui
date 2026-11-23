@@ -49,6 +49,9 @@ const styles = `
 @media(prefers-reduced-motion:reduce){.wlkr-liquid-tabs .wlkr-liquid-tabs-blob>span,.wlkr-liquid-tabs .wlkr-liquid-tabs-option{transition:none!important}}
 `
 
+// The neck stops short of the drop's ends; flush with them, the goo filter swells it into a bump on the resting edge.
+const NECK_INSET = 6
+
 const sameLayout = (a: Layout, b: Layout) => a.width === b.width && a.slots.length === b.slots.length && a.slots.every((slot, index) => slot[0] === b.slots[index][0] && slot[1] === b.slots[index][1])
 
 /** A segmented control whose selection is a drop of ink: it stretches toward the new option, necks, snaps across and settles. */
@@ -152,7 +155,7 @@ export function LiquidTabs({ items, value, onValueChange, defaultValue, label, t
         </svg>
         <span className="wlkr-liquid-tabs-blob" aria-hidden="true" style={{ filter: `url(#${filter})` }}>
           <span className="wlkr-liquid-tabs-tail" style={block} />
-          <span className="wlkr-liquid-tabs-neck" style={{ left: x, right: Math.max(0, (layout?.width ?? 0) - x - width) }} />
+          <span className="wlkr-liquid-tabs-neck" style={{ left: x + NECK_INSET, right: Math.max(0, (layout?.width ?? 0) - x - width) + NECK_INSET }} />
           <span className="wlkr-liquid-tabs-head" style={block} />
         </span>
         {items.map((item, index) => (
