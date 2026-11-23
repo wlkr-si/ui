@@ -22,8 +22,36 @@ import e18 from "@/components/examples/icon-button/size-default"
 import e19 from "@/components/examples/icon-button/size-lg"
 import e20 from "@/components/examples/icon-button/pressed"
 import e21 from "@/components/examples/icon-button/disabled"
+import e22 from "@/components/examples/select/default"
+import e23 from "@/components/examples/select/xs"
+import e24 from "@/components/examples/select/sm"
+import e25 from "@/components/examples/select/lg"
+import e26 from "@/components/examples/select/prefix"
+import e27 from "@/components/examples/select/invalid"
+import e28 from "@/components/examples/select/disabled"
+import e29 from "@/components/examples/combobox/default"
+import e30 from "@/components/examples/combobox/xs"
+import e31 from "@/components/examples/combobox/sm"
+import e32 from "@/components/examples/combobox/lg"
+import e33 from "@/components/examples/combobox/selected"
+import e34 from "@/components/examples/combobox/disabled"
+import e35 from "@/components/examples/combobox/disabled-option"
+import e36 from "@/components/examples/combobox/read-only"
+import e37 from "@/components/examples/combobox/invalid"
+import e38 from "@/components/examples/combobox/empty"
+import e39 from "@/components/examples/chip/pressed"
+import e40 from "@/components/examples/chip/unpressed"
+import e41 from "@/components/examples/chip/xs"
+import e42 from "@/components/examples/chip/sm"
+import e43 from "@/components/examples/chip/static"
+import e44 from "@/components/examples/chip/swatch"
+import e45 from "@/components/examples/chip/icon"
+import e46 from "@/components/examples/chip/disabled"
 
 export const examples: Record<string, Record<string, ComponentType>> = {
   "button": { "default": e0, "secondary": e1, "outline": e2, "ghost": e3, "destructive": e4, "link": e5, "sizes": e6, "icon": e7, "with-icon": e8, "loading": e9, "pressed": e10, "glow": e11, "as-child": e12 },
   "icon-button": { "glass": e13, "plain": e14, "outline": e15, "size-xs": e16, "size-sm": e17, "size-default": e18, "size-lg": e19, "pressed": e20, "disabled": e21 },
+  "select": { "default": e22, "xs": e23, "sm": e24, "lg": e25, "prefix": e26, "invalid": e27, "disabled": e28 },
+  "combobox": { "default": e29, "xs": e30, "sm": e31, "lg": e32, "selected": e33, "disabled": e34, "disabled-option": e35, "read-only": e36, "invalid": e37, "empty": e38 },
+  "chip": { "pressed": e39, "unpressed": e40, "xs": e41, "sm": e42, "static": e43, "swatch": e44, "icon": e45, "disabled": e46 },
 }
