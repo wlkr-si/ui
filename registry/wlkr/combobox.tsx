@@ -1,36 +1,199 @@
 "use client"
 
 import * as React from "react"
-import { Search, X } from "lucide-react"
+import { Check, Search, X } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 export type ComboboxOption = { value: string; label: string; disabled?: boolean }
-export type ComboboxProps = Omit<React.ComponentProps<"input">, "size" | "value" | "defaultValue" | "children"> & {
-  options: ComboboxOption[]
+export type ComboboxSize = "xs" | "sm" | "default" | "lg"
+export type ComboboxProps = Omit<React.ComponentProps<"input">, "size" | "value" | "defaultValue" | "children" | "dangerouslySetInnerHTML"> & {
+  options: readonly ComboboxOption[]
   value?: string
   defaultValue?: string
   onValueChange?: (value: string) => void
-  size?: "sm" | "md"
+  size?: ComboboxSize
   emptyMessage?: string
   clearLabel?: string
 }
 
 const styles = `
-.wlkr-combobox{box-sizing:border-box;position:relative;display:inline-flex;align-items:center;gap:6px;width:208px;max-width:100%;height:32px;padding:0 4px 0 8px;border:1px solid var(--input,var(--border,#dedede));border-radius:6px;background:var(--card,#fff);color:var(--muted-foreground,#696969);transition:border-color 120ms ease,background-color 120ms ease}
-.wlkr-combobox[data-size=sm]{height:28px}.wlkr-combobox-icon{flex:none;width:14px;height:14px}.wlkr-combobox-input{flex:1;min-width:0;width:100%;height:100%;padding:0;border:0;background:transparent;outline:none;font-family:inherit;font-weight:500;font-size:14px;line-height:1;color:var(--foreground,#010101)}.wlkr-combobox[data-size=sm] .wlkr-combobox-input{font-size:12px}.wlkr-combobox-input::placeholder{color:var(--muted-foreground,#696969);opacity:.7}
-.wlkr-combobox:has(input:focus-visible){outline:2px solid var(--brand,#33f282);outline-offset:2px}.wlkr-combobox:has(input:disabled){opacity:.45}.wlkr-combobox:has([aria-invalid=true]){border-color:var(--destructive,#b42318)}
-.wlkr-combobox-clear{display:inline-grid;place-items:center;flex:none;width:20px;height:20px;padding:0;border:0;border-radius:4px;background:transparent;color:var(--muted-foreground,#696969);cursor:pointer}.wlkr-combobox-clear svg{width:12px;height:12px}.wlkr-combobox-clear:focus-visible{outline:2px solid var(--brand,#33f282);outline-offset:2px}
-.wlkr-combobox-list{box-sizing:border-box;position:absolute;left:-1px;right:-1px;top:calc(100% + 6px);z-index:30;max-height:288px;overflow:auto;margin:0;padding:4px;list-style:none;background:var(--popover,#fff);border:1px solid var(--border,#dedede);border-radius:8px;box-shadow:var(--wlkr-combobox-shadow,0 16px 40px rgb(0 0 0 / 55%));opacity:0;visibility:hidden;transform:translateY(-2px) scale(.98);transform-origin:top center;pointer-events:none;transition:opacity 140ms cubic-bezier(.23,1,.32,1),transform 140ms cubic-bezier(.23,1,.32,1),visibility 140ms}
-.wlkr-combobox[data-open=true] .wlkr-combobox-list{opacity:1;visibility:visible;transform:none;pointer-events:auto}
-.wlkr-combobox-option{display:flex;align-items:center;gap:8px;min-height:28px;padding:4px 8px;border-radius:4px;font-family:inherit;font-weight:500;font-size:12px;line-height:1.4;color:var(--foreground,#010101);overflow-wrap:anywhere;cursor:pointer}
-.wlkr-combobox-option[aria-selected=true]{color:var(--foreground,#010101)}.wlkr-combobox-option[data-active=true]{background:color-mix(in srgb,var(--foreground,#010101) 10%,transparent);color:var(--foreground,#010101)}.wlkr-combobox-option[aria-disabled=true]{opacity:.4;cursor:default}.wlkr-combobox-empty{padding:8px 10px;font-size:12px;color:var(--muted-foreground,#696969)}
-@media(hover:hover) and (pointer:fine){.wlkr-combobox:not(:has(input:disabled)):hover{border-color:color-mix(in srgb,var(--border,#dedede),var(--foreground,#010101) 16%)}.wlkr-combobox-clear:hover{background:var(--secondary,#f3f3f3);color:var(--foreground,#010101)}.wlkr-combobox-option:not([aria-disabled=true]):hover{background:var(--accent,#f3f3f3)}}
-@media(prefers-reduced-motion:reduce){.wlkr-combobox,.wlkr-combobox-list{transition:none}}
+.wlkr-combobox {
+  --wlkr-combobox-width: 208px;
+  --wlkr-combobox-list-height: 288px;
+  --wlkr-combobox-h: var(--wlkr-control-h-md);
+  --wlkr-combobox-px: var(--wlkr-control-px-md);
+  --wlkr-combobox-text: var(--wlkr-control-text-md);
+  --wlkr-combobox-icon: var(--wlkr-control-icon-md);
+  --wlkr-combobox-gap: var(--wlkr-control-gap-md);
+  --wlkr-combobox-radius: var(--wlkr-radius-md);
+  position: relative;
+  display: inline-flex;
+  width: var(--wlkr-combobox-width);
+  max-width: 100%;
+}
+.wlkr-combobox[data-size=xs] {
+  --wlkr-combobox-h: var(--wlkr-control-h-xs);
+  --wlkr-combobox-px: var(--wlkr-control-px-xs);
+  --wlkr-combobox-text: var(--wlkr-control-text-xs);
+  --wlkr-combobox-icon: var(--wlkr-control-icon-xs);
+  --wlkr-combobox-gap: var(--wlkr-control-gap-xs);
+  --wlkr-combobox-radius: var(--wlkr-radius-sm);
+}
+.wlkr-combobox[data-size=sm] {
+  --wlkr-combobox-h: var(--wlkr-control-h-sm);
+  --wlkr-combobox-px: var(--wlkr-control-px-sm);
+  --wlkr-combobox-text: var(--wlkr-control-text-sm);
+  --wlkr-combobox-icon: var(--wlkr-control-icon-sm);
+  --wlkr-combobox-gap: var(--wlkr-control-gap-sm);
+}
+.wlkr-combobox[data-size=lg] {
+  --wlkr-combobox-h: var(--wlkr-control-h-lg);
+  --wlkr-combobox-px: var(--wlkr-control-px-lg);
+  --wlkr-combobox-text: var(--wlkr-control-text-lg);
+  --wlkr-combobox-icon: var(--wlkr-control-icon-lg);
+  --wlkr-combobox-gap: var(--wlkr-control-gap-lg);
+}
+
+.wlkr-combobox-field {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--wlkr-combobox-gap);
+  width: 100%;
+  height: var(--wlkr-combobox-h);
+  padding: 0 var(--wlkr-combobox-px);
+  border: var(--wlkr-control-border) solid var(--wlkr-border-default);
+  border-radius: var(--wlkr-combobox-radius);
+  color: var(--wlkr-content-primary);
+  transition: border-color var(--wlkr-duration-fast) var(--wlkr-ease-out);
+}
+.wlkr-combobox-field > svg {
+  flex: none;
+  width: var(--wlkr-combobox-icon);
+  height: var(--wlkr-combobox-icon);
+  color: var(--wlkr-content-secondary);
+}
+.wlkr-combobox-input {
+  flex: 1;
+  min-width: 0;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  outline: none;
+  color: inherit;
+  font-family: inherit;
+  font-weight: var(--wlkr-weight-medium);
+  font-size: var(--wlkr-combobox-text);
+  line-height: 1;
+}
+.wlkr-combobox-input::placeholder { color: var(--wlkr-content-tertiary); opacity: 1; }
+.wlkr-combobox-input::-webkit-search-cancel-button { appearance: none; }
+.wlkr-combobox-field:has(> .wlkr-combobox-input:is([aria-invalid=true],[aria-invalid=grammar],[aria-invalid=spelling])) {
+  border-color: var(--wlkr-danger);
+}
+.wlkr-combobox-field:has(> .wlkr-combobox-input:disabled) { opacity: var(--wlkr-disabled-opacity); }
+
+.wlkr-combobox-clear {
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  width: calc(var(--wlkr-combobox-icon) + var(--wlkr-combobox-gap));
+  height: calc(var(--wlkr-combobox-icon) + var(--wlkr-combobox-gap));
+  padding: 0;
+  border: 0;
+  border-radius: inherit;
+  background: transparent;
+  color: var(--wlkr-content-secondary);
+  cursor: pointer;
+  transition: color var(--wlkr-duration-fast) var(--wlkr-ease-out), background-color var(--wlkr-duration-fast) var(--wlkr-ease-out), transform var(--wlkr-duration-fast) var(--wlkr-ease-out);
+}
+.wlkr-combobox-clear svg { width: var(--wlkr-combobox-icon); height: var(--wlkr-combobox-icon); }
+.wlkr-combobox-field:has(> .wlkr-combobox-input:focus), .wlkr-combobox-clear:focus-visible {
+  outline: var(--wlkr-focus-width) solid var(--wlkr-focus-ring);
+  outline-offset: var(--wlkr-focus-offset);
+}
+.wlkr-combobox-clear:disabled { visibility: hidden; }
+.wlkr-combobox-clear:not(:disabled):active, .wlkr-combobox-option:not([aria-disabled=true]):active {
+  transform: scale(var(--wlkr-press-scale));
+}
+
+.wlkr-combobox-list {
+  box-sizing: border-box;
+  position: absolute;
+  inset-inline: 0;
+  top: calc(100% + var(--wlkr-space-1_5));
+  z-index: var(--wlkr-z-overlay);
+  max-height: var(--wlkr-combobox-list-height);
+  overflow: auto;
+  margin: 0;
+  padding: var(--wlkr-space-1);
+  list-style: none;
+  background: var(--wlkr-surface-overlay);
+  border: var(--wlkr-control-border) solid var(--wlkr-border-default);
+  border-radius: var(--wlkr-radius-lg);
+  box-shadow: var(--wlkr-shadow-overlay);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translateY(calc(-1 * var(--wlkr-space-0_5)));
+  transition: opacity var(--wlkr-duration-base) var(--wlkr-ease-out), transform var(--wlkr-duration-base) var(--wlkr-ease-out), visibility var(--wlkr-duration-base) var(--wlkr-ease-out);
+}
+.wlkr-combobox[data-open=true] .wlkr-combobox-list {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+  pointer-events: auto;
+}
+.wlkr-combobox-option, .wlkr-combobox-empty {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  gap: var(--wlkr-combobox-gap);
+  min-height: var(--wlkr-combobox-h);
+  padding: var(--wlkr-space-0_5) var(--wlkr-combobox-px);
+  border-radius: var(--wlkr-radius-md);
+  color: var(--wlkr-content-secondary);
+  font-family: inherit;
+  font-weight: var(--wlkr-weight-medium);
+  font-size: var(--wlkr-combobox-text);
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+}
+.wlkr-combobox-option {
+  cursor: pointer;
+  transition: transform var(--wlkr-duration-fast) var(--wlkr-ease-out);
+}
+.wlkr-combobox-option svg {
+  flex: none;
+  width: var(--wlkr-combobox-icon);
+  height: var(--wlkr-combobox-icon);
+  margin-inline-start: auto;
+}
+.wlkr-combobox-option[aria-selected=true] { color: var(--wlkr-content-primary); }
+.wlkr-combobox-option[data-active=true] { background: var(--wlkr-fill-hover); }
+.wlkr-combobox-option[aria-disabled=true] { opacity: var(--wlkr-disabled-opacity); cursor: default; }
+
+@media (hover: hover) and (pointer: fine) {
+  .wlkr-combobox-field:hover:has(> .wlkr-combobox-input:enabled:not([aria-invalid=true],[aria-invalid=grammar],[aria-invalid=spelling])) {
+    border-color: var(--wlkr-border-strong);
+  }
+  .wlkr-combobox-clear:not(:disabled):hover { background: var(--wlkr-fill-hover); color: var(--wlkr-content-primary); }
+  .wlkr-combobox-list:not(:has([data-active=true])) .wlkr-combobox-option:not([aria-disabled=true]):hover { background: var(--wlkr-fill-hover); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .wlkr-combobox-field, .wlkr-combobox-clear, .wlkr-combobox-option, .wlkr-combobox-list { transition: none; }
+  .wlkr-combobox-list, .wlkr-combobox-clear:not(:disabled):active, .wlkr-combobox-option:not([aria-disabled=true]):active { transform: none; }
+}
 `
 
 const fold = (text: string) => text.normalize("NFD").replace(/\p{M}/gu, "").toLocaleLowerCase()
 
-export function Combobox({ options, value, defaultValue = "", onValueChange, size = "md", emptyMessage = "No results", clearLabel = "Clear selection", className, disabled, readOnly, onKeyDown, onChange, onFocus, onBlur, ref, ...props }: ComboboxProps) {
+export function Combobox({
+  options, value, defaultValue = "", onValueChange, size = "default", emptyMessage = "No results",
+  clearLabel = "Clear selection", className, disabled, readOnly, onKeyDown, onChange, onFocus, ref, ...props
+}: ComboboxProps) {
   const id = React.useId()
   const [inner, setInner] = React.useState(defaultValue)
   const [query, setQuery] = React.useState<string | null>(null)
@@ -40,51 +203,130 @@ export function Combobox({ options, value, defaultValue = "", onValueChange, siz
   const list = React.useRef<HTMLUListElement>(null)
   const current = value ?? inner
   const text = query ?? options.find(option => option.value === current)?.label ?? ""
-  const filtered = options.filter(option => fold(option.label).includes(fold(query ?? "")))
+  const search = fold(query ?? "")
+  const filtered = options.filter(option => fold(option.label).includes(search))
   const enabled = filtered.filter(option => !option.disabled)
   const activeValue = enabled.some(option => option.value === active) ? active : null
   const expanded = open && !disabled && !readOnly
   const activeIndex = filtered.findIndex(option => option.value === activeValue)
+
   React.useEffect(() => {
     if (expanded && activeIndex >= 0) list.current?.children[activeIndex]?.scrollIntoView({ block: "nearest" })
   }, [expanded, activeIndex])
+
+  function close() {
+    setQuery(null)
+    setOpen(false)
+    setActive(null)
+  }
+
   function commit(next: string) {
     if (value === undefined) setInner(next)
     if (next !== current) onValueChange?.(next)
-    setQuery(null); setOpen(false); setActive(null)
+    close()
   }
-  return <><style>{styles}</style><span data-size={size} data-open={expanded} className={cn("wlkr-combobox", className)}>
-    <Search className="wlkr-combobox-icon" aria-hidden="true" />
-    <input {...props} ref={node => {
-      input.current = node
-      if (typeof ref === "function") return ref(node)
-      if (ref) ref.current = node
-    }} disabled={disabled} readOnly={readOnly} className="wlkr-combobox-input" role="combobox" aria-autocomplete="list" aria-expanded={expanded} aria-controls={`${id}-list`} aria-activedescendant={expanded && activeIndex >= 0 ? `${id}-${activeIndex}` : undefined} autoComplete="off" value={text} onChange={event => {
-      onChange?.(event)
-      setQuery(event.target.value); setOpen(true); setActive(null)
-    }} onFocus={event => { onFocus?.(event); if (!event.defaultPrevented) setOpen(true) }} onBlur={event => {
-      onBlur?.(event)
-      if (!event.currentTarget.parentElement?.contains(event.relatedTarget)) { setOpen(false); setQuery(null); setActive(null) }
-    }} onKeyDown={event => {
-      onKeyDown?.(event)
-      if (event.defaultPrevented || event.nativeEvent.isComposing || disabled || readOnly) return
-      const index = enabled.findIndex(option => option.value === activeValue)
-      if (event.key === "ArrowDown" || event.key === "ArrowUp") {
-        event.preventDefault(); setOpen(true)
-        const next = !expanded || index < 0 ? (event.key === "ArrowDown" ? 0 : enabled.length - 1) : (index + (event.key === "ArrowDown" ? 1 : -1) + enabled.length) % enabled.length
-        setActive(enabled[next]?.value ?? null)
-      } else if (expanded && (event.key === "Home" || event.key === "End")) {
-        event.preventDefault(); setActive((event.key === "Home" ? enabled[0] : enabled.at(-1))?.value ?? null)
-      } else if (event.key === "Enter" && expanded && activeValue !== null) {
-        event.preventDefault(); commit(activeValue)
-      } else if (event.key === "Escape" && expanded) {
-        event.preventDefault(); event.stopPropagation(); setOpen(false); setQuery(null); setActive(null)
-      } else if (event.key === "Tab") { setOpen(false); setQuery(null); setActive(null) }
-    }} />
-    {text && !readOnly && <button type="button" className="wlkr-combobox-clear" aria-label={clearLabel} disabled={disabled} onPointerDown={event => event.preventDefault()} onClick={() => { commit(""); input.current?.focus() }}><X aria-hidden="true" /></button>}
-    <ul ref={list} id={`${id}-list`} role="listbox" aria-label={props["aria-label"] ? `${props["aria-label"]} options` : "Options"} className="wlkr-combobox-list" inert={!expanded}>
-      {filtered.map((option, index) => <li key={option.value} id={`${id}-${index}`} role="option" aria-selected={current === option.value} aria-disabled={option.disabled || undefined} data-active={activeValue === option.value} className="wlkr-combobox-option" onPointerDown={event => event.preventDefault()} onClick={() => { if (!option.disabled) commit(option.value) }}>{option.label}</li>)}
-      {!filtered.length && <li role="presentation" className="wlkr-combobox-empty"><span role="status">{emptyMessage}</span></li>}
-    </ul>
-  </span></>
+
+  function handleKeyDown(event: React.KeyboardEvent<HTMLInputElement>) {
+    onKeyDown?.(event)
+    if (event.defaultPrevented || event.nativeEvent.isComposing || disabled || readOnly) return
+
+    if (event.key === "ArrowDown" || event.key === "ArrowUp") {
+      event.preventDefault()
+      setOpen(true)
+      const direction = event.key === "ArrowDown" ? 1 : -1
+      const index = expanded ? enabled.findIndex(option => option.value === activeValue) : -1
+      const startingIndex = direction === 1 ? 0 : enabled.length - 1
+      const next = index < 0 ? startingIndex : (index + direction + enabled.length) % enabled.length
+      setActive(enabled[next]?.value ?? null)
+    } else if (expanded && (event.key === "Home" || event.key === "End")) {
+      event.preventDefault()
+      setActive((event.key === "Home" ? enabled[0] : enabled.at(-1))?.value ?? null)
+    } else if (event.key === "Enter" && expanded && activeValue !== null) {
+      event.preventDefault()
+      commit(activeValue)
+    } else if (event.key === "Escape" && expanded) {
+      event.preventDefault()
+      event.stopPropagation()
+      close()
+    } else if (event.key === "Tab") {
+      close()
+    }
+  }
+
+  return <>
+    <style href="wlkr-combobox" precedence="default">{styles}</style>
+    <div data-size={size} data-open={expanded} className={cn("wlkr-combobox", className)} onBlur={event => {
+      if (!event.currentTarget.contains(event.relatedTarget)) close()
+    }}>
+      <span className="wlkr-combobox-field">
+        <Search aria-hidden="true" />
+        <input
+          {...props}
+          ref={node => {
+            input.current = node
+            if (typeof ref === "function") return ref(node)
+            if (ref) ref.current = node
+          }}
+          disabled={disabled}
+          readOnly={readOnly}
+          className="wlkr-combobox-input"
+          role="combobox"
+          aria-autocomplete="list"
+          aria-expanded={expanded}
+          aria-controls={`${id}-list`}
+          aria-activedescendant={expanded && activeIndex >= 0 ? `${id}-${activeIndex}` : undefined}
+          autoComplete="off"
+          value={text}
+          onChange={event => {
+            onChange?.(event)
+            setQuery(event.target.value)
+            setOpen(true)
+            setActive(null)
+          }}
+          onFocus={event => {
+            onFocus?.(event)
+            if (!event.defaultPrevented && !readOnly) setOpen(true)
+          }}
+          onKeyDown={handleKeyDown}
+        />
+        {text && !readOnly && <button
+          type="button"
+          className="wlkr-combobox-clear"
+          aria-label={clearLabel}
+          disabled={disabled}
+          onPointerDown={event => event.preventDefault()}
+          onClick={() => {
+            input.current?.focus()
+            commit("")
+          }}
+        ><X aria-hidden="true" /></button>}
+      </span>
+      <ul
+        ref={list}
+        id={`${id}-list`}
+        role="listbox"
+        aria-label={props["aria-label"] ? `${props["aria-label"]} options` : "Options"}
+        className="wlkr-combobox-list"
+        inert={!expanded}
+      >
+        {filtered.map((option, index) => <li
+          key={option.value}
+          id={`${id}-${index}`}
+          role="option"
+          aria-selected={current === option.value}
+          aria-disabled={option.disabled || undefined}
+          data-active={activeValue === option.value}
+          className="wlkr-combobox-option"
+          onPointerDown={event => event.preventDefault()}
+          onClick={() => {
+            if (!option.disabled) commit(option.value)
+          }}
+        >
+          <span>{option.label}</span>
+          {current === option.value && <Check aria-hidden="true" />}
+        </li>)}
+        {!filtered.length && <li role="presentation" className="wlkr-combobox-empty"><span role="status">{emptyMessage}</span></li>}
+      </ul>
+    </div>
+  </>
 }

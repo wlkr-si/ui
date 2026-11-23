@@ -92,10 +92,13 @@
       "name": "combobox",
       "type": "registry:component",
       "title": "Combobox",
-      "description": "An editable WAI-ARIA combobox with accent-insensitive filtering, a listbox popup, keyboard selection and a clear action.",
+      "description": "An editable combobox with accent-insensitive filtering, a listbox, keyboard navigation and a clear action.",
       "author": "WLKR Labs",
       "dependencies": [
         "lucide-react"
+      ],
+      "registryDependencies": [
+        "https://ui.wlkr.si/r/theme.json"
       ],
       "files": [
         {
