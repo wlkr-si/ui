@@ -24,9 +24,9 @@ import { PixelObject } from "@/components/wlkr/pixel-object"
 
 Use your project's configured import alias. Components are copied into your source; there is no WLKR runtime service or account. The collection contains 79 original components, optional typography and a light/dark theme. Original component code is MIT; brand assets and fonts have separate terms.
 
-The gallery and focused tools use primary-domain canonical and social metadata with static, page-specific 1200×630 previews. Next.js renders these previews during the static build from the approved local mark and Geist font; no image service is called. The existing **ui.wlkrlabs.com** host remains available.
+The gallery and focused tools use primary-domain canonical and social metadata with static, page-specific 1200×630 previews. Next.js renders these previews during the static build from the approved local mark and Geist font; no image service is called.
 
-The gallery is available at **ui.wlkr.si**. The focused [contrast checker](https://ui.wlkr.si/contrast) previews opaque colour pairs, checks WCAG text thresholds, and shares pairs by URL. Optional AA text mixes never change the selected colour until applied. The existing **ui.wlkrlabs.com** host and installation namespace remain available. The current source is [wlkr-si/ui](https://github.com/wlkr-si/ui). Dated release and consumer-installation evidence is kept in [verification](docs/verification.md); a source or documentation commit does not itself deploy the gallery.
+The gallery is available at **ui.wlkr.si**. The focused [contrast checker](https://ui.wlkr.si/contrast) previews opaque colour pairs, checks WCAG text thresholds, and shares pairs by URL. Optional AA text mixes never change the selected colour until applied. The current source is [wlkr-si/ui](https://github.com/wlkr-si/ui). Dated release and consumer-installation evidence is kept in [verification](docs/verification.md); a source or documentation commit does not itself deploy the gallery.
 
 The private package is version 0.24.0. See [the changelog](CHANGELOG.md) for the gallery milestone; distribution remains GitHub source and the public registry, not an npm package.
 
@@ -185,7 +185,7 @@ The site uses installed, unchanged stock `Button`, `Input`, `Switch`, `Tabs`, `S
 
 ## Gallery controls and source panels
 
-[Pixels](https://ui.wlkr.si/pixels) is the focused drawing page, with the same editor, state, codec and export implementation as the gallery. React code opens only when requested; studio navigation and display controls remain available. New Share links point to `/pixels`; existing root v1/v2 links still restore the same artwork. The static release receipt hashes `/pixels` and checks it on both hosts, with a scoped no-transform response directive; older baseline/rollback receipts remain explicitly registry-only.
+[Pixels](https://ui.wlkr.si/pixels) is the focused drawing page, with the same editor, state, codec and export implementation as the gallery. React code opens only when requested; studio navigation and display controls remain available. New Share links point to `/pixels`; existing root v1/v2 links still restore the same artwork. The static release receipt hashes `/pixels` and checks it on `ui.wlkr.si`, with a scoped no-transform response directive; older baseline/rollback receipts remain explicitly registry-only.
 
 The Pixel object playground offers 8×8, 16×16 and 32×32 masks with theme-relative or explicit six-digit hex ink. Grid changes centre the artwork; shrinking crops it. Undo/redo tracks 32 strokes or artwork edits and restores cropped pixels, size and ink together. Clear keeps the current size and ink; Reset returns to the original 8×8 theme-relative starter and is undoable. Switching to Object preserves mask state and the existing object settings.
 
@@ -212,11 +212,11 @@ Paper white `#ffffff`, ink `#010101`, neutral secondary text, and WLKR green `#3
 - The Open Lens mark, favicon, and licensed Geist font come from the [WLKR.SI brand suite](https://wlkr.si/brand). Branding remains WLKR.SI property; no rights to its marks are granted by the source license.
 - Original component code: MIT, see `LICENSE`.
 
-The public site runs on its own Cloudflare static Worker, `wlkr-ui`, at `ui.wlkr.si` (the earlier `ui.wlkrlabs.com` address still serves the same build). The main website and its Worker remain unchanged. See [release verification](docs/verification.md) for the exact published source revision and acceptance evidence. Source is published in the public [wlkr-si/ui repository](https://github.com/wlkr-si/ui).
+The public site runs on its own Cloudflare static Worker, `wlkr-ui`, at `ui.wlkr.si`. The main website and its Worker remain unchanged. See [release verification](docs/verification.md) for the exact published source revision and acceptance evidence. Source is published in the public [wlkr-si/ui repository](https://github.com/wlkr-si/ui).
 
 ## Static Cloudflare release
 
-See [the deployment runbook](docs/deployment.md). `pnpm deploy:check` builds and validates the upload without publishing. `pnpm run deploy` requires a clean committed checkout, rebuilds and checks it, then activates the separate `wlkr-ui` static Worker and verifies the exact receipt plus all registry hashes on both gallery hosts. Failed releases restore and verify the previous version when deployment ownership is certain; observed conflicts stop further writes. See the runbook for the local lock and non-atomic provider concurrency limitation. The main `wlkrlabs-com` Worker and apex/`www` routes are outside this configuration.
+See [the deployment runbook](docs/deployment.md). `pnpm deploy:check` builds and validates the upload without publishing. `pnpm run deploy` requires a clean committed checkout, rebuilds and checks it, then activates the separate `wlkr-ui` static Worker and verifies the exact receipt plus all registry hashes on `ui.wlkr.si`. Failed releases restore and verify the previous version when deployment ownership is certain; observed conflicts stop further writes. See the runbook for the local lock and non-atomic provider concurrency limitation.
 
 ## GitHub star
 
