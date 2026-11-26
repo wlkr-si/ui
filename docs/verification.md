@@ -1,4 +1,6 @@
-# Verification — 2026-10-23
+# Release verification
+
+The current installation namespace is `https://ui.wlkr.si/r/{name}.json`. The gallery’s [build receipt](https://ui.wlkr.si/build-info.json) identifies the deployed commit and asset hashes. The source repository is [wlkr-si/ui](https://github.com/wlkr-si/ui).
 
 Chronological acceptance for the standalone `wlkr/ui` checkout. Initial local checks preceded the public release recorded below.
 
@@ -42,7 +44,7 @@ No public deployment, DNS change, or existing website modification was performed
 
 ## Public release — 2026-10-23
 
-Published source revision: `8f87ab3313e943653dfd113d3912160d830cd0f4`. Separate Cloudflare Worker `wlkr-ui`, version `3b5c8346-a7d5-4894-90f3-ae396520dc01`, serves `https://ui.wlkrlabs.com` at 100%. The public build receipt reported the exact source revision.
+Published source revision: `8f87ab3313e943653dfd113d3912160d830cd0f4`. Separate Cloudflare Worker `wlkr-ui`, version `3b5c8346-a7d5-4894-90f3-ae396520dc01`, served the original gallery domain at 100%. The public build receipt reported the exact source revision.
 
 Immutable release identity: Cloudflare deployment `14b2cdfb-b58c-466d-a01d-c232ae5efdec`, created `2026-10-23T15:26:39.475628Z` (10:26:39 a.m. America/Chicago). The Cloudflare API confirmed the custom domain belongs to service `wlkr-ui`, is enabled, and has a certificate assigned. The main website’s deployment `50111ab6-fa2d-4295-883a-db215a29550c` and its domain/service mapping remained unchanged.
 
@@ -52,7 +54,7 @@ Immutable release identity: Cloudflare deployment `14b2cdfb-b58c-466d-a01d-c232a
 - At verification time the Mac’s normal resolver still retained an earlier negative lookup; authoritative DNS and Cloudflare’s 1.1.1.1 resolver returned positive records. Public acceptance ran from an isolated existing Playwright image container using DNS 1.1.1.1 and ordinary public HTTPS, with no hostname mappings or mocked responses.
 - In a fresh Vite/React/Radix consumer inside that disposable container, the standard shadcn CLI listed all five `@wlkr` entries and installed all four original components plus the theme from the public namespace. Stock dependencies came from upstream. The fixture mounted all four originals and passed TypeScript and Vite production build checks. Bundled Chromium rendered the installed copy control, async action, filter list, and pixel object. Searching “weather” returned one result; the async action reached “Changes saved”; PixelObject reported `data-motion="running"`. Browser page errors: none. Screenshot: `output/playwright/public-installed-consumer.png`. The owned disposable container was scheduled for removal after the screenshot was saved.
 
-Public configuration remains restricted to `ui.wlkrlabs.com`; `workers.dev` and preview URLs are disabled. The source receipt is generated in the exported output rather than committed into public source. This documentation update does not change the deployed application revision.
+Public configuration at the time used a single custom domain; `workers.dev` and preview URLs are disabled. The source receipt is generated in the exported output rather than committed into public source. This documentation update does not change the deployed application revision.
 
 ## Motion playground expansion — historical local review, 2026-10-23
 
@@ -70,9 +72,9 @@ Published source revision: `6c34da775eb20b62b4352a360586d100b62399df`. Cloudflar
 
 - Public build-info reported the exact source revision. All eight JSON endpoints (both catalogs and six items) returned HTTP 200 with bytes and SHA-256 hashes matching the exported release receipt. A missing registry item returned 404.
 - Normal Mac DNS resolution and public HTTPS worked for this verification; no hostname overrides, localhost registry URLs, or mocked responses were used for public installation. The earlier negative DNS cache issue is no longer present at this check.
-- The apex website’s build-info bytes stayed unchanged. This release updated only the separate `ui.wlkrlabs.com` service.
+- The apex website’s build-info bytes stayed unchanged. This release updated only the separate gallery service.
 - Live gallery browser acceptance selected Disco (`data-pattern="scatter"`) and the Dots loader variant (six cells, running), with no console warnings or errors. Screenshot: `output/playwright/public-wlkr-loader-release.png`.
-- A fresh consumer was scaffolded at `/tmp/wlkr-ui-release-consumer-20261023` using `pnpm dlx shadcn@latest init --template vite --base radix --preset nova --no-monorepo --name wlkr-ui-release-consumer-20261023 -y`. The WLKR source directory was confirmed absent before installing. Its `@wlkr` namespace used `https://ui.wlkrlabs.com/r/{name}.json`.
+- A fresh consumer was scaffolded at `/tmp/wlkr-ui-release-consumer-20261023` using `pnpm dlx shadcn@latest init --template vite --base radix --preset nova --no-monorepo --name wlkr-ui-release-consumer-20261023 -y`. The WLKR source directory was confirmed absent before installing. Its `@wlkr` namespace used the original gallery domain.
 - The normal command `pnpm dlx shadcn@latest add @wlkr/pixel-object @wlkr/wlkr-loader -y` installed both originals directly from the public registry, reusing the identical stock shadcn button. The fixture mounted a customized PixelObject and both loader variants. `pnpm build` passed TypeScript and Vite production build checks.
 - Browser acceptance of that installed consumer confirmed the customized pixel object using the Wave pattern and running, with Bars and Dots loaders each rendering six running cells. Console warnings and errors: none. Screenshot: `output/playwright/public-motion-installed-consumer.png`. The owned production preview on port 3102 was stopped gracefully after acceptance.
 
@@ -91,7 +93,7 @@ These additions and the parallel website adoption are for local review. No publi
 - Gallery browser acceptance passed synchronized header/demo theme toggles in light and dark, keyboard focus opening the TextLink preview, component search filtering to PageIntro and clearing back to the collection, and valid import/Usage examples. Wave plus the opt-in morph switch reported `data-morph="continuous"`; generated Usage included sphere/cube/torus and duration 8. Browser console errors and warnings: none.
 - The gallery PageIntro specimen uses h2, leaving the main editorial hero as the only primary h1; distributed PageIntro source and consumers were unchanged by that gallery fix.
 - The parallel Astro website integration passed its full npm verify command and a dependency audit with zero vulnerabilities. Parent browser acceptance passed at desktop width 1280, mobile widths 390 and 320, and reduced motion. The installed typography and four page components came through standard CLI installation from the local registry; public namespace configuration was retained.
-- Registry static export, lint, TypeScript, source validation for 11 items, and diff checks passed. Final public build-info bytes match the pre-work receipts: ui.wlkrlabs.com remains `6c34da775eb20b62b4352a360586d100b62399df`, and wlkrlabs.com remains `51fc3d16f13e2be37e4ccc4fbc27fc62145153c7`.
+- Registry static export, lint, TypeScript, source validation for 11 items, and diff checks passed. Final public build-info bytes match the pre-work receipts: the gallery remained at `6c34da775eb20b62b4352a360586d100b62399df` and the studio website remained at `51fc3d16f13e2be37e4ccc4fbc27fc62145153c7`.
 
 The reviewed draft is saved in local Git commits for owner review. No deploy or push was performed.
 
@@ -128,11 +130,11 @@ Added an original `GithubStar` repository link and a thirteenth registry item. T
 
 Production static build, lint, TypeScript, registry validation (13 items), registry generation, and `git diff --check` passed. Browser and clean-consumer acceptance are tracked separately after the local artifact handoff. No public deployment or push was performed.
 
-GitHub star browser acceptance: the 4,530 example remains 80.47 px wide throughout replay, with a 32 px link height, 18 px GitHub icon, and 16 px star. Hover shows bottom-up fill from inset 100% to zero, rolling digit transforms, and twelve particles settling at 25/32 px radii with opacity zero. Zero has the correct accessible count; unavailable data shows GitHub with no burst. The nine-digit example remains 123.55 px wide. Reduced motion has no fill/digit animation and invisible particles. The website displays the actual `wlkr-labs/ui` count of zero; its narrow header clips only viewport-edge decorative overflow. The complete embedded icon license was moved after imports so standard Astro CLI transforms preserve it. No Worker/website deployment was performed.
+GitHub star browser acceptance: the 4,530 example remains 80.47 px wide throughout replay, with a 32 px link height, 18 px GitHub icon, and 16 px star. Hover shows bottom-up fill from inset 100% to zero, rolling digit transforms, and twelve particles settling at 25/32 px radii with opacity zero. Zero has the correct accessible count; unavailable data shows GitHub with no burst. The nine-digit example remains 123.55 px wide. Reduced motion has no fill/digit animation and invisible particles. The website displays the actual `wlkr-si/ui` count of zero; its narrow header clips only viewport-edge decorative overflow. The complete embedded icon license was moved after imports so standard Astro CLI transforms preserve it. No Worker/website deployment was performed.
 
 ### Complete registry public release — 2026-10-23
 
-Published UI source `2935308d0e1a68df26bbba95a6cadcf38bf8719f` to the public `wlkr-labs/ui` repository and `ui.wlkrlabs.com`. Cloudflare deployment `69a3b1e9-256a-4b3b-8cd0-5bb3f8531aa4`, Worker version `48754c13-30e6-42d4-8421-03c97810b48a`, was created at `2026-10-23T18:21:14.681391Z` and independently confirmed at 100%. Previous release identities and local review history above are historical evidence.
+Published UI source `2935308d0e1a68df26bbba95a6cadcf38bf8719f` to the public UI repository and the original gallery domain. Cloudflare deployment `69a3b1e9-256a-4b3b-8cd0-5bb3f8531aa4`, Worker version `48754c13-30e6-42d4-8421-03c97810b48a`, was created at `2026-10-23T18:21:14.681391Z` and independently confirmed at 100%. Previous release identities and local review history above are historical evidence.
 
 Before release, fresh read-only review approved public namespace commands, agent documentation, all 13 source/export payloads, and isolated Worker configuration. Production build, lint, TypeScript, registry validation of all 13 items, and clean committed-source release checks passed. The authorized source commit was pushed to main.
 
@@ -154,6 +156,6 @@ Release evidence is preserved locally under ignored `output/releases/controls-20
 
 Source `2dedd50f8f4b9d4cd48fd7507ea9340cd1f54982` passed the complete committed-source release check and was published as Worker version `d14f504d-7baa-4510-869e-53bc9d4e0846`. Previous version `08d0a08d-520d-4bb5-81ab-cf2b1e3c5208` remains available for recovery. The change adds the unchanged canonical WLKR.SI family badge and updates studio/source links; original component and registry code are unchanged.
 
-The live build receipt matched that exact source. All 15 registry endpoints matched their recorded SHA-256 hashes on both `ui.wlkrlabs.com` and the newly attached `ui.wlkr.si` alias. Both hosts serve byte-identical build receipts. At 320px, the gallery has no horizontal overflow; manual light/dark selections show the correct badge artwork, the studio link points to `https://wlkr.si`, and browser page errors are empty.
+The live build receipt matched that exact source. All 15 registry endpoints matched their recorded SHA-256 hashes on the original gallery domain and the newly attached `ui.wlkr.si` domain. Both hosts served byte-identical build receipts. At 320px, the gallery has no horizontal overflow; manual light/dark selections show the correct badge artwork, the studio link points to `https://wlkr.si`, and browser page errors are empty.
 
 The alias is owned by the studio app registry receipt. Its creation changed no legacy address, installer namespace, license or attribution. Later documentation/configuration commits can produce a newer live source receipt without changing these original registry artifacts.

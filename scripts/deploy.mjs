@@ -4,7 +4,7 @@ import { open, readFile, unlink } from "node:fs/promises"
 import { isDeepStrictEqual } from "node:util"
 import { fileURLToPath, pathToFileURL } from "node:url"
 
-export const HOSTS = ["https://ui.wlkr.si", "https://ui.wlkrlabs.com"]
+const GALLERY_URL = "https://ui.wlkr.si"
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
 const sha = bytes => createHash("sha256").update(bytes).digest("hex")
 export class ConflictError extends Error {}
@@ -66,31 +66,28 @@ export async function localReceipt(run = processAdapter, read = readFile) {
   return receipt
 }
 
-export async function verifyHosts(expected, { fetchImpl = fetch, sleep = ms => new Promise(resolve => setTimeout(resolve, ms)), attempts = 20, delayMs = 3000, timeoutMs = 5000, nonce = randomUUID() } = {}) {
+export async function verifyGallery(expected, { fetchImpl = fetch, sleep = ms => new Promise(resolve => setTimeout(resolve, ms)), attempts = 20, delayMs = 3000, timeoutMs = 5000, nonce = randomUUID() } = {}) {
   let failure
   for (let attempt = 0; attempt < attempts; attempt++) {
     try {
-      async function get(host, path) {
-        const response = await fetchImpl(`${host}${path}?release=${nonce}-${attempt}`, { credentials: "omit", redirect: "error", cache: "no-store", headers: { "Cache-Control": "no-cache" }, signal: AbortSignal.timeout(timeoutMs) })
-        if (!response.ok) throw new Error(`${host}${path}: HTTP ${response.status}`)
+      async function get(path) {
+        const response = await fetchImpl(`${GALLERY_URL}${path}?release=${nonce}-${attempt}`, { credentials: "omit", redirect: "error", cache: "no-store", headers: { "Cache-Control": "no-cache" }, signal: AbortSignal.timeout(timeoutMs) })
+        if (!response.ok) throw new Error(`${GALLERY_URL}${path}: HTTP ${response.status}`)
         return Buffer.from(await response.arrayBuffer())
       }
-      const received = await Promise.allSettled(HOSTS.map(async host => validateReceipt(JSON.parse((await get(host, "/build-info.json")).toString("utf8")))))
-      const failed = received.find(result => result.status === "rejected")
-      if (failed) throw failed.reason
-      const receipts = received.map(result => result.value)
-      const target = expected || receipts[0]
-      if (receipts.some(receipt => !isDeepStrictEqual(receipt, target))) throw new Error(`Public build receipt differs from the exact expected receipt: expected ${target.sourceCommit}@${target.builtAt}; ${receipts.map((receipt, index) => `${HOSTS[index]}=${receipt.sourceCommit}@${receipt.builtAt}`).join("; ")}`)
-      const checks = HOSTS.flatMap(host => Object.entries({ ...target.registrySha256, ...target.pageSha256, ...target.imageSha256 }).map(([path, hash]) => ({ host, path, hash })))
+      const receipt = validateReceipt(JSON.parse((await get("/build-info.json")).toString("utf8")))
+      const target = expected || receipt
+      if (!isDeepStrictEqual(receipt, target)) throw new Error(`Public build receipt differs from the exact expected receipt: expected ${target.sourceCommit}@${target.builtAt}; ${GALLERY_URL} reported ${receipt.sourceCommit}@${receipt.builtAt}`)
+      const checks = Object.entries({ ...target.registrySha256, ...target.pageSha256, ...target.imageSha256 })
       for (let offset = 0; offset < checks.length; offset += 4) {
-        const batch = await Promise.allSettled(checks.slice(offset, offset + 4).map(async ({ host, path, hash }) => {
-          if (sha(await get(host, path)) !== hash) throw new Error(`${host}${path}: asset SHA-256 mismatch`)
+        const batch = await Promise.allSettled(checks.slice(offset, offset + 4).map(async ([path, hash]) => {
+          if (sha(await get(path)) !== hash) throw new Error(`${GALLERY_URL}${path}: asset SHA-256 mismatch`)
         }))
         const rejected = batch.find(result => result.status === "rejected")
         if (rejected) throw rejected.reason
       }
-      const finalReceipts = await Promise.allSettled(HOSTS.map(async host => JSON.parse((await get(host, "/build-info.json")).toString("utf8"))))
-      if (finalReceipts.some(result => result.status !== "fulfilled" || !isDeepStrictEqual(result.value, target))) throw new Error("Public receipt changed during asset verification.")
+      const finalReceipt = JSON.parse((await get("/build-info.json")).toString("utf8"))
+      if (!isDeepStrictEqual(finalReceipt, target)) throw new Error("Public receipt changed during asset verification.")
       return target
     } catch (error) { failure = error }
     if (attempt + 1 < attempts) await sleep(delayMs)
@@ -106,7 +103,7 @@ export async function release({ run = processAdapter, readCandidate = () => loca
     if (observed.id !== deployment.id) throw new ConflictError(`Deployment changed from ${deployment.id} to ${observed.id}. No further writes: inspect wlkr-ui deployments before retrying.`)
     return observed
   }
-  const verify = receipt => verifyHosts(receipt, { fetchImpl, sleep, ...verifyOptions })
+  const verify = receipt => verifyGallery(receipt, { fetchImpl, sleep, ...verifyOptions })
   log("Checking committed source and static assets…")
   required(await run("pnpm", ["release:check"]), "Release check")
   const candidate = validateReceipt(await readCandidate())
@@ -133,8 +130,8 @@ export async function release({ run = processAdapter, readCandidate = () => loca
     if (!owned(active, version, message)) throw new ConflictError(`Candidate ownership cannot be established at deployment ${active.id}. No rollback: inspect wlkr-ui deployments.`)
     await verify(candidate)
     await assertCurrent(active)
-    log(`Verified source ${candidate.sourceCommit}, all ${Object.keys(candidate.registrySha256).length} registry hashes, all pages and all three social previews on both hosts.`)
-    return { sourceCommit: candidate.sourceCommit, version, deployment: active.id, previousVersion: priorVersion, previousDeployment: previous.id, hosts: HOSTS }
+    log(`Verified source ${candidate.sourceCommit}, all ${Object.keys(candidate.registrySha256).length} registry hashes, all pages and all three social previews at ${GALLERY_URL}.`)
+    return { sourceCommit: candidate.sourceCommit, version, deployment: active.id, previousVersion: priorVersion, previousDeployment: previous.id, hosts: [GALLERY_URL] }
   } catch (failure) {
     if (failure instanceof ConflictError) throw failure
     // Reconcile even a failed CLI command: the provider may have activated it.
@@ -167,8 +164,8 @@ export async function release({ run = processAdapter, readCandidate = () => loca
     try {
       await verify(baseline)
       await assertCurrent(restored)
-    } catch (error) { throw new Error(`${failure.message}\nRollback deployment ${restored.id} exists but restoration verification failed: ${error.message}. Inspect both hosts and deployment before retrying.`) }
-    throw new Error(`${failure.message}\nPrevious version ${priorVersion} restored and verified on both hosts (deployment ${restored.id}). Release failed; candidate was not accepted.`)
+    } catch (error) { throw new Error(`${failure.message}\nRollback deployment ${restored.id} exists but restoration verification failed: ${error.message}. Inspect ${GALLERY_URL} and the deployment before retrying.`) }
+    throw new Error(`${failure.message}\nPrevious version ${priorVersion} restored and verified at ${GALLERY_URL} (deployment ${restored.id}). Release failed; candidate was not accepted.`)
   }
 }
 
